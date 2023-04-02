@@ -7,3 +7,4 @@ package.json
 README.md
 .husky
 .lintstagedrc.js
+next.config.js
