@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import Layout from '../../components/layout/Layout';
+import GameContainer from '../../components/layout/GameContainer';
 // import { Inter } from 'next/font/google';
 
 // const inter = Inter({ subsets: ['latin'] });
@@ -7,7 +8,7 @@ import Layout from '../../components/layout/Layout';
 export default function Home(): ReactElement {
   return (
     <Layout>
-      <p>Lorem ipsum</p>
+      <GameContainer />
     </Layout>
   );
 }
