@@ -1,7 +1,5 @@
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-rgb: 0, 0, 0;
-}
+$foreground-colour: #fff;
+$background-colour: #000;
 
 * {
   box-sizing: border-box;
@@ -16,8 +14,8 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: $foreground-colour;
+  background: $background-colour;
 }
 
 a {
