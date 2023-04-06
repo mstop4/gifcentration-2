@@ -1,10 +1,10 @@
 module.exports = {
   // Type check TypeScript files
-  '**/*.(ts|tsx)': () => 'npx tsc --noEmit',
+  '**/*.(ts|tsx)': () => 'npm run check-ts',
 
   '**/*.*': () => [
     `npm run lint`,
-    `npx jest`,
-    `npx prettier --write .`
+    `npm run test`,
+    `npm run prettier`
   ],
 };

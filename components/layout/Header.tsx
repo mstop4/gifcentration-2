@@ -1,9 +1,5 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import styles from '@/styles/layout/Header.module.scss';
-
-type Props = {
-  children: ReactNode;
-};
 
 const Header: React.FC = () => (
   <header className={styles.header}>GIFcentration 2</header>
