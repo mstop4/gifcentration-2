@@ -4,6 +4,7 @@ module.exports = {
 
   '**/*.*': () => [
     `npm run lint`,
+    `npx jest`,
     `npx prettier --write .`
   ],
 };
