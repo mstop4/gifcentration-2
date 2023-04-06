@@ -3,11 +3,15 @@ import Home from '../src/pages/index';
 import '@testing-library/jest-dom';
 
 describe('Home', () => {
-  it('renders a lorem ipsum', () => {
+  it('renders homepage', () => {
     render(<Home />);
 
-    const text = screen.getByText(/lorem ipsum/i);
+    const bodyText = screen.getByText(/lorem ipsum/i);
+    const headerText = screen.getByText(/gifcentration 2/i);
+    const footerText = screen.getByText(/2023/i);
 
-    expect(text).toBeInTheDocument();
+    expect(headerText).toBeInTheDocument();
+    expect(bodyText).toBeInTheDocument();
+    expect(footerText).toBeInTheDocument();
   });
 });

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styles from '@/styles/Footer.module.scss';
+import styles from '@/styles/layout/Footer.module.scss';
 
 type Props = {
   children: ReactNode;
