@@ -1,0 +1,13 @@
+@use '../globalVariables' as global;
+@use '../colourScheme' as colours;
+
+.cardContainer {
+  border: 1px solid colours.$outline-color;
+  border-radius: global.$corner-rad;
+  margin: global.$card-gap;
+  width: global.$max-card-dim;
+  height: global.$max-card-dim;
+  position: relative;
+  perspective: 800px;
+  display: inline-block;
+}
