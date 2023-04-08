@@ -11,3 +11,74 @@
   perspective: 800px;
   display: inline-block;
 }
+
+.cardBody {
+  border-radius: global.$corner-rad;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: transform 0.5s ease-out, opacity 1s ease-in;
+}
+
+.cardFace {
+  margin: 0;
+  border: 2px solid colours.$outline-color;
+  border-radius: global.$corner-rad;
+  display: block;
+  position: absolute;
+  width: global.$max-card-dim;
+  height: global.$max-card-dim;
+  backface-visibility: hidden;
+  transition: background-color 0.3s ease-out;
+}
+
+.front {
+  background-color: colours.$secondary-color;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  line-height: global.$max-card-dim;
+  font-size: calc(global.$max-card-dim * 0.6);
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.back {
+  background-color: colours.$secondary-color;
+  transform: rotateY(180deg);
+}
+
+.matched {
+  background-color: colours.$primary-color;
+  transform: rotateY(180deg);
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.active {
+  opacity: 1;
+}
+
+.inactive {
+  opacity: 0;
+}
+
+.gif {
+  max-height: global.$max-img-dim;
+  max-width: global.$max-img-dim;
+  border: 1px solid colours.$outline-color;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}

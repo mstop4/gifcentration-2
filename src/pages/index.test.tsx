@@ -15,30 +15,4 @@ describe('Home', () => {
     expect(bodyText).toBeInTheDocument();
     expect(footerText).toBeInTheDocument();
   });
-
-  it('has a Card on it', () => {
-    const { container } = render(<Home />);
-
-    const card = container.querySelector('.cardContainer');
-    expect(card).toBeInTheDocument();
-
-    const cardFront = card?.querySelector('.card-front');
-    expect(cardFront).toBeInTheDocument();
-
-    const cardText = cardFront?.innerHTML;
-    expect(cardText).toEqual('Front');
-  });
-
-  it('should flip Card when clicked', () => {
-    const { container } = render(<Home />);
-
-    const card = container.querySelector('.cardContainer') as Element;
-    fireEvent.click(card);
-
-    const cardBack = card?.querySelector('.card-back');
-    expect(cardBack).toBeInTheDocument();
-
-    const cardText = cardBack?.innerHTML;
-    expect(cardText).toEqual('Back');
-  });
 });

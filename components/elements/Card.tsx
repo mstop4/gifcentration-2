@@ -3,25 +3,27 @@ import styles from '@/styles/elements/Card.module.scss';
 
 export default function Card(): ReactElement {
   const [flipped, setFlipped] = useState(false);
+  const [active, setActive] = useState(true);
+  const [matched, setMatched] = useState(false);
 
   const handleCardClick = function (): void {
     setFlipped(!flipped);
   };
 
+  const cardBodyClasses = `${styles.cardBody} ${
+    active ? styles.active : styles.inactive
+  } ${flipped ? styles.flipped : ''}`;
+
+  const cardBackClasses = `${styles.cardFace} ${styles.back} ${
+    matched ? styles.matched : ''
+  }`;
+
   return (
     <div className={styles.cardContainer} onClick={handleCardClick}>
-      <div className="card-body">
-        <div
-          className="card-front"
-          style={flipped ? { display: 'none' } : { display: 'inline' }}
-        >
-          Front
-        </div>
-        <div
-          className="card-back"
-          style={flipped ? { display: 'inline' } : { display: 'none' }}
-        >
-          Back
+      <div className={cardBodyClasses}>
+        <div className={`${styles.cardFace} ${styles.front}`}>?</div>
+        <div className={cardBackClasses}>
+          <div className={styles.gif}>Back</div>
         </div>
       </div>
     </div>
