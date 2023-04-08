@@ -1,5 +1,4 @@
-$foreground-colour: #fff;
-$background-colour: #000;
+@use './colourScheme' as colours;
 
 * {
   box-sizing: border-box;
@@ -14,8 +13,8 @@ body {
 }
 
 body {
-  color: $foreground-colour;
-  background: $background-colour;
+  color: colours.$text-colour;
+  background: colours.$background-colour;
 }
 
 a {

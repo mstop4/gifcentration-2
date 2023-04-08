@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
-import styles from '@/styles/Layout.module.scss';
+import styles from '@/styles/layout/Layout.module.scss';
 
 type Props = {
   children: ReactNode;
