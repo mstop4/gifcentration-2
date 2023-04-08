@@ -6,7 +6,6 @@ const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ['!.test.ts(x)'],
   reactStrictMode: true,
   sassOptions: {
     includePaths: [join(__dirname, 'styles')],

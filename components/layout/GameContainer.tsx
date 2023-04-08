@@ -1,10 +1,10 @@
 import React from 'react';
-import Card from '../elements/Card';
+import CardArray from '../elements/CardArray';
 
 const GameContainer: React.FC = () => (
   <>
     <div id="gameContainer">Lorem ipsum</div>
-    <Card />
+    <CardArray />
   </>
 );
 

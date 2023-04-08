@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import Card from './Card';
+import Card from '../../../components/elements/Card';
 import '@testing-library/jest-dom';
 
 describe('Card', () => {
