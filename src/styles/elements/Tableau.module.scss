@@ -1,0 +1,19 @@
+@use '../globalVariables' as global;
+
+.cardContainer {
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  .cardContainer {
+    grid-template-columns: repeat(global.$num-cols, auto);
+  }
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+  .cardContainer {
+    grid-template-columns: repeat(global.$num-rows, auto);
+  }
+}

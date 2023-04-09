@@ -14,10 +14,10 @@ describe('Home', () => {
     expect(footerText).toBeInTheDocument();
   });
 
-  it('has a CardArray', () => {
+  it('has a Tableau', () => {
     const { container } = render(<Home />);
 
-    const cardArray = container.querySelector('.cardArray');
+    const cardArray = container.querySelector('.tableau');
     expect(cardArray).toBeInTheDocument();
   });
 });
