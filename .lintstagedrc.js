@@ -4,7 +4,7 @@ module.exports = {
 
   '**/*.*': () => [
     `npm run lint`,
-    `npm run test`,
-    `npm run prettier`
+    `npm run prettier`,
+    `npm run test`
   ],
 };
