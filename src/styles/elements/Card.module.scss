@@ -4,12 +4,22 @@
 .cardContainer {
   border: 1px solid colours.$outline-color;
   border-radius: global.$corner-rad;
-  margin: global.$card-gap;
-  width: 15vw;
-  height: 15vw;
   position: relative;
   perspective: 800px;
   display: inline-block;
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  .cardContainer {
+    padding-bottom: 100%;
+  }
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+  .cardContainer {
+    height: 100%;
+    padding-right: 100%;
+  }
 }
 
 .cardBody {
@@ -39,8 +49,8 @@
   color: white;
   text-align: center;
   font-weight: bold;
-  line-height: 15vw;
-  font-size: 12vw;
+  line-height: global.$max-card-dim;
+  font-size: calc(global.$max-card-dim * 0.6);
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

@@ -1,4 +1,8 @@
 @use './colourScheme' as colours;
+:root {
+  --major-axis-size: 6;
+  --minor-axis-size: 3;
+}
 
 * {
   box-sizing: border-box;

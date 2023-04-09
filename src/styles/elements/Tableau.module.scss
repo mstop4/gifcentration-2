@@ -1,19 +1,62 @@
 @use '../globalVariables' as global;
 
+$container-padding: 1rem;
+$header-footer-space: 4rem;
+
 .cardContainer {
-  width: 100%;
+  padding: $container-padding;
   display: grid;
+  align-items: center;
   justify-content: center;
+  gap: global.$card-gap;
 }
 
 @media screen and (min-aspect-ratio: 1/1) {
   .cardContainer {
-    grid-template-columns: repeat(global.$num-cols, auto);
+    $total-gap-width: calc((var(--major-axis-size)) * #{global.$card-gap});
+    $total-gap-height: calc((var(--minor-axis-size)) * #{global.$card-gap});
+
+    $max_cell-width: calc(
+      (100vw - #{$total-gap-width}) / var(--major-axis-size)
+    );
+    $max_cell-height: calc(
+      (
+          100vh - #{$total-gap-height} - #{$container-padding} - #{$header-footer-space}
+        ) / var(--minor-axis-size)
+    );
+
+    grid-template-columns: repeat(
+      var(--major-axis-size),
+      min(#{$max_cell-width}, #{$max_cell-height})
+    );
+    grid-template-rows: repeat(
+      var(--minor-axis-size),
+      min(#{$max_cell-width}, #{$max_cell-height})
+    );
   }
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
   .cardContainer {
-    grid-template-columns: repeat(global.$num-rows, auto);
+    $total-gap-width: calc((var(--minor-axis-size)) * #{global.$card-gap});
+    $total-gap-height: calc((var(--major-axis-size)) * #{global.$card-gap});
+
+    $max_cell-width: calc(
+      (100vw - #{$total-gap-width}) / var(--minor-axis-size)
+    );
+    $max_cell-height: calc(
+      (
+          100vh - #{$total-gap-height} - #{$container-padding} - #{$header-footer-space}
+        ) / var(--major-axis-size)
+    );
+
+    grid-template-columns: repeat(
+      var(--minor-axis-size),
+      min(#{$max_cell-width}, #{$max_cell-height})
+    );
+    grid-template-rows: repeat(
+      var(--major-axis-size),
+      min(#{$max_cell-width}, #{$max_cell-height})
+    );
   }
 }
