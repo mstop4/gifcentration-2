@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Card from '../../../components/elements/Card';
 import '@testing-library/jest-dom';
 
@@ -11,12 +11,13 @@ describe('Card', () => {
     expect(card).toBeInTheDocument();
   });
 
-  it('has a front with a "?"', () => {
+  it('has a front with a "?" icon', () => {
     const { container } = render(<Card />);
 
     const cardFront = container?.querySelector('.front');
     expect(cardFront).toBeInTheDocument();
-    expect(cardFront?.innerHTML).toEqual('?');
+    const icon = screen.queryByTestId('question mark');
+    expect(icon).toBeInTheDocument();
   });
 
   it('has a back with the word "Back"', () => {

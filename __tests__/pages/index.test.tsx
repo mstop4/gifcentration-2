@@ -7,8 +7,8 @@ describe('Home', () => {
   it('has a header and footer', () => {
     render(<Home />);
 
-    const headerText = screen.getByText(/gifcentration 2/i);
-    const footerText = screen.getByText(/2023/i);
+    const headerText = screen.queryByText(/gifcentration 2/i);
+    const footerText = screen.queryByText(/2023/i);
 
     expect(headerText).toBeInTheDocument();
     expect(footerText).toBeInTheDocument();

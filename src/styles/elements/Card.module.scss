@@ -45,12 +45,13 @@
 }
 
 .front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: colours.$secondary-color;
   color: white;
   text-align: center;
   font-weight: bold;
-  line-height: global.$max-card-dim;
-  font-size: calc(global.$max-card-dim * 0.6);
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
