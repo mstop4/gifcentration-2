@@ -4,11 +4,17 @@ import Card from './Card';
 import '@testing-library/jest-dom';
 
 const handleClickMock = jest.fn();
-const makeCard = (): ReactElement => (
+const makeCard = (
+  flipped = false,
+  active = true,
+  matched = false
+): ReactElement => (
   <Card
     index={0}
     imageIndex={0}
-    flipped={false}
+    flipped={flipped}
+    active={active}
+    matched={matched}
     handleCardClick={handleClickMock}
   />
 );
@@ -54,5 +60,12 @@ describe('Card', () => {
     const cardHolder = container.querySelector('.cardHolder') as Element;
     fireEvent.click(cardHolder);
     expect(handleClickMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should have a flipped class on cardBody when flipped', () => {
+    const cardComp = makeCard(true);
+    const { container } = render(cardComp);
+    const cardHolder = container.querySelector('.cardBody') as Element;
+    expect(cardHolder).toHaveClass('flipped');
   });
 });

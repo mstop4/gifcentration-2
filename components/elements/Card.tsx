@@ -9,13 +9,14 @@ export type CardProps = {
   index: number;
   imageIndex: number;
   flipped: boolean;
+  active: boolean;
+  matched: boolean;
   handleCardClick: (index: number) => void;
 };
 
 export default function Card(props: CardProps): ReactElement {
-  const [active, setActive] = useState(true);
-  const [matched, setMatched] = useState(false);
-  const { index, imageIndex, flipped, handleCardClick } = props;
+  const { index, imageIndex, flipped, active, matched, handleCardClick } =
+    props;
 
   const onClick = (): void => {
     handleCardClick(index);
