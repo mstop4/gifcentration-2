@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import Card from '../../../components/elements/Card';
+import Card from './Card';
 import '@testing-library/jest-dom';
+
+const handleClickMock = jest.fn();
+const makeCard = (): ReactElement => (
+  <Card
+    index={0}
+    imageIndex={0}
+    flipped={false}
+    handleCardClick={handleClickMock}
+  />
+);
 
 describe('Card', () => {
   it('renders a Card', () => {
-    const { container } = render(<Card />);
+    const { container } = render(makeCard());
 
     const card = container.querySelector('.cardHolder');
     expect(card).toBeInTheDocument();
   });
 
   it('has a front with a "?" icon', () => {
-    const { container } = render(<Card />);
+    const { container } = render(makeCard());
 
     const cardFront = container?.querySelector('.front');
     expect(cardFront).toBeInTheDocument();
@@ -20,29 +30,29 @@ describe('Card', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it('has a back with the word "Back"', () => {
-    const { container } = render(<Card />);
+  it('has a back', () => {
+    const { container } = render(makeCard());
 
     const cardBack = container?.querySelector('.back');
     expect(cardBack).toBeInTheDocument();
 
     const gifElem = cardBack?.querySelector('.gif');
     expect(gifElem).toBeInTheDocument();
-    expect(gifElem?.innerHTML).toEqual('Back');
   });
 
   it('should be front-facing when initialized', () => {
-    const { container } = render(<Card />);
+    const { container } = render(makeCard());
 
     const card = container.querySelector('.cardHolder') as Element;
     expect(card).not.toHaveClass('flipped');
   });
 
   it('should flip when clicked', () => {
-    const { container } = render(<Card />);
+    const cardComp = makeCard();
+    const { container } = render(cardComp);
 
-    const cardBody = container.querySelector('.cardBody') as Element;
-    fireEvent.click(cardBody);
-    expect(cardBody).toHaveClass('flipped');
+    const cardHolder = container.querySelector('.cardHolder') as Element;
+    fireEvent.click(cardHolder);
+    expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Tableau from '../../../components/elements/Tableau';
+import Tableau from './Tableau';
 import '@testing-library/jest-dom';
 
 describe('Tableau', () => {

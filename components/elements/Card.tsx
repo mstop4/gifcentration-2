@@ -5,13 +5,20 @@ import { Measures, useMeasure } from '@react-hookz/web';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import styles from '@/styles/elements/Card.module.scss';
 
-export default function Card(): ReactElement {
-  const [flipped, setFlipped] = useState(false);
+export type CardProps = {
+  index: number;
+  imageIndex: number;
+  flipped: boolean;
+  handleCardClick: (index: number) => void;
+};
+
+export default function Card(props: CardProps): ReactElement {
   const [active, setActive] = useState(true);
   const [matched, setMatched] = useState(false);
+  const { index, imageIndex, flipped, handleCardClick } = props;
 
-  const handleCardClick = function (): void {
-    setFlipped(!flipped);
+  const onClick = (): void => {
+    handleCardClick(index);
   };
 
   const cardBodyClasses = `${styles.cardBody} ${
@@ -29,7 +36,7 @@ export default function Card(): ReactElement {
   const size = `${sizeMultipler}x` as SizeProp;
 
   return (
-    <div className={styles.cardHolder} onClick={handleCardClick}>
+    <div className={styles.cardHolder} onClick={onClick}>
       <div className={cardBodyClasses} ref={ref}>
         <div className={`${styles.cardFace} ${styles.front}`}>
           <FontAwesomeIcon
@@ -39,7 +46,9 @@ export default function Card(): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          <div className={styles.gif}>Back</div>
+          <div className={styles.gif}>
+            {index} - {imageIndex}
+          </div>
         </div>
       </div>
     </div>
