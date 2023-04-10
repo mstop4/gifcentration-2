@@ -1,29 +1,26 @@
 @use '../globalVariables' as global;
 @use '../colourScheme' as colours;
 
-.cardContainer {
-  border: 1px solid colours.$outline-color;
-  border-radius: global.$corner-rad;
+.cardHolder {
   position: relative;
   perspective: 800px;
   display: inline-block;
 }
 
 @media screen and (min-aspect-ratio: 1/1) {
-  .cardContainer {
+  .cardHolder {
     padding-bottom: 100%;
   }
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-  .cardContainer {
+  .cardHolder {
     height: 100%;
     padding-right: 100%;
   }
 }
 
 .cardBody {
-  border-radius: global.$corner-rad;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -61,6 +58,10 @@
 .back {
   background-color: colours.$secondary-color;
   transform: rotateY(180deg);
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .matched {

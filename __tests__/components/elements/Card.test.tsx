@@ -7,7 +7,7 @@ describe('Card', () => {
   it('renders a Card', () => {
     const { container } = render(<Card />);
 
-    const card = container.querySelector('.cardContainer');
+    const card = container.querySelector('.cardHolder');
     expect(card).toBeInTheDocument();
   });
 
@@ -34,7 +34,7 @@ describe('Card', () => {
   it('should be front-facing when initialized', () => {
     const { container } = render(<Card />);
 
-    const card = container.querySelector('.cardContainer') as Element;
+    const card = container.querySelector('.cardHolder') as Element;
     expect(card).not.toHaveClass('flipped');
   });
 

@@ -11,11 +11,14 @@ describe('Tableau', () => {
     expect(tableau).toBeInTheDocument();
   });
 
-  it('has a Card in the tableau div', () => {
+  it('has 18 Cards in the tableau div', () => {
     const { container } = render(<Tableau />);
     const tableau = container.querySelector('.tableau');
-    const card = tableau?.querySelector('.cardContainer');
+    const cards = tableau?.querySelectorAll('.cardHolder');
 
-    expect(card).toBeInTheDocument();
+    expect(cards).toHaveLength(18);
+    cards?.forEach(card => {
+      expect(card).toBeInTheDocument();
+    });
   });
 });

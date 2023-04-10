@@ -29,7 +29,7 @@ export default function Card(): ReactElement {
   const size = `${sizeMultipler}x` as SizeProp;
 
   return (
-    <div className={styles.cardContainer} onClick={handleCardClick}>
+    <div className={styles.cardHolder} onClick={handleCardClick}>
       <div className={cardBodyClasses} ref={ref}>
         <div className={`${styles.cardFace} ${styles.front}`}>
           <FontAwesomeIcon
