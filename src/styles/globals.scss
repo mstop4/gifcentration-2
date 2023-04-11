@@ -10,13 +10,14 @@
   margin: 0;
 }
 
-html {
+html,
+body {
   max-width: 100dvw;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 body {
-  max-width: 100dvw;
   height: 100dvh;
   color: colours.$text-colour;
   background: colours.$background-colour;
