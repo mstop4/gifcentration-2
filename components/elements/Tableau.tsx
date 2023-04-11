@@ -15,9 +15,8 @@ export default function Tableau(): ReactElement {
   const [matched, setMatched] = useState<boolean[]>([]);
   const [gameFinished, setGameFinished] = useState(false);
 
-  const numFlipped = useRef(0);
-  const numPairs = useRef(1);
-  const cardIndices = useRef<number[]>([]); // use memo?
+  const imageIndexes = useRef<number[]>([]); // use memo?
+  const selectedCardIndexes = useRef<number[]>([]);
 
   useMountEffect(() => {
     const rect = getRectangleDimensions(numCards);
@@ -41,42 +40,55 @@ export default function Tableau(): ReactElement {
   };
 
   const checkPair = (): void => {
-    setFlipped([...matched]);
-    numFlipped.current = 0;
+    if (
+      imageIndexes.current[selectedCardIndexes.current[0]] ===
+      imageIndexes.current[selectedCardIndexes.current[1]]
+    ) {
+      const newMatched = [...matched];
+      newMatched[selectedCardIndexes.current[0]] = true;
+      newMatched[selectedCardIndexes.current[1]] = true;
+      setMatched(() => newMatched);
+
+      if (newMatched.every(status => status)) {
+        setGameFinished(() => true);
+      }
+    } else {
+      setFlipped(() => [...matched]);
+    }
+    selectedCardIndexes.current = [];
   };
 
   const resetCards = useCallback(() => {
-    numPairs.current = numCards / 2;
     setFlipped(() => Array(numCards).fill(false));
     setMatched(() => Array(numCards).fill(false));
-    numFlipped.current = 0;
-    cardIndices.current = pairShuffler(numPairs.current);
+    selectedCardIndexes.current = [];
+    imageIndexes.current = pairShuffler(numCards / 2);
   }, []);
 
   const handleCardClick = (index: number): void => {
     if (flipped[index]) return;
-    if (numFlipped.current >= 2) return;
+    if (selectedCardIndexes.current.length >= 2) return;
 
     const newFlipped = { ...flipped };
     newFlipped[index] = true;
     setFlipped(() => newFlipped);
-    numFlipped.current++;
+    selectedCardIndexes.current.push(index);
 
-    if (numFlipped.current >= 2) {
+    if (selectedCardIndexes.current.length >= 2) {
       setTimeout(checkPair, checkDelay);
     }
   };
 
   const cardArray: ReactElement[] = [];
-  for (let i = 0; i < cardIndices.current.length; ++i) {
+  for (let i = 0; i < imageIndexes.current.length; ++i) {
     cardArray.push(
       <Card
         key={i}
         index={i}
-        imageIndex={cardIndices.current[i]}
+        imageIndex={imageIndexes.current[i]}
         flipped={flipped[i]}
         active={true}
-        matched={false}
+        matched={matched[i]}
         handleCardClick={handleCardClick}
       />
     );
