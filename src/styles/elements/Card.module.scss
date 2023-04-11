@@ -1,19 +1,26 @@
 @use '../globalVariables' as global;
 @use '../colourScheme' as colours;
 
-.cardContainer {
-  border: 1px solid colours.$outline-color;
-  border-radius: global.$corner-rad;
-  margin: global.$card-gap;
-  width: global.$max-card-dim;
-  height: global.$max-card-dim;
+.cardHolder {
   position: relative;
   perspective: 800px;
   display: inline-block;
 }
 
+@media screen and (min-aspect-ratio: 1/1) {
+  .cardHolder {
+    padding-bottom: 100%;
+  }
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+  .cardHolder {
+    height: 100%;
+    padding-right: 100%;
+  }
+}
+
 .cardBody {
-  border-radius: global.$corner-rad;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -28,19 +35,20 @@
   border-radius: global.$corner-rad;
   display: block;
   position: absolute;
-  width: global.$max-card-dim;
-  height: global.$max-card-dim;
+  width: 100%;
+  height: 100%;
   backface-visibility: hidden;
   transition: background-color 0.3s ease-out;
 }
 
 .front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: colours.$secondary-color;
   color: white;
   text-align: center;
   font-weight: bold;
-  line-height: global.$max-card-dim;
-  font-size: calc(global.$max-card-dim * 0.6);
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -50,6 +58,10 @@
 .back {
   background-color: colours.$secondary-color;
   transform: rotateY(180deg);
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .matched {

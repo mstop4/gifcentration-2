@@ -12,6 +12,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@react-hookz/web": "^23.0.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.32",
     "@types/react-dom": "18.0.11",
@@ -34,6 +38,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
+    "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.60.0"
   }
 }

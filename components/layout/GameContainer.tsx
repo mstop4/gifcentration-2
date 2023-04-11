@@ -1,11 +1,10 @@
 import React from 'react';
-import Card from '../elements/Card';
+import Tableau from '../elements/Tableau';
 
 const GameContainer: React.FC = () => (
-  <>
-    <div id="gameContainer">Lorem ipsum</div>
-    <Card />
-  </>
+  <div id="gameContainer">
+    <Tableau />
+  </div>
 );
 
 export default GameContainer;

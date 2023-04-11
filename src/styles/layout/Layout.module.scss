@@ -1,9 +1,12 @@
 .main {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
 .content {
   flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
