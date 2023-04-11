@@ -1,14 +1,6 @@
 import { ReactElement } from 'react';
-import Layout from '../../components/layout/Layout';
-import GameContainer from '../../components/layout/GameContainer';
-// import { Inter } from 'next/font/google';
-
-// const inter = Inter({ subsets: ['latin'] });
+import Game from '../../components/layout/Game';
 
 export default function Home(): ReactElement {
-  return (
-    <Layout>
-      <GameContainer />
-    </Layout>
-  );
+  return <Game />;
 }
