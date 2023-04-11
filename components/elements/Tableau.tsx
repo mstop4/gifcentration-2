@@ -7,7 +7,7 @@ import getRectangleDimensions, {
   RectangleDimensions,
 } from '../../helpers/getRectangleDimensions';
 
-const numCards = 16;
+const numCards = 18;
 const checkDelay = 1000;
 
 export default function Tableau(): ReactElement {

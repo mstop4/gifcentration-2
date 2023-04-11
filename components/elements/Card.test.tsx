@@ -65,7 +65,14 @@ describe('Card', () => {
   it('should have a flipped class on cardBody when flipped', () => {
     const cardComp = makeCard(true);
     const { container } = render(cardComp);
-    const cardHolder = container.querySelector('.cardBody') as Element;
-    expect(cardHolder).toHaveClass('flipped');
+    const cardBody = container.querySelector('.cardBody') as Element;
+    expect(cardBody).toHaveClass('flipped');
+  });
+
+  it('should have a matched class on cardBack when matched', () => {
+    const cardComp = makeCard(false, true, true);
+    const { container } = render(cardComp);
+    const cardBack = container.querySelector('.back') as Element;
+    expect(cardBack).toHaveClass('matched');
   });
 });
