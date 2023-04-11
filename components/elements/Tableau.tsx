@@ -3,8 +3,11 @@ import Card from './Card';
 import styles from '@/styles/elements/Tableau.module.scss';
 import pairShuffler from '../../helpers/pairShuffler';
 import { useMountEffect } from '@react-hookz/web';
+import getRectangleDimensions, {
+  RectangleDimensions,
+} from '../../helpers/getRectangleDimensions';
 
-const numPairs = 9;
+const numCards = 16;
 const checkDelay = 1000;
 
 export default function Tableau(): ReactElement {
@@ -13,9 +16,42 @@ export default function Tableau(): ReactElement {
   const [gameFinished, setGameFinished] = useState(false);
 
   const numFlipped = useRef(0);
+  const numPairs = useRef(1);
   const cardIndices = useRef<number[]>([]); // use memo?
 
-  useMountEffect(() => resetCards());
+  useMountEffect(() => {
+    const rect = getRectangleDimensions(numCards);
+    if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
+    updateGridDimensions(rect);
+    resetCards();
+  });
+
+  const updateGridDimensions = (rect: RectangleDimensions): void => {
+    const { majorAxisSize, minorAxisSize } = rect;
+
+    document.documentElement.style.setProperty(
+      '--major-axis-size',
+      `${majorAxisSize}`
+    );
+
+    document.documentElement.style.setProperty(
+      '--minor-axis-size',
+      `${minorAxisSize}`
+    );
+  };
+
+  const checkPair = (): void => {
+    setFlipped([...matched]);
+    numFlipped.current = 0;
+  };
+
+  const resetCards = useCallback(() => {
+    numPairs.current = numCards / 2;
+    setFlipped(() => Array(numCards).fill(false));
+    setMatched(() => Array(numCards).fill(false));
+    numFlipped.current = 0;
+    cardIndices.current = pairShuffler(numPairs.current);
+  }, []);
 
   const handleCardClick = (index: number): void => {
     if (flipped[index]) return;
@@ -30,18 +66,6 @@ export default function Tableau(): ReactElement {
       setTimeout(checkPair, checkDelay);
     }
   };
-
-  const checkPair = (): void => {
-    setFlipped([...matched]);
-    numFlipped.current = 0;
-  };
-
-  const resetCards = useCallback(() => {
-    setFlipped(() => Array(numPairs * 2).fill(false));
-    setMatched(() => Array(numPairs * 2).fill(false));
-    numFlipped.current = 0;
-    cardIndices.current = pairShuffler(numPairs);
-  }, []);
 
   const cardArray: ReactElement[] = [];
   for (let i = 0; i < cardIndices.current.length; ++i) {

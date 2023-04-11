@@ -1,7 +1,7 @@
 @use './colourScheme' as colours;
 :root {
-  --major-axis-size: 6;
-  --minor-axis-size: 3;
+  $major-axis-size: 1;
+  $minor-axis-size: 1;
 }
 
 * {
