@@ -3,7 +3,7 @@
 $container-padding: 1rem;
 $header-footer-space: 4rem;
 
-.cardContainer {
+#tableau {
   padding: $container-padding;
   display: grid;
   align-items: center;
@@ -12,7 +12,7 @@ $header-footer-space: 4rem;
 }
 
 @media screen and (min-aspect-ratio: 1/1) {
-  .cardContainer {
+  #tableau {
     $total-gap-width: calc((var(--major-axis-size)) * #{global.$card-gap});
     $total-gap-height: calc((var(--minor-axis-size)) * #{global.$card-gap});
 
@@ -37,7 +37,7 @@ $header-footer-space: 4rem;
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-  .cardContainer {
+  #tableau {
     $total-gap-width: calc((var(--minor-axis-size)) * #{global.$card-gap});
     $total-gap-height: calc((var(--major-axis-size)) * #{global.$card-gap});
 

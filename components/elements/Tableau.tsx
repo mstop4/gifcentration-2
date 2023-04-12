@@ -103,9 +103,5 @@ export default function Tableau(props: TableauProps): ReactElement {
     );
   }
 
-  return (
-    <div className={styles.tableau}>
-      <div className={styles.cardContainer}>{cardArray}</div>
-    </div>
-  );
+  return <div id={styles.tableau}>{cardArray}</div>;
 }

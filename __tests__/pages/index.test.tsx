@@ -17,7 +17,7 @@ describe('Home', () => {
   it('has a Tableau', () => {
     const { container } = render(<Home />);
 
-    const cardArray = container.querySelector('.tableau');
-    expect(cardArray).toBeInTheDocument();
+    const tableau = container.querySelector('#tableau');
+    expect(tableau).toBeInTheDocument();
   });
 });

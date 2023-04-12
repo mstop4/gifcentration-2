@@ -22,15 +22,15 @@ const makeTableau = (): ReactElement => {
 describe('Tableau', () => {
   it('renders a Tableau', () => {
     const { container } = render(makeTableau());
-    const tableau = container.querySelector('.tableau');
+    const tableau = container.querySelector('#tableau');
 
     expect(tableau).toBeInTheDocument();
   });
 
   it('has 2 Cards in the tableau div', () => {
     const { container } = render(makeTableau());
-    const tableau = container.querySelector('.tableau');
-    const cards = tableau?.querySelectorAll('.cardHolder');
+    const tableau = container.querySelector('#tableau');
+    const cards = tableau?.querySelectorAll('.cardContainer');
 
     expect(cards).toHaveLength(2);
     cards?.forEach(card => {

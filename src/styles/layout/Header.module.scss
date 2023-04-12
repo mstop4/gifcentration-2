@@ -1,4 +1,8 @@
-.header {
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background: green;
   width: 100%;
   flex: 0 1 2rem;

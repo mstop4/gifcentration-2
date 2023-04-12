@@ -35,8 +35,8 @@ export default function Game(): ReactElement {
 
   return (
     <Layout>
-      <Header />
-      <div className={styles.content}>
+      <Header resetCards={resetCards} />
+      <div id={styles.content}>
         <Tableau
           flipped={flipped}
           setFlipped={setFlipped}
