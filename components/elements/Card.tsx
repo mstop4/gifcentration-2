@@ -7,7 +7,7 @@ import styles from '@/styles/elements/Card.module.scss';
 
 export type CardProps = {
   index: number;
-  imageIndex: number;
+  imageUrl: string;
   flipped: boolean;
   active: boolean;
   matched: boolean;
@@ -15,8 +15,7 @@ export type CardProps = {
 };
 
 export default function Card(props: CardProps): ReactElement {
-  const { index, imageIndex, flipped, active, matched, handleCardClick } =
-    props;
+  const { index, imageUrl, flipped, active, matched, handleCardClick } = props;
 
   const onClick = (): void => {
     handleCardClick(index);
@@ -47,9 +46,7 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          <div className={styles.gif}>
-            {index} - {imageIndex}
-          </div>
+          <div className={styles.gif}>{imageUrl}</div>
         </div>
       </div>
     </div>

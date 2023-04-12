@@ -1,11 +1,12 @@
 import React, { ReactElement, useCallback, useRef, useState } from 'react';
+import { useMountEffect } from '@react-hookz/web';
+import randomWords from 'random-words';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
 import Footer from './Footer';
 import pairShuffler from '../../helpers/pairShuffler';
 import styles from '@/styles/layout/Game.module.scss';
-import { useMountEffect } from '@react-hookz/web';
 
 const numCards = 18;
 
@@ -14,9 +15,13 @@ export default function Game(): ReactElement {
   const [matched, setMatched] = useState<boolean[]>([]);
 
   const imageIndexes = useRef<number[]>([]); // use memo?
+  const imageUrls = useRef<string[]>([]);
   const selectedCardIndexes = useRef<number[]>([]);
 
-  useMountEffect(() => resetCards());
+  useMountEffect(async () => {
+    await getGifs();
+    resetCards();
+  });
 
   const addSelectedCardIndex = (index: number): void => {
     selectedCardIndexes.current.push(index);
@@ -24,6 +29,10 @@ export default function Game(): ReactElement {
 
   const resetSelectedCardIndexes = (): void => {
     selectedCardIndexes.current = [];
+  };
+
+  const getGifs = async (): Promise<void> => {
+    imageUrls.current = randomWords(numCards / 2);
   };
 
   const resetCards = useCallback(() => {
@@ -35,7 +44,7 @@ export default function Game(): ReactElement {
 
   return (
     <Layout>
-      <Header resetCards={resetCards} />
+      <Header getGifs={getGifs} resetCards={resetCards} />
       <div id={styles.content}>
         <Tableau
           flipped={flipped}
@@ -44,6 +53,7 @@ export default function Game(): ReactElement {
           setMatched={setMatched}
           numCards={numCards}
           imageIndexes={imageIndexes.current}
+          imageUrls={imageUrls.current}
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}

@@ -11,7 +11,7 @@ const makeCard = (
 ): ReactElement => (
   <Card
     index={0}
-    imageIndex={0}
+    imageUrl={'apple'}
     flipped={flipped}
     active={active}
     matched={matched}

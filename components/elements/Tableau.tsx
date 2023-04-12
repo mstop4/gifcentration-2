@@ -13,6 +13,7 @@ export type TableauProps = {
   setMatched: React.Dispatch<React.SetStateAction<boolean[]>>;
   numCards: number;
   imageIndexes: number[];
+  imageUrls: string[];
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
@@ -30,6 +31,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     setMatched,
     numCards,
     imageIndexes,
+    imageUrls,
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
@@ -94,7 +96,7 @@ export default function Tableau(props: TableauProps): ReactElement {
       <Card
         key={i}
         index={i}
-        imageIndex={imageIndexes[i]}
+        imageUrl={imageUrls[imageIndexes[i]]}
         flipped={flipped[i]}
         active={true}
         matched={matched[i]}
