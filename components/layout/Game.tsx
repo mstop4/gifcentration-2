@@ -7,12 +7,14 @@ import Header from './Header';
 import Footer from './Footer';
 import pairShuffler from '../../helpers/pairShuffler';
 import styles from '@/styles/layout/Game.module.scss';
+import SearchOverlay from './SearchOverlay';
 
 const numCards = 18;
 
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
+  const [overlayVisible, setOverlayVisible] = useState(false);
 
   const imageIndexes = useRef<number[]>([]); // use memo?
   const imageUrls = useRef<string[]>([]);
@@ -22,14 +24,6 @@ export default function Game(): ReactElement {
     await getGifs();
     resetCards();
   });
-
-  const addSelectedCardIndex = (index: number): void => {
-    selectedCardIndexes.current.push(index);
-  };
-
-  const resetSelectedCardIndexes = (): void => {
-    selectedCardIndexes.current = [];
-  };
 
   const getGifs = async (): Promise<void> => {
     imageUrls.current = randomWords(numCards / 2);
@@ -42,9 +36,24 @@ export default function Game(): ReactElement {
     imageIndexes.current = pairShuffler(numCards / 2);
   }, []);
 
+  const toggleSearchOverlay = (visible: boolean): void => {
+    setOverlayVisible(() => visible);
+  };
+
+  const addSelectedCardIndex = (index: number): void => {
+    selectedCardIndexes.current.push(index);
+  };
+
+  const resetSelectedCardIndexes = (): void => {
+    selectedCardIndexes.current = [];
+  };
+
   return (
     <Layout>
-      <Header getGifs={getGifs} resetCards={resetCards} />
+      <Header
+        resetCards={resetCards}
+        showSearchOverlay={(): void => toggleSearchOverlay(true)}
+      />
       <div id={styles.content}>
         <Tableau
           flipped={flipped}
@@ -60,6 +69,10 @@ export default function Game(): ReactElement {
         />
       </div>
       <Footer />
+      <SearchOverlay
+        overlayVisible={overlayVisible}
+        hideSearchOverlay={(): void => toggleSearchOverlay(false)}
+      />
     </Layout>
   );
 }

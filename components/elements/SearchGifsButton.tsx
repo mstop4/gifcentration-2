@@ -1,24 +1,31 @@
 import React, { ReactElement } from 'react';
-import styles from '@/styles/elements/SearchGifsButton.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import buttonBaseStyles from '@/styles/elements/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {
-  getGifs: () => Promise<void>;
-  resetCards: () => void;
+  showSearchOverlay: () => void;
 };
 
 export default function SearchGifsButton(
   props: SearchGifsButtonProps
 ): ReactElement {
-  const { getGifs, resetCards } = props;
+  const { showSearchOverlay } = props;
 
   const handleClick = async (): Promise<void> => {
-    await getGifs();
-    resetCards();
+    showSearchOverlay();
   };
 
   return (
-    <button id={styles.searchGifsButton} onClick={handleClick}>
-      Search
+    <button
+      id="searchGifsButton"
+      className={buttonBaseStyles.buttonBase}
+      onClick={handleClick}
+    >
+      <FontAwesomeIcon
+        icon={faMagnifyingGlass}
+        data-testid="magnifying glass"
+      />
     </button>
   );
 }

@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 describe('SearchGifsButton', () => {
   it('renders a SearchGifsButton', async () => {
     const { container } = render(
-      <SearchGifsButton resetCards={jest.fn()} getGifs={jest.fn()} />
+      <SearchGifsButton showSearchOverlay={jest.fn()} />
     );
     const card = container.querySelector('#searchGifsButton');
 
@@ -15,19 +15,17 @@ describe('SearchGifsButton', () => {
     });
   });
 
-  it('calls getGifs and resetCards when clicked', async () => {
-    const resetCardsMock = jest.fn();
-    const getGifsMock = jest.fn();
+  it('calls showSearchOverlay when clicked', async () => {
+    const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <SearchGifsButton resetCards={resetCardsMock} getGifs={getGifsMock} />
+      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />
     );
 
     const button = container.querySelector('#searchGifsButton') as Element;
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(resetCardsMock).toBeCalled();
-      expect(getGifsMock).toBeCalled();
+      expect(showSearchOverlayMock).toBeCalled();
     });
   });
 });

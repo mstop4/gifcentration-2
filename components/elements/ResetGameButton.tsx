@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react';
-import styles from '@/styles/elements/ResetGameButton.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import buttonBaseStyles from '@/styles/elements/ButtonBase.module.scss';
 
 export type ResetGameButtonProps = {
   resetCards: () => void;
@@ -15,8 +17,12 @@ export default function ResetGameButton(
   };
 
   return (
-    <button id={styles.resetGameButton} onClick={handleClick}>
-      Reshuffle
+    <button
+      id="resetGameButton"
+      className={buttonBaseStyles.buttonBase}
+      onClick={handleClick}
+    >
+      <FontAwesomeIcon icon={faRotateLeft} data-testid="reset" />
     </button>
   );
 }
