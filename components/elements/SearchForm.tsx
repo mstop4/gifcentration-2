@@ -11,17 +11,12 @@ import styles from '@/styles/elements/SearchForm.module.scss';
 export type SearchFormProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
+  getGifs: () => Promise<void>;
+  hideSearchOverlay: () => void;
 };
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
-  const { searchQuery, setSearchQuery } = props;
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (
-    e
-  ): Promise<void> => {
-    e.preventDefault();
-    console.log(`Go: ${searchQuery}`);
-  };
+  const { searchQuery, setSearchQuery, getGifs, hideSearchOverlay } = props;
 
   const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
     setSearchQuery(() => e.target.value);
@@ -29,6 +24,16 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   const handleQueryClear: MouseEventHandler<HTMLButtonElement> = () => {
     setSearchQuery(() => '');
+  };
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (
+    e
+  ): Promise<void> => {
+    e.preventDefault();
+    console.log(`Go: ${searchQuery}`);
+    await getGifs();
+    setSearchQuery(() => '');
+    hideSearchOverlay();
   };
 
   return (
@@ -41,6 +46,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         placeholder="Enter your query here..."
         value={searchQuery}
         onChange={handleQueryChange}
+        required
       />
       <div>
         <button id={styles.searchSubmit} type="submit">

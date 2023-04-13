@@ -27,6 +27,7 @@ export default function Game(): ReactElement {
   });
 
   const getGifs = async (): Promise<void> => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
     imageUrls.current = randomWords(numCards / 2);
   };
 
@@ -74,6 +75,7 @@ export default function Game(): ReactElement {
         overlayVisible={overlayVisible}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        getGifs={getGifs}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
       />
     </Layout>
