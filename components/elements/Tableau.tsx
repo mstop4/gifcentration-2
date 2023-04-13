@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
 import Card from './Card';
 import { useMountEffect } from '@react-hookz/web';
 import getRectangleDimensions, {
@@ -8,9 +8,9 @@ import styles from '@/styles/elements/Tableau.module.scss';
 
 export type TableauProps = {
   flipped: boolean[];
-  setFlipped: React.Dispatch<React.SetStateAction<boolean[]>>;
+  setFlipped: Dispatch<SetStateAction<boolean[]>>;
   matched: boolean[];
-  setMatched: React.Dispatch<React.SetStateAction<boolean[]>>;
+  setMatched: Dispatch<SetStateAction<boolean[]>>;
   numCards: number;
   imageIndexes: number[];
   imageUrls: string[];

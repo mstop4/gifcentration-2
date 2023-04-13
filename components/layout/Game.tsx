@@ -15,6 +15,7 @@ export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const imageIndexes = useRef<number[]>([]); // use memo?
   const imageUrls = useRef<string[]>([]);
@@ -29,16 +30,16 @@ export default function Game(): ReactElement {
     imageUrls.current = randomWords(numCards / 2);
   };
 
+  const toggleSearchOverlay = (visible: boolean): void => {
+    setOverlayVisible(() => visible);
+  };
+
   const resetCards = useCallback(() => {
     setFlipped(() => Array(numCards).fill(false));
     setMatched(() => Array(numCards).fill(false));
     selectedCardIndexes.current = [];
     imageIndexes.current = pairShuffler(numCards / 2);
   }, []);
-
-  const toggleSearchOverlay = (visible: boolean): void => {
-    setOverlayVisible(() => visible);
-  };
 
   const addSelectedCardIndex = (index: number): void => {
     selectedCardIndexes.current.push(index);
@@ -71,6 +72,8 @@ export default function Game(): ReactElement {
       <Footer />
       <SearchOverlay
         overlayVisible={overlayVisible}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
       />
     </Layout>

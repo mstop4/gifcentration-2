@@ -2,11 +2,11 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import styles from '@/styles/layout/Layout.module.scss';
 
-type Props = {
+type LayoutProps = {
   children: ReactNode;
 };
 
-const Layout: React.FC<Props> = props => (
+const Layout: React.FC<LayoutProps> = props => (
   <main className={styles.main}>
     <Head>
       <title>GIFcentration 2</title>
