@@ -1,14 +1,12 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
-import Header from './Header';
-import Footer from './Footer';
 import styles from '@/styles/layout/Layout.module.scss';
 
-type Props = {
+type LayoutProps = {
   children: ReactNode;
 };
 
-const Layout: React.FC<Props> = props => (
+const Layout: React.FC<LayoutProps> = props => (
   <main className={styles.main}>
     <Head>
       <title>GIFcentration 2</title>
@@ -16,9 +14,7 @@ const Layout: React.FC<Props> = props => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Header />
-    <div className={styles.content}>{props.children}</div>
-    <Footer />
+    {props.children}
   </main>
 );
 

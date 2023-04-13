@@ -11,7 +11,7 @@ const makeCard = (
 ): ReactElement => (
   <Card
     index={0}
-    imageIndex={0}
+    imageUrl={'apple'}
     flipped={flipped}
     active={active}
     matched={matched}
@@ -23,7 +23,7 @@ describe('Card', () => {
   it('renders a Card', () => {
     const { container } = render(makeCard());
 
-    const card = container.querySelector('.cardHolder');
+    const card = container.querySelector('.cardContainer');
     expect(card).toBeInTheDocument();
   });
 
@@ -49,7 +49,7 @@ describe('Card', () => {
   it('should be front-facing when initialized', () => {
     const { container } = render(makeCard());
 
-    const card = container.querySelector('.cardHolder') as Element;
+    const card = container.querySelector('.cardContainer') as Element;
     expect(card).not.toHaveClass('flipped');
   });
 
@@ -57,8 +57,8 @@ describe('Card', () => {
     const cardComp = makeCard();
     const { container } = render(cardComp);
 
-    const cardHolder = container.querySelector('.cardHolder') as Element;
-    fireEvent.click(cardHolder);
+    const cardContainer = container.querySelector('.cardContainer') as Element;
+    fireEvent.click(cardContainer);
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
 
