@@ -8,7 +8,10 @@ export type SearchOverlayProps = {
   overlayVisible: boolean;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
+  numCards: number;
+  setNumCards: Dispatch<SetStateAction<number>>;
   getGifs: () => Promise<void>;
+  resetCards: () => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
 };
@@ -18,7 +21,10 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     overlayVisible,
     searchQuery,
     setSearchQuery,
+    numCards,
+    setNumCards,
     getGifs,
+    resetCards,
     setGameState,
     hideSearchOverlay,
   } = props;
@@ -31,7 +37,10 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
       <SearchForm
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        numCards={numCards}
+        setNumCards={setNumCards}
         getGifs={getGifs}
+        resetCards={resetCards}
         setGameState={setGameState}
         hideSearchOverlay={hideSearchOverlay}
       />

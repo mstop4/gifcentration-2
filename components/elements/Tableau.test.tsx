@@ -13,7 +13,6 @@ const makeTableau = (): ReactElement => {
       setFlipped={jest.fn()}
       matched={[false, false]}
       setMatched={jest.fn()}
-      numCards={2}
       imageIndexes={[1, 1]}
       imageUrls={['apple', 'banana']}
       selectedCardIndexes={[]}

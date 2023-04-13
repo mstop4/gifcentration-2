@@ -1,11 +1,15 @@
-import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import Card from './Card';
-import { useMountEffect } from '@react-hookz/web';
 import getRectangleDimensions, {
   RectangleDimensions,
 } from '../../helpers/getRectangleDimensions';
 import styles from '@/styles/elements/Tableau.module.scss';
-import Game, { GameState } from '../layout/Game';
+import { GameState } from '../layout/Game';
 
 export type TableauProps = {
   gameState: GameState;
@@ -14,7 +18,6 @@ export type TableauProps = {
   setFlipped: Dispatch<SetStateAction<boolean[]>>;
   matched: boolean[];
   setMatched: Dispatch<SetStateAction<boolean[]>>;
-  numCards: number;
   imageIndexes: number[];
   imageUrls: string[];
   selectedCardIndexes: number[];
@@ -32,33 +35,12 @@ export default function Tableau(props: TableauProps): ReactElement {
     setFlipped,
     matched,
     setMatched,
-    numCards,
     imageIndexes,
     imageUrls,
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
   } = props;
-
-  useMountEffect(() => {
-    const rect = getRectangleDimensions(numCards);
-    if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
-    updateGridDimensions(rect);
-  });
-
-  const updateGridDimensions = (rect: RectangleDimensions): void => {
-    const { majorAxisSize, minorAxisSize } = rect;
-
-    document.documentElement.style.setProperty(
-      '--major-axis-size',
-      `${majorAxisSize}`
-    );
-
-    document.documentElement.style.setProperty(
-      '--minor-axis-size',
-      `${minorAxisSize}`
-    );
-  };
 
   const checkPair = (): void => {
     if (
