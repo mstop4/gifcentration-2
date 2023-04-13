@@ -7,16 +7,24 @@ import React, {
   SetStateAction,
 } from 'react';
 import styles from '@/styles/elements/SearchForm.module.scss';
+import { GameState } from '../layout/Game';
 
 export type SearchFormProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   getGifs: () => Promise<void>;
+  setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
 };
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
-  const { searchQuery, setSearchQuery, getGifs, hideSearchOverlay } = props;
+  const {
+    searchQuery,
+    setSearchQuery,
+    getGifs,
+    setGameState,
+    hideSearchOverlay,
+  } = props;
 
   const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
     setSearchQuery(() => e.target.value);
@@ -30,9 +38,11 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e
   ): Promise<void> => {
     e.preventDefault();
+    setGameState(() => GameState.Loading);
     console.log(`Go: ${searchQuery}`);
     await getGifs();
     setSearchQuery(() => '');
+    setGameState(() => GameState.Playing);
     hideSearchOverlay();
   };
 

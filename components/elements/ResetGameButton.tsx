@@ -10,17 +10,11 @@ export type ResetGameButtonProps = {
 export default function ResetGameButton(
   props: ResetGameButtonProps
 ): ReactElement {
-  const { resetCards } = props;
-
-  const handleClick = (): void => {
-    resetCards();
-  };
-
   return (
     <button
       id="resetGameButton"
       className={buttonBaseStyles.buttonBase}
-      onClick={handleClick}
+      onClick={props.resetCards}
     >
       <FontAwesomeIcon icon={faRotateLeft} data-testid="reset" />
     </button>

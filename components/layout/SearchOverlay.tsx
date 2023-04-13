@@ -2,12 +2,14 @@ import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 import OverlayCloseButton from '../elements/OverlayCloseButton';
 import SearchForm from '../elements/SearchForm';
+import { GameState } from './Game';
 
 export type SearchOverlayProps = {
   overlayVisible: boolean;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   getGifs: () => Promise<void>;
+  setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
 };
 
@@ -17,6 +19,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     searchQuery,
     setSearchQuery,
     getGifs,
+    setGameState,
     hideSearchOverlay,
   } = props;
   const classes = `${styles.overlayBase} ${
@@ -29,6 +32,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         getGifs={getGifs}
+        setGameState={setGameState}
         hideSearchOverlay={hideSearchOverlay}
       />
       <OverlayCloseButton hideOverlay={hideSearchOverlay} />

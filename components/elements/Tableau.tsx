@@ -5,8 +5,11 @@ import getRectangleDimensions, {
   RectangleDimensions,
 } from '../../helpers/getRectangleDimensions';
 import styles from '@/styles/elements/Tableau.module.scss';
+import Game, { GameState } from '../layout/Game';
 
 export type TableauProps = {
+  gameState: GameState;
+  setGameState: Dispatch<SetStateAction<GameState>>;
   flipped: boolean[];
   setFlipped: Dispatch<SetStateAction<boolean[]>>;
   matched: boolean[];
@@ -22,9 +25,9 @@ export type TableauProps = {
 const checkDelay = 1000;
 
 export default function Tableau(props: TableauProps): ReactElement {
-  const [gameFinished, setGameFinished] = useState(false);
-
   const {
+    gameState,
+    setGameState,
     flipped,
     setFlipped,
     matched,
@@ -68,7 +71,7 @@ export default function Tableau(props: TableauProps): ReactElement {
       setMatched(() => newMatched);
 
       if (newMatched.every(status => status)) {
-        setGameFinished(() => true);
+        setGameState(() => GameState.Finished);
       }
     } else {
       setFlipped(() => [...matched]);
@@ -77,6 +80,7 @@ export default function Tableau(props: TableauProps): ReactElement {
   };
 
   const handleCardClick = (index: number): void => {
+    if (gameState !== GameState.Playing) return;
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
 
@@ -105,5 +109,16 @@ export default function Tableau(props: TableauProps): ReactElement {
     );
   }
 
-  return <div id={styles.tableau}>{cardArray}</div>;
+  return (
+    <div
+      id={styles.tableau}
+      className={
+        gameState === GameState.Started || gameState === GameState.Loading
+          ? styles.tableauHidden
+          : styles.tableauVisible
+      }
+    >
+      {cardArray}
+    </div>
+  );
 }

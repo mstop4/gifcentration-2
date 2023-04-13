@@ -2,10 +2,13 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import Tableau from './Tableau';
 import '@testing-library/jest-dom';
+import { GameState } from '../layout/Game';
 
 const makeTableau = (): ReactElement => {
   return (
     <Tableau
+      gameState={GameState.Playing}
+      setGameState={jest.fn()}
       flipped={[false, false]}
       setFlipped={jest.fn()}
       matched={[false, false]}

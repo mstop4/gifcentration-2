@@ -10,14 +10,8 @@ export type OverlayCloseButtonProps = {
 export default function OverlayCloseButton(
   props: OverlayCloseButtonProps
 ): ReactElement {
-  const { hideOverlay } = props;
-
-  const handleClick = (): void => {
-    hideOverlay();
-  };
-
   return (
-    <button id={styles.overlayCloseButton} onClick={handleClick}>
+    <button id={styles.overlayCloseButton} onClick={props.hideOverlay}>
       <FontAwesomeIcon icon={faXmark} data-testid="x mark" />
     </button>
   );

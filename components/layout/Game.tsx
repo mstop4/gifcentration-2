@@ -8,14 +8,23 @@ import Footer from './Footer';
 import pairShuffler from '../../helpers/pairShuffler';
 import styles from '@/styles/layout/Game.module.scss';
 import SearchOverlay from './SearchOverlay';
+import sleep from '../../helpers/timeout';
 
 const numCards = 18;
+
+export enum GameState {
+  Started,
+  Loading,
+  Playing,
+  Finished,
+}
 
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [gameState, setGameState] = useState<GameState>(GameState.Started);
 
   const imageIndexes = useRef<number[]>([]); // use memo?
   const imageUrls = useRef<string[]>([]);
@@ -27,7 +36,7 @@ export default function Game(): ReactElement {
   });
 
   const getGifs = async (): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await sleep(2000);
     imageUrls.current = randomWords(numCards / 2);
   };
 
@@ -35,11 +44,16 @@ export default function Game(): ReactElement {
     setOverlayVisible(() => visible);
   };
 
-  const resetCards = useCallback(() => {
+  const resetCards = useCallback(async () => {
+    setGameState(() => GameState.Loading);
     setFlipped(() => Array(numCards).fill(false));
     setMatched(() => Array(numCards).fill(false));
     selectedCardIndexes.current = [];
-    imageIndexes.current = pairShuffler(numCards / 2);
+
+    setTimeout(() => {
+      imageIndexes.current = pairShuffler(numCards / 2);
+      setGameState(() => GameState.Playing);
+    }, 1000);
   }, []);
 
   const addSelectedCardIndex = (index: number): void => {
@@ -58,6 +72,8 @@ export default function Game(): ReactElement {
       />
       <div id={styles.content}>
         <Tableau
+          gameState={gameState}
+          setGameState={setGameState}
           flipped={flipped}
           setFlipped={setFlipped}
           matched={matched}
@@ -76,6 +92,7 @@ export default function Game(): ReactElement {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         getGifs={getGifs}
+        setGameState={setGameState}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
       />
     </Layout>

@@ -9,6 +9,15 @@ $header-footer-space: 5rem;
   align-items: center;
   justify-content: center;
   gap: global.$card-gap;
+  transition: 1s;
+}
+
+.tableauVisible {
+  opacity: 1;
+}
+
+.tableauHidden {
+  opacity: 0;
 }
 
 @media screen and (min-aspect-ratio: 1/1) {
