@@ -11,27 +11,18 @@ import { IGif } from '@giphy/js-types';
 export type CardProps = {
   gameState: GameState;
   index: number;
-  imageUrl: string;
+  imageData: IGif;
   flipped: boolean;
   active: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
-  testGif: IGif;
 };
 
 const defaultSize = 100;
 const gifSizeScale = 0.9;
 
 export default function Card(props: CardProps): ReactElement {
-  const {
-    index,
-    imageUrl,
-    flipped,
-    active,
-    matched,
-    handleCardClick,
-    testGif,
-  } = props;
+  const { index, imageData, flipped, active, matched, handleCardClick } = props;
 
   const onClick = (): void => {
     handleCardClick(index);
@@ -54,7 +45,7 @@ export default function Card(props: CardProps): ReactElement {
 
   // Determine aspect ratio of image and resize
   const { width: originalWidth, height: originalHeight } =
-    testGif.images.original;
+    imageData.images.original;
   let newWidth, newHeight;
 
   if (originalWidth >= originalHeight) {
@@ -84,9 +75,9 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          {testGif && (
+          {imageData && (
             <Gif
-              gif={testGif}
+              gif={imageData}
               width={newWidth}
               height={newHeight}
               hideAttribution={hideLinks}

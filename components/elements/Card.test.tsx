@@ -15,12 +15,11 @@ const makeCard = (
   <Card
     gameState={GameState.Playing}
     index={0}
-    imageUrl={'apple'}
+    imageData={mockIGif as unknown as IGif}
     flipped={flipped}
     active={active}
     matched={matched}
     handleCardClick={handleClickMock}
-    testGif={mockIGif as unknown as IGif}
   />
 );
 

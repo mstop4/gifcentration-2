@@ -1,18 +1,17 @@
 import React, { ReactElement, useRef, useState } from 'react';
 import { useMountEffect } from '@react-hookz/web';
-import randomWords from 'random-words';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
 import Footer from './Footer';
-import pairShuffler from '../../helpers/pairShuffler';
 import styles from '@/styles/layout/Game.module.scss';
 import SearchOverlay from './SearchOverlay';
-import getRectangleDimensions, {
+import { IGif } from '@giphy/js-types';
+import {
   RectangleDimensions,
-} from '../../helpers/getRectangleDimensions';
-import sleep from '../../helpers/timeout';
-import { HomeProps } from '@/pages';
+  getRectangleDimensions,
+  pairShuffler,
+} from '../../helpers';
 
 export enum GameState {
   Idle,
@@ -27,7 +26,7 @@ export enum ErrorState {
   UnknownError,
 }
 
-export default function Game(props: HomeProps): ReactElement {
+export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -36,7 +35,7 @@ export default function Game(props: HomeProps): ReactElement {
   const [tableauSize, setTableauSize] = useState(18);
 
   const imageIndexes = useRef<number[]>([]);
-  const imageUrls = useRef<string[]>([]);
+  const imageData = useRef<IGif[]>([]);
   const selectedCardIndexes = useRef<number[]>([]);
 
   // Initialize game
@@ -47,11 +46,17 @@ export default function Game(props: HomeProps): ReactElement {
   // Gets GIFs from API service
   const getGifs = async (): Promise<number> => {
     console.log(`Getting ${tableauSize / 2} pairs...`);
-    await sleep(2000);
-    imageUrls.current = randomWords(tableauSize / 2 - 2);
-    console.log(imageUrls.current);
 
-    return imageUrls.current.length;
+    const searchParams = new URLSearchParams({
+      q: searchQuery,
+      limit: (tableauSize / 2).toString(),
+    });
+
+    const response = await fetch('/api/search?' + searchParams);
+    imageData.current = await response.json();
+    console.log(imageData.current);
+
+    return imageData.current.length;
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -117,11 +122,10 @@ export default function Game(props: HomeProps): ReactElement {
           matched={matched}
           setMatched={setMatched}
           imageIndexes={imageIndexes.current}
-          imageUrls={imageUrls.current}
+          imageData={imageData.current}
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}
-          testGif={props.gif}
         />
       </div>
       <Footer />

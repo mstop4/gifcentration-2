@@ -12,11 +12,10 @@ export type TableauProps = {
   matched: boolean[];
   setMatched: Dispatch<SetStateAction<boolean[]>>;
   imageIndexes: number[];
-  imageUrls: string[];
+  imageData: IGif[];
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
-  testGif: IGif;
 };
 
 const checkDelay = 1000;
@@ -30,11 +29,10 @@ export default function Tableau(props: TableauProps): ReactElement {
     matched,
     setMatched,
     imageIndexes,
-    imageUrls,
+    imageData,
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
-    testGif,
   } = props;
 
   const checkPair = (): void => {
@@ -77,13 +75,12 @@ export default function Tableau(props: TableauProps): ReactElement {
       <Card
         key={i}
         index={i}
-        imageUrl={imageUrls[imageIndexes[i]]}
+        imageData={imageData[imageIndexes[i]]}
         flipped={flipped[i]}
         active={true}
         matched={matched[i]}
         handleCardClick={handleCardClick}
         gameState={gameState}
-        testGif={testGif}
       />
     );
   }

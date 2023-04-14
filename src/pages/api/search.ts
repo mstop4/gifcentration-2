@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import giphyFetch from '../../../lib/giphySDK';
+import { getRandomArrayElement } from '../../../helpers';
 
 type GIFMeQuery = {
   q: string;
@@ -14,10 +15,17 @@ export default async function handle(
   res: NextApiResponse
 ): Promise<void> {
   const { q, limit } = <GIFMeQuery>req.query;
+  const limitInt = parseInt(limit);
 
   const { data: results } = await giphyFetch.search(q, {
     sort: 'relevant',
+    limit: maxLimit,
   });
 
-  res.status(200).json(results);
+  const selection = [];
+  for (let i = 0; i < limitInt; i++) {
+    selection.push(getRandomArrayElement(results));
+  }
+
+  res.status(200).json(selection);
 }

@@ -16,11 +16,10 @@ const makeTableau = (): ReactElement => {
       matched={[false, false]}
       setMatched={jest.fn()}
       imageIndexes={[1, 1]}
-      imageUrls={['apple', 'banana']}
+      imageData={[mockIGif, mockIGif] as unknown as IGif[]}
       selectedCardIndexes={[]}
       addSelectedCardIndex={jest.fn()}
       resetSelectedCardIndexes={jest.fn()}
-      testGif={mockIGif as unknown as IGif}
     />
   );
 };
