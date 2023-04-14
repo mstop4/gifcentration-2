@@ -1,15 +1,8 @@
-import React, {
-  Dispatch,
-  ReactElement,
-  SetStateAction,
-  useEffect,
-} from 'react';
+import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import Card from './Card';
-import getRectangleDimensions, {
-  RectangleDimensions,
-} from '../../helpers/getRectangleDimensions';
 import styles from '@/styles/elements/Tableau.module.scss';
 import { GameState } from '../layout/Game';
+import { IGif } from '@giphy/js-types';
 
 export type TableauProps = {
   gameState: GameState;
@@ -23,6 +16,7 @@ export type TableauProps = {
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
+  testGif: IGif;
 };
 
 const checkDelay = 1000;
@@ -40,6 +34,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
+    testGif,
   } = props;
 
   const checkPair = (): void => {
@@ -87,6 +82,8 @@ export default function Tableau(props: TableauProps): ReactElement {
         active={true}
         matched={matched[i]}
         handleCardClick={handleCardClick}
+        gameState={gameState}
+        testGif={testGif}
       />
     );
   }
@@ -95,7 +92,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     <div
       id={styles.tableau}
       className={
-        gameState === GameState.Started || gameState === GameState.Loading
+        gameState === GameState.Idle || gameState === GameState.Loading
           ? styles.tableauHidden
           : styles.tableauVisible
       }

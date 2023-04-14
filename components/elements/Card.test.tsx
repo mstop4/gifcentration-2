@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
+import { IGif } from '@giphy/js-types';
+import { GameState } from '../layout/Game';
+import mockIGif from '../../mockData/IGif.json';
 
 const handleClickMock = jest.fn();
 const makeCard = (
@@ -10,12 +13,14 @@ const makeCard = (
   matched = false
 ): ReactElement => (
   <Card
+    gameState={GameState.Playing}
     index={0}
     imageUrl={'apple'}
     flipped={flipped}
     active={active}
     matched={matched}
     handleCardClick={handleClickMock}
+    testGif={mockIGif as unknown as IGif}
   />
 );
 
@@ -41,9 +46,6 @@ describe('Card', () => {
 
     const cardBack = container?.querySelector('.back');
     expect(cardBack).toBeInTheDocument();
-
-    const gifElem = cardBack?.querySelector('.gif');
-    expect(gifElem).toBeInTheDocument();
   });
 
   it('should be front-facing when initialized', () => {

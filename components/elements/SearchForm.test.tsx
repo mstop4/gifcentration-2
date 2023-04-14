@@ -7,7 +7,7 @@ const makeSearchForm = (): ReactElement => (
   <SearchForm
     searchQuery={'foo'}
     setSearchQuery={jest.fn()}
-    numCards={2}
+    tableauSize={2}
     setNumCards={jest.fn()}
     getGifs={jest.fn()}
     resetCards={jest.fn()}

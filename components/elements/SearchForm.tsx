@@ -14,10 +14,10 @@ import { GameState } from '../layout/Game';
 export type SearchFormProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
-  numCards: number;
+  tableauSize: number;
   setNumCards: Dispatch<SetStateAction<number>>;
-  getGifs: () => Promise<void>;
-  resetCards: () => void;
+  getGifs: () => Promise<number>;
+  resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
 };
@@ -30,7 +30,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
     searchQuery,
     setSearchQuery,
-    numCards,
+    tableauSize,
     setNumCards,
     getGifs,
     resetCards,
@@ -38,6 +38,16 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     hideSearchOverlay,
   } = props;
 
+  const _postGifSearchSetup = (numCards: number): void => {
+    resetCards(numCards);
+    setSearchQuery(() => '');
+
+    setTimeout(() => {
+      setGameState(() => GameState.Playing);
+    }, 1000);
+  };
+
+  // Event handlers
   const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
     setSearchQuery(() => e.target.value);
   };
@@ -55,15 +65,19 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   ): Promise<void> => {
     e.preventDefault();
     setGameState(() => GameState.Loading);
-    console.log(`Go! Search for: ${searchQuery} Num Cards: ${numCards}`);
+    console.log(
+      `Go! Search for: ${searchQuery} Expected Tableau Size: ${tableauSize}`
+    );
     hideSearchOverlay();
-    await getGifs();
-    resetCards();
-    setSearchQuery(() => '');
+    const numResults = await getGifs();
 
-    setTimeout(() => {
-      setGameState(() => GameState.Playing);
-    }, 1000);
+    if (numResults === tableauSize / 2) {
+      // There are enough GIFs for every card in the tableau
+      _postGifSearchSetup(tableauSize);
+    } else if (numResults < tableauSize / 2) {
+      // There aren't enough GIFs for every card in the tableau, reduce tableau size
+      _postGifSearchSetup(numResults * 2);
+    }
   };
 
   return (
@@ -95,8 +109,8 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           type="number"
           id="searchNumCards"
           className={styles.searchFieldInput}
-          name="numCards"
-          value={numCards}
+          name="tableauSize"
+          value={tableauSize}
           onChange={handleNumCardsChange}
           min={minCards}
           max={maxCards}

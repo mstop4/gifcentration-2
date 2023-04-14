@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import { useMountEffect } from '@react-hookz/web';
 import randomWords from 'random-words';
 import Tableau from '../elements/Tableau';
@@ -12,21 +12,28 @@ import getRectangleDimensions, {
   RectangleDimensions,
 } from '../../helpers/getRectangleDimensions';
 import sleep from '../../helpers/timeout';
+import { HomeProps } from '@/pages';
 
 export enum GameState {
-  Started,
+  Idle,
   Loading,
   Playing,
   Finished,
 }
 
-export default function Game(): ReactElement {
+export enum ErrorState {
+  Ok,
+  NotEnoughGifs,
+  UnknownError,
+}
+
+export default function Game(props: HomeProps): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [gameState, setGameState] = useState<GameState>(GameState.Started);
-  const [numCards, setNumCards] = useState(18);
+  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+  const [tableauSize, setTableauSize] = useState(18);
 
   const imageIndexes = useRef<number[]>([]);
   const imageUrls = useRef<string[]>([]);
@@ -34,15 +41,17 @@ export default function Game(): ReactElement {
 
   // Initialize game
   useMountEffect(async () => {
-    await getGifs();
-    resetCards();
+    setTimeout(() => toggleSearchOverlay(true), 1000);
   });
 
   // Gets GIFs from API service
-  const getGifs = async (): Promise<void> => {
-    console.log(`Getting ${numCards / 2} pairs...`);
+  const getGifs = async (): Promise<number> => {
+    console.log(`Getting ${tableauSize / 2} pairs...`);
     await sleep(2000);
-    imageUrls.current = randomWords(numCards / 2);
+    imageUrls.current = randomWords(tableauSize / 2 - 2);
+    console.log(imageUrls.current);
+
+    return imageUrls.current.length;
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -63,7 +72,8 @@ export default function Game(): ReactElement {
     setOverlayVisible(() => visible);
   };
 
-  const resetCards = useCallback(async () => {
+  const resetCards = (numCards: number = tableauSize): void => {
+    if (gameState === GameState.Idle || gameState === GameState.Loading) return;
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
@@ -81,7 +91,7 @@ export default function Game(): ReactElement {
     setTimeout(() => {
       setGameState(() => GameState.Playing);
     }, 1000);
-  }, [numCards]);
+  };
 
   const addSelectedCardIndex = (index: number): void => {
     selectedCardIndexes.current.push(index);
@@ -94,6 +104,7 @@ export default function Game(): ReactElement {
   return (
     <Layout>
       <Header
+        gameState={gameState}
         resetCards={resetCards}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
@@ -110,6 +121,7 @@ export default function Game(): ReactElement {
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}
+          testGif={props.gif}
         />
       </div>
       <Footer />
@@ -117,8 +129,8 @@ export default function Game(): ReactElement {
         overlayVisible={overlayVisible}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        numCards={numCards}
-        setNumCards={setNumCards}
+        tableauSize={tableauSize}
+        setNumCards={setTableauSize}
         getGifs={getGifs}
         resetCards={resetCards}
         setGameState={setGameState}
