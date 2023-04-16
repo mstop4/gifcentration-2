@@ -45,9 +45,8 @@ export const pairShuffler = (numPairs: number): number[] => {
   return shuffleArray(cards);
 };
 
-export const getRandomArrayElement = (array: unknown[]): unknown => {
-  const randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
+export const randomIntegerRange = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min) + min);
 };
 
 export const sleep = (duration: number): Promise<void> => {

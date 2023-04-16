@@ -1,5 +1,5 @@
 import {
-  getRandomArrayElement,
+  randomIntegerRange,
   getRectangleDimensions,
   pairShuffler,
   sleep,
@@ -66,15 +66,20 @@ describe('sleep', () => {
   });
 });
 
-describe('getRandomArrayElement', () => {
+describe('randomIntegerRange', () => {
   beforeAll(() => {
     jest.spyOn(global.Math, 'random').mockReturnValue(0.5);
   });
 
-  it('should return something from the array', () => {
-    const arr = [1, 2, 3, 4, 5, 6];
-    const result = getRandomArrayElement(arr);
-    expect(result).toEqual(4);
+  it('should return 1', () => {
+    const num = randomIntegerRange(0, 2);
+    expect(num).toEqual(1);
+  });
+
+  it('should return 42 from the array', () => {
+    const arr = [-13, '45', null, 42, true, 0.564];
+    const index = randomIntegerRange(0, arr.length);
+    expect(arr[index]).toEqual(42);
   });
 
   afterAll(() => {

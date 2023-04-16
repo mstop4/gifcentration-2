@@ -26,16 +26,18 @@ export enum ErrorState {
   UnknownError,
 }
 
+const defaultTableauSize = 18;
+
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
-  const [tableauSize, setTableauSize] = useState(18);
+  const [tableauSize, setTableauSize] = useState(defaultTableauSize);
 
-  const imageIndexes = useRef<number[]>([]);
   const imageData = useRef<IGif[]>([]);
+  const imageIndexes = useRef<number[]>([]);
   const selectedCardIndexes = useRef<number[]>([]);
 
   // Initialize game
@@ -53,10 +55,11 @@ export default function Game(): ReactElement {
     });
 
     const response = await fetch('/api/search?' + searchParams);
-    imageData.current = await response.json();
-    console.log(imageData.current);
+    const json = await response.json();
+    imageData.current = json;
+    console.log(json);
 
-    return imageData.current.length;
+    return json.length;
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -78,7 +81,7 @@ export default function Game(): ReactElement {
   };
 
   const resetCards = (numCards: number = tableauSize): void => {
-    if (gameState === GameState.Idle || gameState === GameState.Loading) return;
+    if (gameState === GameState.Loading) return;
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
