@@ -16,16 +16,29 @@ export type CardProps = {
   active: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
+  updateImageLoaded: (index: number) => void;
 };
 
 const defaultSize = 100;
 const gifSizeScale = 0.9;
 
 export default function Card(props: CardProps): ReactElement {
-  const { index, imageData, flipped, active, matched, handleCardClick } = props;
+  const {
+    index,
+    imageData,
+    flipped,
+    active,
+    matched,
+    handleCardClick,
+    updateImageLoaded,
+  } = props;
 
   const onClick = (): void => {
     handleCardClick(index);
+  };
+
+  const handleGifSeen = (): void => {
+    updateImageLoaded(index);
   };
 
   // Determine CSS classes
@@ -82,6 +95,7 @@ export default function Card(props: CardProps): ReactElement {
               height={newHeight}
               hideAttribution={hideLinks}
               noLink={hideLinks}
+              onGifSeen={handleGifSeen}
             />
           )}
         </div>

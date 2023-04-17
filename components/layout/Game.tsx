@@ -38,9 +38,11 @@ export default function Game(): ReactElement {
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
   const [rating, setRating] = useState<Rating>('g');
+  const [numImagesLoaded, setNumImagesLoaded] = useState<number>(0);
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
+  const imageLoaded = useRef<boolean[]>([]);
   const selectedCardIndexes = useRef<number[]>([]);
 
   // Initialize game
@@ -90,8 +92,8 @@ export default function Game(): ReactElement {
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
-    setFlipped(() => Array(numCards).fill(true));
-    setMatched(() => Array(numCards).fill(true));
+    setFlipped(() => Array(numCards).fill(false));
+    setMatched(() => Array(numCards).fill(false));
     selectedCardIndexes.current = [];
 
     const rect = getRectangleDimensions(numCards);
@@ -100,10 +102,6 @@ export default function Game(): ReactElement {
 
     console.log(`Setting up ${numCards / 2} pairs...`);
     imageIndexes.current = pairShuffler(numCards / 2);
-
-    // setTimeout(() => {
-    //   setGameState(() => GameState.Playing);
-    // }, 1000);
   };
 
   const addSelectedCardIndex = (index: number): void => {
@@ -112,6 +110,38 @@ export default function Game(): ReactElement {
 
   const resetSelectedCardIndexes = (): void => {
     selectedCardIndexes.current = [];
+  };
+
+  const updateImageLoaded = (index: number): void => {
+    if (index >= 0 && index < imageLoaded.current.length) {
+      imageLoaded.current[index] = true;
+
+      const newNumImagesLoaded = imageLoaded.current.reduce(
+        (total, current) => (current ? total + 1 : total),
+        0
+      );
+      setNumImagesLoaded(() => newNumImagesLoaded);
+
+      if (newNumImagesLoaded === imageLoaded.current.length) {
+        console.log('all ok');
+
+        setTimeout(() => {
+          toggleSearchOverlay(false);
+        }, 500);
+        setTimeout(() => {
+          setGameState(() => GameState.Playing);
+        }, 1000);
+      }
+    } else {
+      console.warn(
+        `Index ${index} out of bounds 0-${imageLoaded.current.length - 1}`
+      );
+    }
+  };
+
+  const resetImageLoaded = (numCards: number): void => {
+    imageLoaded.current = new Array(numCards).fill(false);
+    setNumImagesLoaded(() => 0);
   };
 
   return (
@@ -131,6 +161,7 @@ export default function Game(): ReactElement {
           setMatched={setMatched}
           imageIndexes={imageIndexes.current}
           imageData={imageData.current}
+          updateImageLoaded={updateImageLoaded}
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}
@@ -139,6 +170,7 @@ export default function Game(): ReactElement {
       <Footer />
       <SearchOverlay
         gameState={gameState}
+        numImagesLoaded={numImagesLoaded}
         overlayVisible={overlayVisible}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -147,6 +179,7 @@ export default function Game(): ReactElement {
         rating={rating}
         setRating={setRating}
         getGifs={getGifs}
+        resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
         setGameState={setGameState}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}

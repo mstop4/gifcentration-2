@@ -8,6 +8,8 @@ import LoadingIndicator from '../elements/LoadingIndicator';
 
 export type SearchOverlayProps = {
   gameState: GameState;
+  numImagesLoaded: number;
+  resetImageLoaded: (numCards: number) => void;
   overlayVisible: boolean;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
@@ -24,6 +26,8 @@ export type SearchOverlayProps = {
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
     gameState,
+    numImagesLoaded,
+    resetImageLoaded,
     overlayVisible,
     searchQuery,
     setSearchQuery,
@@ -55,14 +59,20 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             rating={rating}
             setRating={setRating}
             getGifs={getGifs}
+            resetImageLoaded={resetImageLoaded}
             resetCards={resetCards}
             setGameState={setGameState}
-            hideSearchOverlay={hideSearchOverlay}
           />
           <OverlayCloseButton hideOverlay={hideSearchOverlay} />
         </>
       )}
-      {isFetchingGifs && <LoadingIndicator gameState={gameState} />}
+      {isFetchingGifs && (
+        <LoadingIndicator
+          gameState={gameState}
+          numImagesLoaded={numImagesLoaded}
+          tableauSize={tableauSize}
+        />
+      )}
     </div>
   );
 }

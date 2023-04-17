@@ -13,6 +13,7 @@ export type TableauProps = {
   setMatched: Dispatch<SetStateAction<boolean[]>>;
   imageIndexes: number[];
   imageData: IGif[];
+  updateImageLoaded: (index: number) => void;
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
@@ -30,6 +31,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     setMatched,
     imageIndexes,
     imageData,
+    updateImageLoaded,
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
@@ -59,7 +61,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
 
-    const newFlipped = { ...flipped };
+    const newFlipped = [...flipped];
     newFlipped[index] = true;
     setFlipped(() => newFlipped);
     addSelectedCardIndex(index);
@@ -80,6 +82,7 @@ export default function Tableau(props: TableauProps): ReactElement {
         active={true}
         matched={matched[i]}
         handleCardClick={handleCardClick}
+        updateImageLoaded={updateImageLoaded}
         gameState={gameState}
       />
     );

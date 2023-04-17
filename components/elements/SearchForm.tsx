@@ -20,9 +20,9 @@ export type SearchFormProps = {
   rating: Rating;
   setRating: Dispatch<SetStateAction<Rating>>;
   getGifs: () => Promise<number>;
+  resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
-  hideSearchOverlay: () => void;
 };
 
 const minCards = 2;
@@ -38,19 +38,15 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     rating,
     setRating,
     getGifs,
+    resetImageLoaded,
     resetCards,
     setGameState,
-    hideSearchOverlay,
   } = props;
 
   const _postGifSearchSetup = (numCards: number): void => {
-    // hideSearchOverlay();
     resetCards(numCards);
+    resetImageLoaded(numCards);
     setSearchQuery(() => '');
-
-    // setTimeout(() => {
-    //   setGameState(() => GameState.Playing);
-    // }, 1000);
   };
 
   // Event handlers
