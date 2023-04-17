@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useState } from 'react';
-import { useMountEffect } from '@react-hookz/web';
+import { useFunctionalState, useMountEffect } from '@react-hookz/web';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
@@ -12,6 +12,7 @@ import {
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
+import { Rating } from '@giphy/js-fetch-api';
 
 export enum GameState {
   Idle,
@@ -35,6 +36,7 @@ export default function Game(): ReactElement {
   const [searchQuery, setSearchQuery] = useState('');
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
+  const [rating, setRating] = useState<Rating>('g');
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
@@ -52,6 +54,7 @@ export default function Game(): ReactElement {
     const searchParams = new URLSearchParams({
       q: searchQuery,
       limit: (tableauSize / 2).toString(),
+      rating,
     });
 
     const response = await fetch('/api/search?' + searchParams);
@@ -85,8 +88,8 @@ export default function Game(): ReactElement {
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
-    setFlipped(() => Array(numCards).fill(false));
-    setMatched(() => Array(numCards).fill(false));
+    setFlipped(() => Array(numCards).fill(true));
+    setMatched(() => Array(numCards).fill(true));
     selectedCardIndexes.current = [];
 
     const rect = getRectangleDimensions(numCards);
@@ -137,7 +140,9 @@ export default function Game(): ReactElement {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         tableauSize={tableauSize}
-        setNumCards={setTableauSize}
+        setTableauSize={setTableauSize}
+        rating={rating}
+        setRating={setRating}
         getGifs={getGifs}
         resetCards={resetCards}
         setGameState={setGameState}

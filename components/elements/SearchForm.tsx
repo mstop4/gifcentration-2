@@ -10,12 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/SearchForm.module.scss';
 import { GameState } from '../layout/Game';
+import { Rating } from '@giphy/js-fetch-api';
 
 export type SearchFormProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   tableauSize: number;
-  setNumCards: Dispatch<SetStateAction<number>>;
+  setTableauSize: Dispatch<SetStateAction<number>>;
+  rating: Rating;
+  setRating: Dispatch<SetStateAction<Rating>>;
   getGifs: () => Promise<number>;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -31,7 +34,9 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     searchQuery,
     setSearchQuery,
     tableauSize,
-    setNumCards,
+    setTableauSize,
+    rating,
+    setRating,
     getGifs,
     resetCards,
     setGameState,
@@ -56,8 +61,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setSearchQuery(() => '');
   };
 
+  const handleRatingChange: ChangeEventHandler<HTMLInputElement> = e => {
+    const newRating = e.target.value as Rating;
+    console.log(newRating);
+    setRating(() => newRating);
+  };
+
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setNumCards(() => parseInt(e.target.value));
+    setTableauSize(() => parseInt(e.target.value));
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -66,7 +77,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e.preventDefault();
     setGameState(() => GameState.Loading);
     console.log(
-      `Go! Search for: ${searchQuery} Expected Tableau Size: ${tableauSize}`
+      `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
     );
     hideSearchOverlay();
     const numResults = await getGifs();
@@ -82,11 +93,13 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
-      <label htmlFor="searchQuery">Search for GIFs</label>
+      <label className={styles.searchMajorLabel} htmlFor="searchQuery">
+        Search for GIFs
+      </label>
       <div>
         <input
           type="text"
-          id=""
+          id="searchQuery"
           className={styles.searchFieldInput}
           name="searchQuery"
           placeholder="Enter your query here..."
@@ -103,8 +116,77 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           <FontAwesomeIcon icon={faDeleteLeft} />
         </button>
       </div>
+      <label className={styles.searchMajorLabel}>Rating</label>
       <div>
-        <label htmlFor="searchNumCards">Tableau Size</label>
+        <input
+          type="radio"
+          id="ratingY"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="y"
+          checked={rating === 'y'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingY" className={styles.searchRatingLabel}>
+          Y
+        </label>
+
+        <input
+          type="radio"
+          id="ratingG"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="g"
+          checked={rating === 'g'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingG" className={styles.searchRatingLabel}>
+          G
+        </label>
+
+        <input
+          type="radio"
+          id="ratingPG"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="pg"
+          checked={rating === 'pg'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
+          PG
+        </label>
+
+        <input
+          type="radio"
+          id="ratingPG13"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="pg-13"
+          checked={rating === 'pg-13'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
+          PG-13
+        </label>
+
+        <input
+          type="radio"
+          id="ratingR"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="r"
+          checked={rating === 'r'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingR" className={styles.searchRatingLabel}>
+          R
+        </label>
+      </div>
+      <div>
+        <label htmlFor="searchNumCards" className={styles.searchMajorLabel}>
+          Tableau Size
+        </label>
         <input
           type="number"
           id="searchNumCards"
