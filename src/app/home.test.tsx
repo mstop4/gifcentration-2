@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import Home from '../../src/pages/index';
+import Home from './home';
 import '@testing-library/jest-dom';
 
 describe('Home', () => {
