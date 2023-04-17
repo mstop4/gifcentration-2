@@ -43,6 +43,7 @@ export default function Game(): ReactElement {
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
   const imageLoaded = useRef<boolean[]>([]);
+  const actualTableauSize = useRef<number>(defaultTableauSize);
   const selectedCardIndexes = useRef<number[]>([]);
 
   // Initialize game
@@ -63,9 +64,10 @@ export default function Game(): ReactElement {
     const response = await fetch('/api/search?' + searchParams);
     const json = await response.json();
     imageData.current = json;
-    console.log(json);
+    actualTableauSize.current = imageData.current.length * 2;
+    console.log(imageData.current);
 
-    return json.length;
+    return imageData.current.length;
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -175,6 +177,7 @@ export default function Game(): ReactElement {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         tableauSize={tableauSize}
+        actualTableauSize={actualTableauSize.current}
         setTableauSize={setTableauSize}
         rating={rating}
         setRating={setRating}

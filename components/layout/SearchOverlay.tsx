@@ -14,6 +14,7 @@ export type SearchOverlayProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   tableauSize: number;
+  actualTableauSize: number;
   setTableauSize: Dispatch<SetStateAction<number>>;
   rating: Rating;
   setRating: Dispatch<SetStateAction<Rating>>;
@@ -32,6 +33,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     searchQuery,
     setSearchQuery,
     tableauSize,
+    actualTableauSize,
     setTableauSize,
     rating,
     setRating,
@@ -70,7 +72,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
         <LoadingIndicator
           gameState={gameState}
           numImagesLoaded={numImagesLoaded}
-          tableauSize={tableauSize}
+          actualTableauSize={actualTableauSize}
         />
       )}
     </div>
