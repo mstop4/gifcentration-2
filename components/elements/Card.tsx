@@ -57,22 +57,26 @@ export default function Card(props: CardProps): ReactElement {
   const size = `${sizeMultipler}x` as SizeProp;
 
   // Determine aspect ratio of image and resize
-  const { width: originalWidth, height: originalHeight } =
-    imageData.images.original;
-  let newWidth, newHeight;
+  let newWidth = 100;
+  let newHeight = 100;
 
-  if (originalWidth >= originalHeight) {
-    // Wide
-    newWidth = (width ?? defaultSize) * gifSizeScale;
-    newHeight =
-      (((width ?? defaultSize) * originalHeight) / originalWidth) *
-      gifSizeScale;
-  } else {
-    // Tall
-    newHeight = (width ?? defaultSize) * gifSizeScale;
-    newWidth =
-      (((width ?? defaultSize) * originalWidth) / originalHeight) *
-      gifSizeScale;
+  if (imageData?.images?.original) {
+    const { width: originalWidth, height: originalHeight } =
+      imageData.images.original;
+
+    if (originalWidth >= originalHeight) {
+      // Wide
+      newWidth = (width ?? defaultSize) * gifSizeScale;
+      newHeight =
+        (((width ?? defaultSize) * originalHeight) / originalWidth) *
+        gifSizeScale;
+    } else {
+      // Tall
+      newHeight = (width ?? defaultSize) * gifSizeScale;
+      newWidth =
+        (((width ?? defaultSize) * originalWidth) / originalHeight) *
+        gifSizeScale;
+    }
   }
 
   const hideLinks = true; // gameState === GameState.Playing;

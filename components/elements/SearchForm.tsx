@@ -78,7 +78,10 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     const numResults = await getGifs();
     setGameState(() => GameState.Loading);
 
-    if (numResults === tableauSize / 2) {
+    if (numResults === 0) {
+      // No GIFs found
+      setGameState(() => GameState.Idle);
+    } else if (numResults === tableauSize / 2) {
       // There are enough GIFs for every card in the tableau
       _postGifSearchSetup(tableauSize);
     } else if (numResults < tableauSize / 2) {
