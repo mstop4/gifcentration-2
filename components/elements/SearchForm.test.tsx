@@ -8,7 +8,9 @@ const makeSearchForm = (): ReactElement => (
     searchQuery={'foo'}
     setSearchQuery={jest.fn()}
     tableauSize={2}
-    setNumCards={jest.fn()}
+    setTableauSize={jest.fn()}
+    rating={'g'}
+    setRating={jest.fn()}
     getGifs={jest.fn()}
     resetCards={jest.fn()}
     setGameState={jest.fn()}

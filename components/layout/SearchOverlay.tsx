@@ -4,8 +4,10 @@ import OverlayCloseButton from '../elements/OverlayCloseButton';
 import SearchForm from '../elements/SearchForm';
 import { GameState } from './Game';
 import { Rating } from '@giphy/js-fetch-api';
+import LoadingIndicator from '../elements/LoadingIndicator';
 
 export type SearchOverlayProps = {
+  gameState: GameState;
   overlayVisible: boolean;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
@@ -21,6 +23,7 @@ export type SearchOverlayProps = {
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
+    gameState,
     overlayVisible,
     searchQuery,
     setSearchQuery,
@@ -37,21 +40,29 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     overlayVisible ? styles.overlayOpen : ''
   }`;
 
+  const isFetchingGifs =
+    gameState === GameState.Searching || gameState === GameState.Loading;
+
   return (
     <div id={styles.searchOverlay} className={classes}>
-      <SearchForm
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        tableauSize={tableauSize}
-        setTableauSize={setTableauSize}
-        rating={rating}
-        setRating={setRating}
-        getGifs={getGifs}
-        resetCards={resetCards}
-        setGameState={setGameState}
-        hideSearchOverlay={hideSearchOverlay}
-      />
-      <OverlayCloseButton hideOverlay={hideSearchOverlay} />
+      {!isFetchingGifs && (
+        <>
+          <SearchForm
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            tableauSize={tableauSize}
+            setTableauSize={setTableauSize}
+            rating={rating}
+            setRating={setRating}
+            getGifs={getGifs}
+            resetCards={resetCards}
+            setGameState={setGameState}
+            hideSearchOverlay={hideSearchOverlay}
+          />
+          <OverlayCloseButton hideOverlay={hideSearchOverlay} />
+        </>
+      )}
+      {isFetchingGifs && <LoadingIndicator gameState={gameState} />}
     </div>
   );
 }

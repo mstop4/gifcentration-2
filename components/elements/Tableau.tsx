@@ -89,7 +89,9 @@ export default function Tableau(props: TableauProps): ReactElement {
     <div
       id={styles.tableau}
       className={
-        gameState === GameState.Idle || gameState === GameState.Loading
+        gameState === GameState.Idle ||
+        gameState === GameState.Searching ||
+        gameState === GameState.Loading
           ? styles.tableauHidden
           : styles.tableauVisible
       }

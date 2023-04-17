@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useState } from 'react';
-import { useFunctionalState, useMountEffect } from '@react-hookz/web';
+import { useMountEffect } from '@react-hookz/web';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
@@ -15,10 +15,11 @@ import {
 import { Rating } from '@giphy/js-fetch-api';
 
 export enum GameState {
-  Idle,
-  Loading,
-  Playing,
-  Finished,
+  Idle = 'idle',
+  Searching = 'searching',
+  Loading = 'loading',
+  Playing = 'playing',
+  Finished = 'finished',
 }
 
 export enum ErrorState {
@@ -84,7 +85,8 @@ export default function Game(): ReactElement {
   };
 
   const resetCards = (numCards: number = tableauSize): void => {
-    if (gameState === GameState.Loading) return;
+    if (gameState === GameState.Searching || gameState === GameState.Loading)
+      return;
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
@@ -99,9 +101,9 @@ export default function Game(): ReactElement {
     console.log(`Setting up ${numCards / 2} pairs...`);
     imageIndexes.current = pairShuffler(numCards / 2);
 
-    setTimeout(() => {
-      setGameState(() => GameState.Playing);
-    }, 1000);
+    // setTimeout(() => {
+    //   setGameState(() => GameState.Playing);
+    // }, 1000);
   };
 
   const addSelectedCardIndex = (index: number): void => {
@@ -136,6 +138,7 @@ export default function Game(): ReactElement {
       </div>
       <Footer />
       <SearchOverlay
+        gameState={gameState}
         overlayVisible={overlayVisible}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}

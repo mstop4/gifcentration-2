@@ -15,7 +15,12 @@ export default function ResetGameButton(
   const { gameState, resetCards } = props;
 
   const handleClick = (): void => {
-    if (gameState === GameState.Idle || gameState === GameState.Loading) return;
+    if (
+      gameState === GameState.Idle ||
+      gameState === GameState.Searching ||
+      gameState === GameState.Loading
+    )
+      return;
     resetCards();
   };
 

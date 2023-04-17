@@ -15,7 +15,8 @@ export default function SearchGifsButton(
   const { gameState, showSearchOverlay } = props;
 
   const handleClick = async (): Promise<void> => {
-    if (gameState === GameState.Loading) return;
+    if (gameState === GameState.Searching || gameState === GameState.Loading)
+      return;
     showSearchOverlay();
   };
 

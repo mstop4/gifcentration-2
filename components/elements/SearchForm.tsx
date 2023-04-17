@@ -44,12 +44,13 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   } = props;
 
   const _postGifSearchSetup = (numCards: number): void => {
+    // hideSearchOverlay();
     resetCards(numCards);
     setSearchQuery(() => '');
 
-    setTimeout(() => {
-      setGameState(() => GameState.Playing);
-    }, 1000);
+    // setTimeout(() => {
+    //   setGameState(() => GameState.Playing);
+    // }, 1000);
   };
 
   // Event handlers
@@ -63,7 +64,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   const handleRatingChange: ChangeEventHandler<HTMLInputElement> = e => {
     const newRating = e.target.value as Rating;
-    console.log(newRating);
     setRating(() => newRating);
   };
 
@@ -75,12 +75,12 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e
   ): Promise<void> => {
     e.preventDefault();
-    setGameState(() => GameState.Loading);
+    setGameState(() => GameState.Searching);
     console.log(
       `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
     );
-    hideSearchOverlay();
     const numResults = await getGifs();
+    setGameState(() => GameState.Loading);
 
     if (numResults === tableauSize / 2) {
       // There are enough GIFs for every card in the tableau
