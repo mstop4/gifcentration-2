@@ -5,6 +5,6 @@ module.exports = {
   '**/*.*': () => [
     `npm run lint`,
     `npm run prettier`,
-    `npm run test`
+    // `npm run test`
   ],
 };

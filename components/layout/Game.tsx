@@ -73,6 +73,11 @@ export default function Game(): ReactElement {
     actualTableauSize.current = imageData.current.length * 2;
     console.log(imageData.current);
 
+    setTimeout(() => {
+      setOverlayVisible(false);
+      setGameState(GameState.Playing);
+    }, 1000);
+
     return imageData.current.length;
   };
 

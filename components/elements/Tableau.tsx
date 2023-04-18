@@ -3,6 +3,7 @@ import Card from './Card';
 import styles from '@/styles/elements/Tableau.module.scss';
 import { GameState } from '../layout/Game';
 import { IGif } from '@giphy/js-types';
+import Card2 from './Card2';
 
 export type TableauProps = {
   gameState: GameState;
@@ -74,17 +75,18 @@ export default function Tableau(props: TableauProps): ReactElement {
   const cardArray: ReactElement[] = [];
   for (let i = 0; i < imageIndexes.length; ++i) {
     cardArray.push(
-      <Card
-        key={i}
-        index={i}
-        imageData={imageData[imageIndexes[i]]}
-        flipped={flipped[i]}
-        active={true}
-        matched={matched[i]}
-        handleCardClick={handleCardClick}
-        updateImageLoaded={updateImageLoaded}
-        gameState={gameState}
-      />
+      // <Card
+      //   key={i}
+      //   index={i}
+      //   imageData={imageData[imageIndexes[i]]}
+      //   flipped={flipped[i]}
+      //   active={true}
+      //   matched={matched[i]}
+      //   handleCardClick={handleCardClick}
+      //   updateImageLoaded={updateImageLoaded}
+      //   gameState={gameState}
+      // />
+      <Card2 />
     );
   }
 
