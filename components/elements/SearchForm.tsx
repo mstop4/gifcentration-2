@@ -5,11 +5,12 @@ import React, {
   MouseEventHandler,
   ReactElement,
   SetStateAction,
+  useRef,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/SearchForm.module.scss';
-import { GameState } from '../layout/Game';
+import { GameState, GifErrorState } from '../layout/Game';
 import { Rating } from '@giphy/js-fetch-api';
 
 export type SearchFormProps = {
@@ -23,6 +24,8 @@ export type SearchFormProps = {
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
+  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
+  setAlertVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 const minCards = 2;
@@ -41,12 +44,36 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     resetImageLoaded,
     resetCards,
     setGameState,
+    setGifErrorState,
+    setAlertVisible,
   } = props;
 
-  const _postGifSearchSetup = (numCards: number): void => {
+  const alertTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const postGifSearchSetup = (numCards: number): void => {
     resetCards(numCards);
     resetImageLoaded(numCards);
     setSearchQuery(() => '');
+  };
+
+  const showAlert = (state: GifErrorState): void => {
+    setGifErrorState(() => state);
+    setAlertVisible(() => true);
+
+    if (alertTimeout.current != null) {
+      clearTimeout(alertTimeout.current);
+    }
+
+    alertTimeout.current = setTimeout(() => {
+      setAlertVisible(() => false);
+    }, 5000);
+  };
+
+  const hideAlert = (): void => {
+    if (alertTimeout.current != null) {
+      clearTimeout(alertTimeout.current);
+    }
+    setAlertVisible(() => false);
   };
 
   // Event handlers
@@ -71,6 +98,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e
   ): Promise<void> => {
     e.preventDefault();
+    hideAlert();
     setGameState(() => GameState.Searching);
     console.log(
       `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
@@ -81,12 +109,15 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     if (numResults === 0) {
       // No GIFs found
       setGameState(() => GameState.Idle);
+      showAlert(GifErrorState.NoGifs);
     } else if (numResults === tableauSize / 2) {
       // There are enough GIFs for every card in the tableau
-      _postGifSearchSetup(tableauSize);
+      postGifSearchSetup(tableauSize);
+      setGifErrorState(() => GifErrorState.Ok);
     } else if (numResults < tableauSize / 2) {
       // There aren't enough GIFs for every card in the tableau, reduce tableau size
-      _postGifSearchSetup(numResults * 2);
+      postGifSearchSetup(numResults * 2);
+      showAlert(GifErrorState.NotEnoughGifs);
     }
   };
 

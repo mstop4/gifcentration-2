@@ -13,6 +13,7 @@ import {
   pairShuffler,
 } from '../../helpers';
 import { Rating } from '@giphy/js-fetch-api';
+import Alert from '../elements/Alert';
 
 export enum GameState {
   Idle = 'idle',
@@ -22,9 +23,10 @@ export enum GameState {
   Finished = 'finished',
 }
 
-export enum ErrorState {
+export enum GifErrorState {
   Ok,
   NotEnoughGifs,
+  NoGifs,
   UnknownError,
 }
 
@@ -39,6 +41,10 @@ export default function Game(): ReactElement {
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
   const [rating, setRating] = useState<Rating>('g');
   const [numImagesLoaded, setNumImagesLoaded] = useState<number>(0);
+  const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
+    GifErrorState.Ok
+  );
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
@@ -186,7 +192,10 @@ export default function Game(): ReactElement {
         resetCards={resetCards}
         setGameState={setGameState}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
+        setGifErrorState={setGifErrorState}
+        setAlertVisible={setAlertVisible}
       />
+      <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />
     </Layout>
   );
 }

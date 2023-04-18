@@ -2,7 +2,7 @@ import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 import OverlayCloseButton from '../elements/OverlayCloseButton';
 import SearchForm from '../elements/SearchForm';
-import { GameState } from './Game';
+import { GameState, GifErrorState } from './Game';
 import { Rating } from '@giphy/js-fetch-api';
 import LoadingIndicator from '../elements/LoadingIndicator';
 
@@ -22,6 +22,8 @@ export type SearchOverlayProps = {
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
+  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
+  setAlertVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
@@ -41,8 +43,10 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     resetCards,
     setGameState,
     hideSearchOverlay,
+    setGifErrorState,
+    setAlertVisible,
   } = props;
-  const classes = `${styles.overlayBase} ${
+  const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
   }`;
 
@@ -64,6 +68,8 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             resetImageLoaded={resetImageLoaded}
             resetCards={resetCards}
             setGameState={setGameState}
+            setGifErrorState={setGifErrorState}
+            setAlertVisible={setAlertVisible}
           />
           <OverlayCloseButton hideOverlay={hideSearchOverlay} />
         </>
