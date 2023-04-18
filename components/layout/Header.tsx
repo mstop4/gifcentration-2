@@ -15,8 +15,9 @@ export default function Header(props: HeaderProps): ReactElement {
 
   return (
     <header id={styles.header}>
-      <span>GIFcentration 2</span>
-      <span>
+      <span id={styles.headerTitle}>GIFcentration 2</span>
+      {/* <span id={styles.headerQuery}>543tr4t3t43t34t43aat3434tt43t4aa34t4ag3ga434ga3 </span> */}
+      <span id={styles.headerButtons}>
         <SearchGifsButton
           gameState={gameState}
           showSearchOverlay={showSearchOverlay}
