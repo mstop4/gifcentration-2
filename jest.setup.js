@@ -1,4 +1,4 @@
-import 'jest-canvas-mock'; // Needed to for compatibilty with react-confetti
+import 'jest-canvas-mock'; // Needed for compatibilty with react-confetti
 
 window.ResizeObserver =
   window.ResizeObserver ||

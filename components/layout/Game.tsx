@@ -1,7 +1,6 @@
 import React, { ReactElement, useRef, useState } from 'react';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
 import Tableau from '../elements/Tableau';
-import Layout from './Layout';
 import Header from './Header';
 import Footer from './Footer';
 import styles from '@/styles/layout/Game.module.scss';
@@ -183,7 +182,7 @@ export default function Game(): ReactElement {
   };
 
   return (
-    <Layout>
+    <main className={styles.main}>
       <Header
         gameState={gameState}
         resetCards={resetCards}
@@ -233,6 +232,6 @@ export default function Game(): ReactElement {
         stopConfetti={(): void => toggleConfetti(false)}
       />
       <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />
-    </Layout>
+    </main>
   );
 }
