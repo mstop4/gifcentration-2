@@ -32,6 +32,7 @@ export enum GifErrorState {
 
 const defaultTableauSize = 18;
 const confettiAmount = 200;
+const confettiDuration = 10000;
 
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
@@ -168,6 +169,7 @@ export default function Game(): ReactElement {
   };
 
   const toggleConfetti = (visible: boolean): void => {
+    console.log('confetti', visible);
     setShowConfetti(() => visible);
 
     if (confettiTimeout.current != null) {
@@ -177,7 +179,7 @@ export default function Game(): ReactElement {
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
         setShowConfetti(() => false);
-      }, 5000);
+      }, confettiDuration);
     }
   };
 
@@ -207,8 +209,8 @@ export default function Game(): ReactElement {
       </div>
       <Footer />
       <Confetti
-        width={appWidth}
-        height={appHeight}
+        width={windowSize.current.appWidth}
+        height={windowSize.current.appHeight}
         numberOfPieces={showConfetti ? confettiAmount : 0}
       />
       <SearchOverlay
