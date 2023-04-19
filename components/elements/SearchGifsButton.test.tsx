@@ -2,11 +2,15 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchGifsButton from './SearchGifsButton';
 import '@testing-library/jest-dom';
+import { GameState } from '../layout/Game';
 
 describe('SearchGifsButton', () => {
   it('renders a SearchGifsButton', async () => {
     const { container } = render(
-      <SearchGifsButton showSearchOverlay={jest.fn()} />
+      <SearchGifsButton
+        gameState={GameState.Playing}
+        showSearchOverlay={jest.fn()}
+      />
     );
     const card = container.querySelector('#searchGifsButton');
 
@@ -18,7 +22,10 @@ describe('SearchGifsButton', () => {
   it('calls showSearchOverlay when clicked', async () => {
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />
+      <SearchGifsButton
+        gameState={GameState.Playing}
+        showSearchOverlay={showSearchOverlayMock}
+      />
     );
 
     const button = container.querySelector('#searchGifsButton') as Element;

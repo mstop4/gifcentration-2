@@ -1,0 +1,36 @@
+$alert-height: 3.5rem;
+
+#alert {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  width: 100dvw;
+  height: $alert-height;
+  transition: 0.5s;
+}
+
+.alertBody {
+  text-align: center;
+  padding: 0.6rem 2rem;
+  background-color: black;
+  min-width: 10rem;
+  border-radius: 2rem 2rem 0 0;
+  border: 2px solid white;
+  border-bottom: 0;
+}
+
+.alertBody.alertError {
+  background-color: red;
+}
+
+.alertBody.alertWarning {
+  background-color: orange;
+}
+
+.alertClosed {
+  bottom: -$alert-height;
+}
+
+.alertOpen {
+  bottom: 0;
+}

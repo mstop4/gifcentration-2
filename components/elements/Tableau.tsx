@@ -1,15 +1,8 @@
-import React, {
-  Dispatch,
-  ReactElement,
-  SetStateAction,
-  useEffect,
-} from 'react';
+import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import Card from './Card';
-import getRectangleDimensions, {
-  RectangleDimensions,
-} from '../../helpers/getRectangleDimensions';
 import styles from '@/styles/elements/Tableau.module.scss';
 import { GameState } from '../layout/Game';
+import { IGif } from '@giphy/js-types';
 
 export type TableauProps = {
   gameState: GameState;
@@ -19,7 +12,8 @@ export type TableauProps = {
   matched: boolean[];
   setMatched: Dispatch<SetStateAction<boolean[]>>;
   imageIndexes: number[];
-  imageUrls: string[];
+  imageData: IGif[];
+  updateImageLoaded: (index: number) => void;
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
@@ -36,7 +30,8 @@ export default function Tableau(props: TableauProps): ReactElement {
     matched,
     setMatched,
     imageIndexes,
-    imageUrls,
+    imageData,
+    updateImageLoaded,
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
@@ -66,7 +61,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
 
-    const newFlipped = { ...flipped };
+    const newFlipped = [...flipped];
     newFlipped[index] = true;
     setFlipped(() => newFlipped);
     addSelectedCardIndex(index);
@@ -82,11 +77,13 @@ export default function Tableau(props: TableauProps): ReactElement {
       <Card
         key={i}
         index={i}
-        imageUrl={imageUrls[imageIndexes[i]]}
+        imageData={imageData[imageIndexes[i]]}
         flipped={flipped[i]}
         active={true}
         matched={matched[i]}
         handleCardClick={handleCardClick}
+        updateImageLoaded={updateImageLoaded}
+        gameState={gameState}
       />
     );
   }
@@ -95,7 +92,9 @@ export default function Tableau(props: TableauProps): ReactElement {
     <div
       id={styles.tableau}
       className={
-        gameState === GameState.Started || gameState === GameState.Loading
+        gameState === GameState.Idle ||
+        gameState === GameState.Searching ||
+        gameState === GameState.Loading
           ? styles.tableauHidden
           : styles.tableauVisible
       }

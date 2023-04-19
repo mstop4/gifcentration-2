@@ -1,48 +1,79 @@
-import React, { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import { useMountEffect } from '@react-hookz/web';
-import randomWords from 'random-words';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
 import Footer from './Footer';
-import pairShuffler from '../../helpers/pairShuffler';
 import styles from '@/styles/layout/Game.module.scss';
 import SearchOverlay from './SearchOverlay';
-import getRectangleDimensions, {
+import { IGif } from '@giphy/js-types';
+import {
   RectangleDimensions,
-} from '../../helpers/getRectangleDimensions';
-import sleep from '../../helpers/timeout';
+  getRectangleDimensions,
+  pairShuffler,
+} from '../../helpers';
+import { Rating } from '@giphy/js-fetch-api';
+import Alert from '../elements/Alert';
 
 export enum GameState {
-  Started,
-  Loading,
-  Playing,
-  Finished,
+  Idle = 'idle',
+  Searching = 'searching',
+  Loading = 'loading',
+  Playing = 'playing',
+  Finished = 'finished',
 }
+
+export enum GifErrorState {
+  Ok,
+  NotEnoughGifs,
+  NoGifs,
+  UnknownError,
+}
+
+const defaultTableauSize = 18;
 
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [gameState, setGameState] = useState<GameState>(GameState.Started);
-  const [numCards, setNumCards] = useState(18);
+  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+  const [tableauSize, setTableauSize] = useState(defaultTableauSize);
+  const [rating, setRating] = useState<Rating>('g');
+  const [numImagesLoaded, setNumImagesLoaded] = useState<number>(0);
+  const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
+    GifErrorState.Ok
+  );
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
 
+  const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
-  const imageUrls = useRef<string[]>([]);
+  const imageLoaded = useRef<boolean[]>([]);
+  const actualTableauSize = useRef<number>(defaultTableauSize);
   const selectedCardIndexes = useRef<number[]>([]);
 
   // Initialize game
   useMountEffect(async () => {
-    await getGifs();
-    resetCards();
+    setTimeout(() => toggleSearchOverlay(true), 1000);
   });
 
   // Gets GIFs from API service
-  const getGifs = async (): Promise<void> => {
-    console.log(`Getting ${numCards / 2} pairs...`);
-    await sleep(2000);
-    imageUrls.current = randomWords(numCards / 2);
+  const getGifs = async (): Promise<number> => {
+    console.log(`Getting ${tableauSize / 2} pairs...`);
+
+    const searchParams = new URLSearchParams({
+      q: searchQuery,
+      limit: (tableauSize / 2).toString(),
+      rating,
+    });
+
+    const response = await fetch('/api/search?' + searchParams);
+    const json = await response.json();
+    imageData.current = json;
+    actualTableauSize.current = imageData.current.length * 2;
+    console.log(imageData.current);
+
+    return imageData.current.length;
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -63,7 +94,9 @@ export default function Game(): ReactElement {
     setOverlayVisible(() => visible);
   };
 
-  const resetCards = useCallback(async () => {
+  const resetCards = (numCards: number = tableauSize): void => {
+    if (gameState === GameState.Searching || gameState === GameState.Loading)
+      return;
     console.log(`Has ${numCards} cards...`);
 
     setGameState(() => GameState.Loading);
@@ -77,11 +110,7 @@ export default function Game(): ReactElement {
 
     console.log(`Setting up ${numCards / 2} pairs...`);
     imageIndexes.current = pairShuffler(numCards / 2);
-
-    setTimeout(() => {
-      setGameState(() => GameState.Playing);
-    }, 1000);
-  }, [numCards]);
+  };
 
   const addSelectedCardIndex = (index: number): void => {
     selectedCardIndexes.current.push(index);
@@ -91,9 +120,42 @@ export default function Game(): ReactElement {
     selectedCardIndexes.current = [];
   };
 
+  const updateImageLoaded = (index: number): void => {
+    if (index >= 0 && index < imageLoaded.current.length) {
+      imageLoaded.current[index] = true;
+
+      const newNumImagesLoaded = imageLoaded.current.reduce(
+        (total, current) => (current ? total + 1 : total),
+        0
+      );
+      setNumImagesLoaded(() => newNumImagesLoaded);
+
+      if (newNumImagesLoaded === imageLoaded.current.length) {
+        console.log('all ok');
+
+        setTimeout(() => {
+          toggleSearchOverlay(false);
+        }, 500);
+        setTimeout(() => {
+          setGameState(() => GameState.Playing);
+        }, 1000);
+      }
+    } else {
+      console.warn(
+        `Index ${index} out of bounds 0-${imageLoaded.current.length - 1}`
+      );
+    }
+  };
+
+  const resetImageLoaded = (numCards: number): void => {
+    imageLoaded.current = new Array(numCards).fill(false);
+    setNumImagesLoaded(() => 0);
+  };
+
   return (
     <Layout>
       <Header
+        gameState={gameState}
         resetCards={resetCards}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
@@ -106,7 +168,8 @@ export default function Game(): ReactElement {
           matched={matched}
           setMatched={setMatched}
           imageIndexes={imageIndexes.current}
-          imageUrls={imageUrls.current}
+          imageData={imageData.current}
+          updateImageLoaded={updateImageLoaded}
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}
@@ -114,16 +177,25 @@ export default function Game(): ReactElement {
       </div>
       <Footer />
       <SearchOverlay
+        gameState={gameState}
+        numImagesLoaded={numImagesLoaded}
         overlayVisible={overlayVisible}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        numCards={numCards}
-        setNumCards={setNumCards}
+        tableauSize={tableauSize}
+        actualTableauSize={actualTableauSize.current}
+        setTableauSize={setTableauSize}
+        rating={rating}
+        setRating={setRating}
         getGifs={getGifs}
+        resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
         setGameState={setGameState}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
+        setGifErrorState={setGifErrorState}
+        setAlertVisible={setAlertVisible}
       />
+      <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />
     </Layout>
   );
 }

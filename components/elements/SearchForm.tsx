@@ -5,21 +5,27 @@ import React, {
   MouseEventHandler,
   ReactElement,
   SetStateAction,
+  useRef,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/SearchForm.module.scss';
-import { GameState } from '../layout/Game';
+import { GameState, GifErrorState } from '../layout/Game';
+import { Rating } from '@giphy/js-fetch-api';
 
 export type SearchFormProps = {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
-  numCards: number;
-  setNumCards: Dispatch<SetStateAction<number>>;
-  getGifs: () => Promise<void>;
-  resetCards: () => void;
+  tableauSize: number;
+  setTableauSize: Dispatch<SetStateAction<number>>;
+  rating: Rating;
+  setRating: Dispatch<SetStateAction<Rating>>;
+  getGifs: () => Promise<number>;
+  resetImageLoaded: (numCards: number) => void;
+  resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
-  hideSearchOverlay: () => void;
+  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
+  setAlertVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 const minCards = 2;
@@ -30,14 +36,47 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
     searchQuery,
     setSearchQuery,
-    numCards,
-    setNumCards,
+    tableauSize,
+    setTableauSize,
+    rating,
+    setRating,
     getGifs,
+    resetImageLoaded,
     resetCards,
     setGameState,
-    hideSearchOverlay,
+    setGifErrorState,
+    setAlertVisible,
   } = props;
 
+  const alertTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const postGifSearchSetup = (numCards: number): void => {
+    resetCards(numCards);
+    resetImageLoaded(numCards);
+    setSearchQuery(() => '');
+  };
+
+  const showAlert = (state: GifErrorState): void => {
+    setGifErrorState(() => state);
+    setAlertVisible(() => true);
+
+    if (alertTimeout.current != null) {
+      clearTimeout(alertTimeout.current);
+    }
+
+    alertTimeout.current = setTimeout(() => {
+      setAlertVisible(() => false);
+    }, 5000);
+  };
+
+  const hideAlert = (): void => {
+    if (alertTimeout.current != null) {
+      clearTimeout(alertTimeout.current);
+    }
+    setAlertVisible(() => false);
+  };
+
+  // Event handlers
   const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
     setSearchQuery(() => e.target.value);
   };
@@ -46,33 +85,51 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setSearchQuery(() => '');
   };
 
+  const handleRatingChange: ChangeEventHandler<HTMLInputElement> = e => {
+    const newRating = e.target.value as Rating;
+    setRating(() => newRating);
+  };
+
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setNumCards(() => parseInt(e.target.value));
+    setTableauSize(() => parseInt(e.target.value));
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
     e
   ): Promise<void> => {
     e.preventDefault();
+    hideAlert();
+    setGameState(() => GameState.Searching);
+    console.log(
+      `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
+    );
+    const numResults = await getGifs();
     setGameState(() => GameState.Loading);
-    console.log(`Go! Search for: ${searchQuery} Num Cards: ${numCards}`);
-    hideSearchOverlay();
-    await getGifs();
-    resetCards();
-    setSearchQuery(() => '');
 
-    setTimeout(() => {
-      setGameState(() => GameState.Playing);
-    }, 1000);
+    if (numResults === 0) {
+      // No GIFs found
+      setGameState(() => GameState.Idle);
+      showAlert(GifErrorState.NoGifs);
+    } else if (numResults === tableauSize / 2) {
+      // There are enough GIFs for every card in the tableau
+      postGifSearchSetup(tableauSize);
+      setGifErrorState(() => GifErrorState.Ok);
+    } else if (numResults < tableauSize / 2) {
+      // There aren't enough GIFs for every card in the tableau, reduce tableau size
+      postGifSearchSetup(numResults * 2);
+      showAlert(GifErrorState.NotEnoughGifs);
+    }
   };
 
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
-      <label htmlFor="searchQuery">Search for GIFs</label>
+      <label className={styles.searchMajorLabel} htmlFor="searchQuery">
+        Search for GIFs
+      </label>
       <div>
         <input
           type="text"
-          id=""
+          id="searchQuery"
           className={styles.searchFieldInput}
           name="searchQuery"
           placeholder="Enter your query here..."
@@ -89,14 +146,83 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           <FontAwesomeIcon icon={faDeleteLeft} />
         </button>
       </div>
+      <label className={styles.searchMajorLabel}>Rating</label>
       <div>
-        <label htmlFor="searchNumCards">Tableau Size</label>
+        <input
+          type="radio"
+          id="ratingY"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="y"
+          checked={rating === 'y'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingY" className={styles.searchRatingLabel}>
+          Y
+        </label>
+
+        <input
+          type="radio"
+          id="ratingG"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="g"
+          checked={rating === 'g'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingG" className={styles.searchRatingLabel}>
+          G
+        </label>
+
+        <input
+          type="radio"
+          id="ratingPG"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="pg"
+          checked={rating === 'pg'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
+          PG
+        </label>
+
+        <input
+          type="radio"
+          id="ratingPG13"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="pg-13"
+          checked={rating === 'pg-13'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
+          PG-13
+        </label>
+
+        <input
+          type="radio"
+          id="ratingR"
+          className={styles.searchFilterButton}
+          name="rating"
+          value="r"
+          checked={rating === 'r'}
+          onChange={handleRatingChange}
+        />
+        <label htmlFor="ratingR" className={styles.searchRatingLabel}>
+          R
+        </label>
+      </div>
+      <div>
+        <label htmlFor="searchNumCards" className={styles.searchMajorLabel}>
+          Tableau Size
+        </label>
         <input
           type="number"
           id="searchNumCards"
           className={styles.searchFieldInput}
-          name="numCards"
-          value={numCards}
+          name="tableauSize"
+          value={tableauSize}
           onChange={handleNumCardsChange}
           min={minCards}
           max={maxCards}

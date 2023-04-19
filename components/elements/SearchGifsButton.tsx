@@ -2,17 +2,21 @@ import React, { ReactElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import buttonBaseStyles from '@/styles/elements/ButtonBase.module.scss';
+import { GameState } from '../layout/Game';
 
 export type SearchGifsButtonProps = {
+  gameState: GameState;
   showSearchOverlay: () => void;
 };
 
 export default function SearchGifsButton(
   props: SearchGifsButtonProps
 ): ReactElement {
-  const { showSearchOverlay } = props;
+  const { gameState, showSearchOverlay } = props;
 
   const handleClick = async (): Promise<void> => {
+    if (gameState === GameState.Searching || gameState === GameState.Loading)
+      return;
     showSearchOverlay();
   };
 

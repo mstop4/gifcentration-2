@@ -2,49 +2,85 @@ import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 import OverlayCloseButton from '../elements/OverlayCloseButton';
 import SearchForm from '../elements/SearchForm';
-import { GameState } from './Game';
+import { GameState, GifErrorState } from './Game';
+import { Rating } from '@giphy/js-fetch-api';
+import LoadingIndicator from '../elements/LoadingIndicator';
 
 export type SearchOverlayProps = {
+  gameState: GameState;
+  numImagesLoaded: number;
+  resetImageLoaded: (numCards: number) => void;
   overlayVisible: boolean;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
-  numCards: number;
-  setNumCards: Dispatch<SetStateAction<number>>;
-  getGifs: () => Promise<void>;
-  resetCards: () => void;
+  tableauSize: number;
+  actualTableauSize: number;
+  setTableauSize: Dispatch<SetStateAction<number>>;
+  rating: Rating;
+  setRating: Dispatch<SetStateAction<Rating>>;
+  getGifs: () => Promise<number>;
+  resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
   hideSearchOverlay: () => void;
+  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
+  setAlertVisible: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
+    gameState,
+    numImagesLoaded,
+    resetImageLoaded,
     overlayVisible,
     searchQuery,
     setSearchQuery,
-    numCards,
-    setNumCards,
+    tableauSize,
+    actualTableauSize,
+    setTableauSize,
+    rating,
+    setRating,
     getGifs,
     resetCards,
     setGameState,
     hideSearchOverlay,
+    setGifErrorState,
+    setAlertVisible,
   } = props;
-  const classes = `${styles.overlayBase} ${
+  const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
   }`;
 
+  const isFetchingGifs =
+    gameState === GameState.Searching || gameState === GameState.Loading;
+
   return (
     <div id={styles.searchOverlay} className={classes}>
-      <SearchForm
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        numCards={numCards}
-        setNumCards={setNumCards}
-        getGifs={getGifs}
-        resetCards={resetCards}
-        setGameState={setGameState}
-        hideSearchOverlay={hideSearchOverlay}
-      />
-      <OverlayCloseButton hideOverlay={hideSearchOverlay} />
+      {!isFetchingGifs && (
+        <>
+          <SearchForm
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            tableauSize={tableauSize}
+            setTableauSize={setTableauSize}
+            rating={rating}
+            setRating={setRating}
+            getGifs={getGifs}
+            resetImageLoaded={resetImageLoaded}
+            resetCards={resetCards}
+            setGameState={setGameState}
+            setGifErrorState={setGifErrorState}
+            setAlertVisible={setAlertVisible}
+          />
+          <OverlayCloseButton hideOverlay={hideSearchOverlay} />
+        </>
+      )}
+      {isFetchingGifs && (
+        <LoadingIndicator
+          gameState={gameState}
+          numImagesLoaded={numImagesLoaded}
+          actualTableauSize={actualTableauSize}
+        />
+      )}
     </div>
   );
 }

@@ -56,6 +56,9 @@
 }
 
 .back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: colours.$secondary-color;
   transform: rotateY(180deg);
   user-select: none;
@@ -79,18 +82,4 @@
 
 .inactive {
   opacity: 0;
-}
-
-.gif {
-  max-height: global.$max-img-dim;
-  max-width: global.$max-img-dim;
-  border: 1px solid colours.$outline-color;
-  width: auto;
-  height: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
 }
