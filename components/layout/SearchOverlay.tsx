@@ -24,6 +24,7 @@ export type SearchOverlayProps = {
   hideSearchOverlay: () => void;
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
+  stopConfetti: () => void;
 };
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
@@ -45,6 +46,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     hideSearchOverlay,
     setGifErrorState,
     setAlertVisible,
+    stopConfetti,
   } = props;
   const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
@@ -70,6 +72,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             setGameState={setGameState}
             setGifErrorState={setGifErrorState}
             setAlertVisible={setAlertVisible}
+            stopConfetti={stopConfetti}
           />
           <OverlayCloseButton hideOverlay={hideSearchOverlay} />
         </>

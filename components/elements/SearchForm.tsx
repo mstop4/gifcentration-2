@@ -26,6 +26,7 @@ export type SearchFormProps = {
   setGameState: Dispatch<SetStateAction<GameState>>;
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
+  stopConfetti: () => void;
 };
 
 const minCards = 2;
@@ -46,6 +47,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setGameState,
     setGifErrorState,
     setAlertVisible,
+    stopConfetti,
   } = props;
 
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -99,6 +101,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   ): Promise<void> => {
     e.preventDefault();
     hideAlert();
+    stopConfetti();
     setGameState(() => GameState.Searching);
     console.log(
       `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
