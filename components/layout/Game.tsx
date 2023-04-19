@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useState } from 'react';
-import { useMountEffect } from '@react-hookz/web';
+import { useMountEffect, useWindowSize } from '@react-hookz/web';
 import Tableau from '../elements/Tableau';
 import Layout from './Layout';
 import Header from './Header';
@@ -14,6 +14,7 @@ import {
 } from '../../helpers';
 import { Rating } from '@giphy/js-fetch-api';
 import Alert from '../elements/Alert';
+import Confetti from 'react-confetti';
 
 export enum GameState {
   Idle = 'idle',
@@ -31,6 +32,7 @@ export enum GifErrorState {
 }
 
 const defaultTableauSize = 18;
+const confettiAmount = 200;
 
 export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
@@ -45,16 +47,30 @@ export default function Game(): ReactElement {
     GifErrorState.Ok
   );
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  const [showConfetti, setShowConfetti] = useState<boolean>(false);
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
   const imageLoaded = useRef<boolean[]>([]);
+  const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const actualTableauSize = useRef<number>(defaultTableauSize);
   const selectedCardIndexes = useRef<number[]>([]);
+  const windowSize = useRef<{ appWidth: number; appHeight: number }>({
+    appWidth: 100,
+    appHeight: 100,
+  });
 
   // Initialize game
+  const { width: appWidth, height: appHeight } = useWindowSize();
+
   useMountEffect(async () => {
     setTimeout(() => toggleSearchOverlay(true), 1000);
+    if (typeof window !== undefined) {
+      windowSize.current = {
+        appWidth,
+        appHeight,
+      };
+    }
   });
 
   // Gets GIFs from API service
@@ -152,6 +168,20 @@ export default function Game(): ReactElement {
     setNumImagesLoaded(() => 0);
   };
 
+  const toggleConfetti = (visible: boolean): void => {
+    setShowConfetti(() => visible);
+
+    if (confettiTimeout.current != null) {
+      clearTimeout(confettiTimeout.current);
+    }
+
+    if (visible) {
+      confettiTimeout.current = setTimeout(() => {
+        setShowConfetti(() => false);
+      }, 5000);
+    }
+  };
+
   return (
     <Layout>
       <Header
@@ -173,9 +203,15 @@ export default function Game(): ReactElement {
           selectedCardIndexes={selectedCardIndexes.current}
           addSelectedCardIndex={addSelectedCardIndex}
           resetSelectedCardIndexes={resetSelectedCardIndexes}
+          showConfetti={(): void => toggleConfetti(true)}
         />
       </div>
       <Footer />
+      <Confetti
+        width={appWidth}
+        height={appHeight}
+        numberOfPieces={showConfetti ? confettiAmount : 0}
+      />
       <SearchOverlay
         gameState={gameState}
         numImagesLoaded={numImagesLoaded}
@@ -194,6 +230,7 @@ export default function Game(): ReactElement {
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
         setGifErrorState={setGifErrorState}
         setAlertVisible={setAlertVisible}
+        stopConfetti={(): void => toggleConfetti(false)}
       />
       <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />
     </Layout>

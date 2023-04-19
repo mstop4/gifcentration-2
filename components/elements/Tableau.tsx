@@ -17,6 +17,7 @@ export type TableauProps = {
   selectedCardIndexes: number[];
   addSelectedCardIndex: (index: number) => void;
   resetSelectedCardIndexes: () => void;
+  showConfetti: () => void;
 };
 
 const checkDelay = 1000;
@@ -35,6 +36,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     selectedCardIndexes,
     addSelectedCardIndex,
     resetSelectedCardIndexes,
+    showConfetti,
   } = props;
 
   const checkPair = (): void => {
@@ -49,6 +51,7 @@ export default function Tableau(props: TableauProps): ReactElement {
 
       if (newMatched.every(status => status)) {
         setGameState(() => GameState.Finished);
+        showConfetti();
       }
     } else {
       setFlipped(() => [...matched]);
