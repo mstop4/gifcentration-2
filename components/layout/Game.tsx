@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
 import Tableau from '../elements/Tableau';
 import Header from './Header';
@@ -11,7 +11,6 @@ import {
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import { Rating } from '@giphy/js-fetch-api';
 import Alert from '../elements/Alert';
 import Confetti from 'react-confetti';
 
@@ -35,26 +34,25 @@ const confettiAmount = 200;
 const confettiDuration = 10000;
 
 export default function Game(): ReactElement {
+  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
-  const [overlayVisible, setOverlayVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+  const [selectedCardIndexes, setSelectedCardIndexes] = useState<number[]>([]);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
-  const [rating, setRating] = useState<Rating>('g');
-  const [numImagesLoaded, setNumImagesLoaded] = useState<number>(0);
-  const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
-    GifErrorState.Ok
-  );
-  const [alertVisible, setAlertVisible] = useState<boolean>(false);
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const actualTableauSize = useRef<number>(defaultTableauSize);
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
-  const imageLoaded = useRef<boolean[]>([]);
+  const [imageLoaded, setImageLoaded] = useState<boolean[]>([]);
+  const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
+    GifErrorState.Ok
+  );
+
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
-  const actualTableauSize = useRef<number>(defaultTableauSize);
-  const selectedCardIndexes = useRef<number[]>([]);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
     appHeight: 100,
@@ -63,8 +61,10 @@ export default function Game(): ReactElement {
   // Initialize game
   const { width: appWidth, height: appHeight } = useWindowSize();
 
-  useMountEffect(async () => {
-    setTimeout(() => toggleSearchOverlay(true), 1000);
+  useMountEffect(() => {
+    setTimeout(() => toggleSearchOverlay(true), 500);
+
+    // Determine window size if on client
     if (typeof window !== undefined) {
       windowSize.current = {
         appWidth,
@@ -73,25 +73,30 @@ export default function Game(): ReactElement {
     }
   });
 
-  // Gets GIFs from API service
-  const getGifs = async (): Promise<number> => {
-    console.log(`Getting ${tableauSize / 2} pairs...`);
+  useEffect(() => {
+    if (gameState !== GameState.Loading) return;
 
-    const searchParams = new URLSearchParams({
-      q: searchQuery,
-      limit: (tableauSize / 2).toString(),
-      rating,
-    });
+    // Check if all GIFs have been loaded, start game once that happens
+    const allLoaded = imageLoaded.every(value => value);
 
-    const response = await fetch('/api/search?' + searchParams);
-    const json = await response.json();
-    imageData.current = json;
-    actualTableauSize.current = imageData.current.length * 2;
-    console.log(imageData.current);
+    if (!allLoaded) return;
+    console.log('all ok');
 
-    return imageData.current.length;
+    setTimeout(() => {
+      toggleSearchOverlay(false);
+    }, 500);
+    setTimeout(() => {
+      setGameState(GameState.Playing);
+    }, 1000);
+  }, [imageLoaded, gameState]);
+
+  const updateImageData = (data: IGif[]): void => {
+    imageData.current = data;
+    actualTableauSize.current = data.length * 2;
+    console.log(data);
   };
 
+  // Updates CSS grid dimensions for tableau
   const updateGridDimensions = (rect: RectangleDimensions): void => {
     const { majorAxisSize, minorAxisSize } = rect;
 
@@ -106,19 +111,16 @@ export default function Game(): ReactElement {
     );
   };
 
-  const toggleSearchOverlay = (visible: boolean): void => {
-    setOverlayVisible(() => visible);
-  };
-
+  // Resets and reshuffles states passed to tableau
   const resetCards = (numCards: number = tableauSize): void => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
     console.log(`Has ${numCards} cards...`);
 
-    setGameState(() => GameState.Loading);
-    setFlipped(() => Array(numCards).fill(false));
-    setMatched(() => Array(numCards).fill(false));
-    selectedCardIndexes.current = [];
+    setGameState(GameState.Loading);
+    setFlipped(Array(numCards).fill(false));
+    setMatched(Array(numCards).fill(false));
+    setSelectedCardIndexes([]);
 
     const rect = getRectangleDimensions(numCards);
     if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
@@ -128,49 +130,30 @@ export default function Game(): ReactElement {
     imageIndexes.current = pairShuffler(numCards / 2);
   };
 
-  const addSelectedCardIndex = (index: number): void => {
-    selectedCardIndexes.current.push(index);
-  };
-
-  const resetSelectedCardIndexes = (): void => {
-    selectedCardIndexes.current = [];
-  };
-
+  // Marks a GIF as loaded
   const updateImageLoaded = (index: number): void => {
-    if (index >= 0 && index < imageLoaded.current.length) {
-      imageLoaded.current[index] = true;
-
-      const newNumImagesLoaded = imageLoaded.current.reduce(
-        (total, current) => (current ? total + 1 : total),
-        0
+    if (index >= 0 && index < imageLoaded.length) {
+      setImageLoaded(prev =>
+        prev.map((value, i) => (i === index ? true : value))
       );
-      setNumImagesLoaded(() => newNumImagesLoaded);
-
-      if (newNumImagesLoaded === imageLoaded.current.length) {
-        console.log('all ok');
-
-        setTimeout(() => {
-          toggleSearchOverlay(false);
-        }, 500);
-        setTimeout(() => {
-          setGameState(() => GameState.Playing);
-        }, 1000);
-      }
     } else {
-      console.warn(
-        `Index ${index} out of bounds 0-${imageLoaded.current.length - 1}`
-      );
+      console.warn(`Index ${index} out of bounds 0-${imageLoaded.length - 1}`);
     }
   };
 
+  // Resets and resizes imageLoaded array
   const resetImageLoaded = (numCards: number): void => {
-    imageLoaded.current = new Array(numCards).fill(false);
-    setNumImagesLoaded(() => 0);
+    setImageLoaded(() => new Array(numCards).fill(false));
   };
 
+  // Shows/hides search overlay
+  const toggleSearchOverlay = (visible: boolean): void => {
+    setOverlayVisible(visible);
+  };
+
+  // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
-    console.log('confetti', visible);
-    setShowConfetti(() => visible);
+    setShowConfetti(visible);
 
     if (confettiTimeout.current != null) {
       clearTimeout(confettiTimeout.current);
@@ -178,7 +161,7 @@ export default function Game(): ReactElement {
 
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
-        setShowConfetti(() => false);
+        setShowConfetti(false);
       }, confettiDuration);
     }
   };
@@ -201,9 +184,8 @@ export default function Game(): ReactElement {
           imageIndexes={imageIndexes.current}
           imageData={imageData.current}
           updateImageLoaded={updateImageLoaded}
-          selectedCardIndexes={selectedCardIndexes.current}
-          addSelectedCardIndex={addSelectedCardIndex}
-          resetSelectedCardIndexes={resetSelectedCardIndexes}
+          selectedCardIndexes={selectedCardIndexes}
+          setSelectedCardIndexes={setSelectedCardIndexes}
           showConfetti={(): void => toggleConfetti(true)}
         />
       </div>
@@ -215,16 +197,12 @@ export default function Game(): ReactElement {
       />
       <SearchOverlay
         gameState={gameState}
-        numImagesLoaded={numImagesLoaded}
+        imageLoaded={imageLoaded}
         overlayVisible={overlayVisible}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
         tableauSize={tableauSize}
         actualTableauSize={actualTableauSize.current}
         setTableauSize={setTableauSize}
-        rating={rating}
-        setRating={setRating}
-        getGifs={getGifs}
+        updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
         setGameState={setGameState}

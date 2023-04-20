@@ -1,4 +1,10 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useCallback,
+  useEffect,
+} from 'react';
 import Card from './Card';
 import styles from '@/styles/elements/Tableau.module.scss';
 import { GameState } from '../layout/Game';
@@ -15,8 +21,7 @@ export type TableauProps = {
   imageData: IGif[];
   updateImageLoaded: (index: number) => void;
   selectedCardIndexes: number[];
-  addSelectedCardIndex: (index: number) => void;
-  resetSelectedCardIndexes: () => void;
+  setSelectedCardIndexes: Dispatch<SetStateAction<number[]>>;
   showConfetti: () => void;
 };
 
@@ -34,44 +39,60 @@ export default function Tableau(props: TableauProps): ReactElement {
     imageData,
     updateImageLoaded,
     selectedCardIndexes,
-    addSelectedCardIndex,
-    resetSelectedCardIndexes,
+    setSelectedCardIndexes,
     showConfetti,
   } = props;
 
-  const checkPair = (): void => {
+  useEffect(() => {
+    if (gameState !== GameState.Playing) return;
+
+    // If all cards have been matched, end game
+    if (matched.every(status => status)) {
+      setGameState(GameState.Finished);
+      showConfetti();
+    }
+  }, [gameState, matched, setGameState, showConfetti]);
+
+  // Checks if flipped cards match
+  const checkPair = useCallback((): void => {
     if (
       imageIndexes[selectedCardIndexes[0]] ===
       imageIndexes[selectedCardIndexes[1]]
     ) {
-      const newMatched = [...matched];
-      newMatched[selectedCardIndexes[0]] = true;
-      newMatched[selectedCardIndexes[1]] = true;
-      setMatched(() => newMatched);
-
-      if (newMatched.every(status => status)) {
-        setGameState(() => GameState.Finished);
-        showConfetti();
-      }
+      setMatched(prev =>
+        prev.map((value, i) =>
+          i === selectedCardIndexes[0] || i === selectedCardIndexes[1]
+            ? true
+            : value
+        )
+      );
     } else {
-      setFlipped(() => [...matched]);
+      setFlipped([...matched]);
     }
-    resetSelectedCardIndexes();
-  };
+    setSelectedCardIndexes([]);
+  }, [
+    imageIndexes,
+    selectedCardIndexes,
+    matched,
+    setFlipped,
+    setMatched,
+    setSelectedCardIndexes,
+  ]);
+
+  useEffect(() => {
+    if (selectedCardIndexes.length >= 2) {
+      setTimeout(checkPair, checkDelay);
+    }
+  }, [selectedCardIndexes, checkPair]);
 
   const handleCardClick = (index: number): void => {
     if (gameState !== GameState.Playing) return;
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
 
-    const newFlipped = [...flipped];
-    newFlipped[index] = true;
-    setFlipped(() => newFlipped);
-    addSelectedCardIndex(index);
-
-    if (selectedCardIndexes.length >= 2) {
-      setTimeout(checkPair, checkDelay);
-    }
+    // Mark current card as flipped
+    setFlipped(prev => prev.map((value, i) => (i === index ? true : value)));
+    setSelectedCardIndexes(prev => [...prev, index]);
   };
 
   const cardArray: ReactElement[] = [];

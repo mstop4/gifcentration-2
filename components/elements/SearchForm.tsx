@@ -6,21 +6,19 @@ import React, {
   ReactElement,
   SetStateAction,
   useRef,
+  useState,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/SearchForm.module.scss';
 import { GameState, GifErrorState } from '../layout/Game';
 import { Rating } from '@giphy/js-fetch-api';
+import { IGif } from '@giphy/js-types';
 
 export type SearchFormProps = {
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
   tableauSize: number;
   setTableauSize: Dispatch<SetStateAction<number>>;
-  rating: Rating;
-  setRating: Dispatch<SetStateAction<Rating>>;
-  getGifs: () => Promise<number>;
+  updateImageData: (data: IGif[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -35,13 +33,9 @@ const cardsStep = 2;
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
-    searchQuery,
-    setSearchQuery,
     tableauSize,
     setTableauSize,
-    rating,
-    setRating,
-    getGifs,
+    updateImageData,
     resetImageLoaded,
     resetCards,
     setGameState,
@@ -50,32 +44,55 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     stopConfetti,
   } = props;
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [rating, setRating] = useState<Rating>('g');
+
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Gets GIFs from API service
+  const getGifs = async (): Promise<number> => {
+    console.log(`Getting ${tableauSize / 2} pairs...`);
+
+    const searchParams = new URLSearchParams({
+      q: searchQuery,
+      limit: (tableauSize / 2).toString(),
+      rating,
+    });
+
+    const response = await fetch('/api/search?' + searchParams);
+    const json = await response.json();
+    updateImageData(json);
+
+    return json.length;
+  };
+
+  // Sets up game after receiving gif data
   const postGifSearchSetup = (numCards: number): void => {
     resetCards(numCards);
     resetImageLoaded(numCards);
-    setSearchQuery(() => '');
+    setSearchQuery('');
   };
 
+  // Shows alert with a given state
   const showAlert = (state: GifErrorState): void => {
-    setGifErrorState(() => state);
-    setAlertVisible(() => true);
+    setGifErrorState(state);
+    setAlertVisible(true);
 
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);
     }
 
     alertTimeout.current = setTimeout(() => {
-      setAlertVisible(() => false);
+      setAlertVisible(false);
     }, 5000);
   };
 
+  // Hides alert
   const hideAlert = (): void => {
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);
     }
-    setAlertVisible(() => false);
+    setAlertVisible(false);
   };
 
   // Event handlers
@@ -93,7 +110,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   };
 
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setTableauSize(() => parseInt(e.target.value));
+    setTableauSize(parseInt(e.target.value));
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -102,21 +119,18 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e.preventDefault();
     hideAlert();
     stopConfetti();
-    setGameState(() => GameState.Searching);
-    console.log(
-      `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
-    );
+    setGameState(GameState.Searching);
     const numResults = await getGifs();
-    setGameState(() => GameState.Loading);
+    setGameState(GameState.Loading);
 
     if (numResults === 0) {
       // No GIFs found
-      setGameState(() => GameState.Idle);
+      setGameState(GameState.Idle);
       showAlert(GifErrorState.NoGifs);
     } else if (numResults === tableauSize / 2) {
       // There are enough GIFs for every card in the tableau
       postGifSearchSetup(tableauSize);
-      setGifErrorState(() => GifErrorState.Ok);
+      setGifErrorState(GifErrorState.Ok);
     } else if (numResults < tableauSize / 2) {
       // There aren't enough GIFs for every card in the tableau, reduce tableau size
       postGifSearchSetup(numResults * 2);
