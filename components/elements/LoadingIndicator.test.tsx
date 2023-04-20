@@ -6,11 +6,12 @@ import { GameState } from '../layout/Game';
 
 describe('LoadingIndicator', () => {
   it('renders a LoadingIndicator', () => {
+    const numCards = 18;
     const { container } = render(
       <LoadingIndicator
         gameState={GameState.Searching}
-        numImagesLoaded={0}
-        actualTableauSize={18}
+        imageLoaded={new Array(numCards).fill(false)}
+        actualTableauSize={numCards}
       />
     );
 
@@ -19,11 +20,12 @@ describe('LoadingIndicator', () => {
   });
 
   it('says "Searching..." when the GameState is Searching', async () => {
+    const numCards = 10;
     render(
       <LoadingIndicator
         gameState={GameState.Searching}
-        numImagesLoaded={0}
-        actualTableauSize={18}
+        imageLoaded={new Array(numCards).fill(false)}
+        actualTableauSize={numCards}
       />
     );
 
@@ -34,11 +36,12 @@ describe('LoadingIndicator', () => {
   });
 
   it('says "Loading..." when the GameState is Loading', async () => {
+    const numCards = 12;
     render(
       <LoadingIndicator
         gameState={GameState.Loading}
-        numImagesLoaded={0}
-        actualTableauSize={18}
+        imageLoaded={new Array(numCards).fill(false)}
+        actualTableauSize={numCards}
       />
     );
 

@@ -5,14 +5,18 @@ import styles from '@/styles/elements/LoadingIndicator.module.scss';
 
 export type LoadingIndicatorProps = {
   gameState: GameState;
-  numImagesLoaded: number;
+  imageLoaded: boolean[];
   actualTableauSize: number;
 };
 
 export default function LoadingIndicator(
   props: LoadingIndicatorProps
 ): ReactElement {
-  const { gameState, numImagesLoaded, actualTableauSize } = props;
+  const { gameState, imageLoaded, actualTableauSize } = props;
+  const numImagesLoaded = imageLoaded.reduce(
+    (total, current) => (current ? total + 1 : total),
+    0
+  );
 
   return (
     <div id={styles.loadingIndicator}>

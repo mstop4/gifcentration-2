@@ -8,7 +8,7 @@ import { IGif } from '@giphy/js-types';
 
 export type SearchOverlayProps = {
   gameState: GameState;
-  numImagesLoaded: number;
+  imageLoaded: boolean[];
   resetImageLoaded: (numCards: number) => void;
   overlayVisible: boolean;
   tableauSize: number;
@@ -26,7 +26,7 @@ export type SearchOverlayProps = {
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
     gameState,
-    numImagesLoaded,
+    imageLoaded,
     resetImageLoaded,
     overlayVisible,
     tableauSize,
@@ -68,7 +68,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
       {isFetchingGifs && (
         <LoadingIndicator
           gameState={gameState}
-          numImagesLoaded={numImagesLoaded}
+          imageLoaded={imageLoaded}
           actualTableauSize={actualTableauSize}
         />
       )}

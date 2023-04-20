@@ -1,4 +1,9 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import Card from './Card';
 import styles from '@/styles/elements/Tableau.module.scss';
 import { GameState } from '../layout/Game';
@@ -39,22 +44,30 @@ export default function Tableau(props: TableauProps): ReactElement {
     showConfetti,
   } = props;
 
+  useEffect(() => {
+    if (gameState !== GameState.Playing) return;
+
+    // If all cards have been matched, end game
+    if (matched.every(status => status)) {
+      setGameState(GameState.Finished);
+      showConfetti();
+    }
+  }, [gameState, matched, setGameState, showConfetti]);
+
   const checkPair = (): void => {
     if (
       imageIndexes[selectedCardIndexes[0]] ===
       imageIndexes[selectedCardIndexes[1]]
     ) {
-      const newMatched = [...matched];
-      newMatched[selectedCardIndexes[0]] = true;
-      newMatched[selectedCardIndexes[1]] = true;
-      setMatched(() => newMatched);
-
-      if (newMatched.every(status => status)) {
-        setGameState(() => GameState.Finished);
-        showConfetti();
-      }
+      setMatched(prev =>
+        prev.map((value, i) =>
+          i === selectedCardIndexes[0] || i === selectedCardIndexes[1]
+            ? true
+            : value
+        )
+      );
     } else {
-      setFlipped(() => [...matched]);
+      setFlipped([...matched]);
     }
     resetSelectedCardIndexes();
   };
@@ -64,9 +77,8 @@ export default function Tableau(props: TableauProps): ReactElement {
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
 
-    const newFlipped = [...flipped];
-    newFlipped[index] = true;
-    setFlipped(() => newFlipped);
+    // Mark current card as flipped
+    setFlipped(prev => prev.map((value, i) => (i === index ? true : value)));
     addSelectedCardIndex(index);
 
     if (selectedCardIndexes.length >= 2) {
