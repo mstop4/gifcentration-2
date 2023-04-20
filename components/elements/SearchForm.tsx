@@ -18,8 +18,6 @@ import { IGif } from '@giphy/js-types';
 export type SearchFormProps = {
   tableauSize: number;
   setTableauSize: Dispatch<SetStateAction<number>>;
-  rating: Rating;
-  setRating: Dispatch<SetStateAction<Rating>>;
   updateImageData: (data: IGif[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
@@ -37,8 +35,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
     tableauSize,
     setTableauSize,
-    rating,
-    setRating,
     updateImageData,
     resetImageLoaded,
     resetCards,
@@ -49,6 +45,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   } = props;
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [rating, setRating] = useState<Rating>('g');
 
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
 

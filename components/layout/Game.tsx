@@ -11,7 +11,6 @@ import {
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import { Rating } from '@giphy/js-fetch-api';
 import Alert from '../elements/Alert';
 import Confetti from 'react-confetti';
 
@@ -40,7 +39,6 @@ export default function Game(): ReactElement {
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
-  const [rating, setRating] = useState<Rating>('g');
   const [numImagesLoaded, setNumImagesLoaded] = useState<number>(0);
   const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
     GifErrorState.Ok
@@ -206,8 +204,6 @@ export default function Game(): ReactElement {
         tableauSize={tableauSize}
         actualTableauSize={actualTableauSize.current}
         setTableauSize={setTableauSize}
-        rating={rating}
-        setRating={setRating}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}

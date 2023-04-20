@@ -3,7 +3,6 @@ import styles from '@/styles/layout/SearchOverlay.module.scss';
 import OverlayCloseButton from '../elements/OverlayCloseButton';
 import SearchForm from '../elements/SearchForm';
 import { GameState, GifErrorState } from './Game';
-import { Rating } from '@giphy/js-fetch-api';
 import LoadingIndicator from '../elements/LoadingIndicator';
 import { IGif } from '@giphy/js-types';
 
@@ -15,8 +14,6 @@ export type SearchOverlayProps = {
   tableauSize: number;
   actualTableauSize: number;
   setTableauSize: Dispatch<SetStateAction<number>>;
-  rating: Rating;
-  setRating: Dispatch<SetStateAction<Rating>>;
   updateImageData: (data: IGif[]) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -35,8 +32,6 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     tableauSize,
     actualTableauSize,
     setTableauSize,
-    rating,
-    setRating,
     updateImageData,
     resetCards,
     setGameState,
@@ -59,8 +54,6 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
           <SearchForm
             tableauSize={tableauSize}
             setTableauSize={setTableauSize}
-            rating={rating}
-            setRating={setRating}
             updateImageData={updateImageData}
             resetImageLoaded={resetImageLoaded}
             resetCards={resetCards}
