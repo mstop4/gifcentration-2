@@ -38,7 +38,7 @@ export default function Game(): ReactElement {
 
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
-  const selectedCardIndexes = useRef<number[]>([]);
+  const [selectedCardIndexes, setSelectedCardIndexes] = useState<number[]>([]);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
   const actualTableauSize = useRef<number>(defaultTableauSize);
 
@@ -122,7 +122,7 @@ export default function Game(): ReactElement {
     setGameState(GameState.Loading);
     setFlipped(Array(numCards).fill(false));
     setMatched(Array(numCards).fill(false));
-    selectedCardIndexes.current = [];
+    setSelectedCardIndexes([]);
 
     const rect = getRectangleDimensions(numCards);
     if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
@@ -130,14 +130,6 @@ export default function Game(): ReactElement {
 
     console.log(`Setting up ${numCards / 2} pairs...`);
     imageIndexes.current = pairShuffler(numCards / 2);
-  };
-
-  const addSelectedCardIndex = (index: number): void => {
-    selectedCardIndexes.current.push(index);
-  };
-
-  const resetSelectedCardIndexes = (): void => {
-    selectedCardIndexes.current = [];
   };
 
   const updateImageLoaded = (index: number): void => {
@@ -187,9 +179,8 @@ export default function Game(): ReactElement {
           imageIndexes={imageIndexes.current}
           imageData={imageData.current}
           updateImageLoaded={updateImageLoaded}
-          selectedCardIndexes={selectedCardIndexes.current}
-          addSelectedCardIndex={addSelectedCardIndex}
-          resetSelectedCardIndexes={resetSelectedCardIndexes}
+          selectedCardIndexes={selectedCardIndexes}
+          setSelectedCardIndexes={setSelectedCardIndexes}
           showConfetti={(): void => toggleConfetti(true)}
         />
       </div>

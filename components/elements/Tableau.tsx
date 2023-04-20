@@ -2,6 +2,7 @@ import React, {
   Dispatch,
   ReactElement,
   SetStateAction,
+  useCallback,
   useEffect,
 } from 'react';
 import Card from './Card';
@@ -20,8 +21,7 @@ export type TableauProps = {
   imageData: IGif[];
   updateImageLoaded: (index: number) => void;
   selectedCardIndexes: number[];
-  addSelectedCardIndex: (index: number) => void;
-  resetSelectedCardIndexes: () => void;
+  setSelectedCardIndexes: Dispatch<SetStateAction<number[]>>;
   showConfetti: () => void;
 };
 
@@ -39,8 +39,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     imageData,
     updateImageLoaded,
     selectedCardIndexes,
-    addSelectedCardIndex,
-    resetSelectedCardIndexes,
+    setSelectedCardIndexes,
     showConfetti,
   } = props;
 
@@ -54,7 +53,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     }
   }, [gameState, matched, setGameState, showConfetti]);
 
-  const checkPair = (): void => {
+  const checkPair = useCallback((): void => {
     if (
       imageIndexes[selectedCardIndexes[0]] ===
       imageIndexes[selectedCardIndexes[1]]
@@ -69,8 +68,21 @@ export default function Tableau(props: TableauProps): ReactElement {
     } else {
       setFlipped([...matched]);
     }
-    resetSelectedCardIndexes();
-  };
+    setSelectedCardIndexes([]);
+  }, [
+    imageIndexes,
+    selectedCardIndexes,
+    matched,
+    setFlipped,
+    setMatched,
+    setSelectedCardIndexes,
+  ]);
+
+  useEffect(() => {
+    if (selectedCardIndexes.length >= 2) {
+      setTimeout(checkPair, checkDelay);
+    }
+  }, [selectedCardIndexes, checkPair]);
 
   const handleCardClick = (index: number): void => {
     if (gameState !== GameState.Playing) return;
@@ -79,11 +91,7 @@ export default function Tableau(props: TableauProps): ReactElement {
 
     // Mark current card as flipped
     setFlipped(prev => prev.map((value, i) => (i === index ? true : value)));
-    addSelectedCardIndex(index);
-
-    if (selectedCardIndexes.length >= 2) {
-      setTimeout(checkPair, checkDelay);
-    }
+    setSelectedCardIndexes(prev => [...prev, index]);
   };
 
   const cardArray: ReactElement[] = [];
