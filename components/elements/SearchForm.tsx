@@ -66,12 +66,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     return json.length;
   };
 
+  // Sets up game after receiving gif data
   const postGifSearchSetup = (numCards: number): void => {
     resetCards(numCards);
     resetImageLoaded(numCards);
     setSearchQuery('');
   };
 
+  // Shows alert with a given state
   const showAlert = (state: GifErrorState): void => {
     setGifErrorState(state);
     setAlertVisible(true);
@@ -85,6 +87,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     }, 5000);
   };
 
+  // Hides alert
   const hideAlert = (): void => {
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);

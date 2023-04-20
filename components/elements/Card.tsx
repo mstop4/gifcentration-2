@@ -33,10 +33,11 @@ export default function Card(props: CardProps): ReactElement {
     updateImageLoaded,
   } = props;
 
-  const onClick = (): void => {
+  const handleClick = (): void => {
     handleCardClick(index);
   };
 
+  // Callback for onGifSeen event in Giphy Gif component
   const handleGifSeen = (): void => {
     updateImageLoaded(index);
   };
@@ -82,7 +83,7 @@ export default function Card(props: CardProps): ReactElement {
   const hideLinks = true; // gameState === GameState.Playing;
 
   return (
-    <div className={styles.cardContainer} onClick={onClick}>
+    <div className={styles.cardContainer} onClick={handleClick}>
       <div className={cardBodyClasses} ref={ref}>
         <div className={`${styles.cardFace} ${styles.front}`}>
           <FontAwesomeIcon

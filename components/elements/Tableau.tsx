@@ -53,6 +53,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     }
   }, [gameState, matched, setGameState, showConfetti]);
 
+  // Checks if flipped cards match
   const checkPair = useCallback((): void => {
     if (
       imageIndexes[selectedCardIndexes[0]] ===

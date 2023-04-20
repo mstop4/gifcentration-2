@@ -96,6 +96,7 @@ export default function Game(): ReactElement {
     console.log(data);
   };
 
+  // Updates CSS grid dimensions for tableau
   const updateGridDimensions = (rect: RectangleDimensions): void => {
     const { majorAxisSize, minorAxisSize } = rect;
 
@@ -110,6 +111,7 @@ export default function Game(): ReactElement {
     );
   };
 
+  // Resets and reshuffles states passed to tableau
   const resetCards = (numCards: number = tableauSize): void => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
@@ -128,6 +130,7 @@ export default function Game(): ReactElement {
     imageIndexes.current = pairShuffler(numCards / 2);
   };
 
+  // Marks a GIF as loaded
   const updateImageLoaded = (index: number): void => {
     if (index >= 0 && index < imageLoaded.length) {
       setImageLoaded(prev =>
@@ -138,14 +141,17 @@ export default function Game(): ReactElement {
     }
   };
 
+  // Resets and resizes imageLoaded array
   const resetImageLoaded = (numCards: number): void => {
     setImageLoaded(() => new Array(numCards).fill(false));
   };
 
+  // Shows/hides search overlay
   const toggleSearchOverlay = (visible: boolean): void => {
     setOverlayVisible(visible);
   };
 
+  // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
     setShowConfetti(visible);
 
