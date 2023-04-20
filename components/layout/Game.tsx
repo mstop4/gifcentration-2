@@ -38,7 +38,6 @@ export default function Game(): ReactElement {
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [tableauSize, setTableauSize] = useState(defaultTableauSize);
   const [rating, setRating] = useState<Rating>('g');
@@ -73,23 +72,10 @@ export default function Game(): ReactElement {
     }
   });
 
-  // Gets GIFs from API service
-  const getGifs = async (): Promise<number> => {
-    console.log(`Getting ${tableauSize / 2} pairs...`);
-
-    const searchParams = new URLSearchParams({
-      q: searchQuery,
-      limit: (tableauSize / 2).toString(),
-      rating,
-    });
-
-    const response = await fetch('/api/search?' + searchParams);
-    const json = await response.json();
-    imageData.current = json;
-    actualTableauSize.current = imageData.current.length * 2;
-    console.log(imageData.current);
-
-    return imageData.current.length;
+  const updateImageData = (data: IGif[]) => {
+    imageData.current = data;
+    actualTableauSize.current = data.length * 2;
+    console.log(data);
   };
 
   const updateGridDimensions = (rect: RectangleDimensions): void => {
@@ -217,14 +203,12 @@ export default function Game(): ReactElement {
         gameState={gameState}
         numImagesLoaded={numImagesLoaded}
         overlayVisible={overlayVisible}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
         tableauSize={tableauSize}
         actualTableauSize={actualTableauSize.current}
         setTableauSize={setTableauSize}
         rating={rating}
         setRating={setRating}
-        getGifs={getGifs}
+        updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
         setGameState={setGameState}

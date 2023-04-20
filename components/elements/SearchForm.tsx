@@ -6,21 +6,21 @@ import React, {
   ReactElement,
   SetStateAction,
   useRef,
+  useState,
 } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/SearchForm.module.scss';
 import { GameState, GifErrorState } from '../layout/Game';
 import { Rating } from '@giphy/js-fetch-api';
+import { IGif } from '@giphy/js-types';
 
 export type SearchFormProps = {
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
   tableauSize: number;
   setTableauSize: Dispatch<SetStateAction<number>>;
   rating: Rating;
   setRating: Dispatch<SetStateAction<Rating>>;
-  getGifs: () => Promise<number>;
+  updateImageData: (data: IGif[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -35,13 +35,11 @@ const cardsStep = 2;
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
-    searchQuery,
-    setSearchQuery,
     tableauSize,
     setTableauSize,
     rating,
     setRating,
-    getGifs,
+    updateImageData,
     resetImageLoaded,
     resetCards,
     setGameState,
@@ -50,7 +48,26 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     stopConfetti,
   } = props;
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Gets GIFs from API service
+  const getGifs = async (): Promise<number> => {
+    console.log(`Getting ${tableauSize / 2} pairs...`);
+
+    const searchParams = new URLSearchParams({
+      q: searchQuery,
+      limit: (tableauSize / 2).toString(),
+      rating,
+    });
+
+    const response = await fetch('/api/search?' + searchParams);
+    const json = await response.json();
+    updateImageData(json);
+
+    return json.length;
+  };
 
   const postGifSearchSetup = (numCards: number): void => {
     resetCards(numCards);
