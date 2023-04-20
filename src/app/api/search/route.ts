@@ -26,7 +26,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     // All gone :(
     if (results.length === 0) break;
 
-    const index = randomIntegerRange(0, results.length);
+    const index: number = randomIntegerRange(0, results.length);
     selection.push(results[index]);
     results.splice(index, 1);
   }
