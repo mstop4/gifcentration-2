@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import buttonBaseStyles from '@/styles/elements/ButtonBase.module.scss';
-import { GameState } from '../layout/Game';
+import { GameState } from '../../layout/Game';
+import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {
   gameState: GameState;

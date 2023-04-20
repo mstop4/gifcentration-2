@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
-import SearchGifsButton from '../elements/SearchGifsButton';
-import ResetGameButton from '../elements/ResetGameButton';
-import styles from '@/styles/layout/Header.module.scss';
 import { GameState } from './Game';
+import SearchGifsButton from '../elements/ui/SearchGifsButton';
+import ResetGameButton from '../elements/ui/ResetGameButton';
+import styles from '@/styles/layout/Header.module.scss';
 
 export type HeaderProps = {
   gameState: GameState;

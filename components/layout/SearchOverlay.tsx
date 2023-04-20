@@ -1,10 +1,10 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
-import styles from '@/styles/layout/SearchOverlay.module.scss';
-import OverlayCloseButton from '../elements/OverlayCloseButton';
-import SearchForm from '../elements/SearchForm';
-import { GameState, GifErrorState } from './Game';
-import LoadingIndicator from '../elements/LoadingIndicator';
 import { IGif } from '@giphy/js-types';
+import { GameState, GifErrorState } from './Game';
+import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
+import SearchForm from '../elements/searchOverlay/SearchForm';
+import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
+import styles from '@/styles/layout/SearchOverlay.module.scss';
 
 export type SearchOverlayProps = {
   gameState: GameState;

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import styles from '@/styles/elements/Alert.module.scss';
-import { GifErrorState } from '../layout/Game';
+import { GifErrorState } from '../../layout/Game';
+import styles from '@/styles/elements/ui/Alert.module.scss';
 
 export type AlertProps = {
   gifErrorState: GifErrorState;

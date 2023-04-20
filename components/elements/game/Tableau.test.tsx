@@ -2,9 +2,9 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import Tableau from './Tableau';
 import '@testing-library/jest-dom';
-import { GameState } from '../layout/Game';
+import { GameState } from '../../layout/Game';
 import { IGif } from '@giphy/js-types';
-import mockIGif from '../../mockData/IGif.json';
+import mockIGif from '../../../mockData/IGif.json';
 
 const makeTableau = (): ReactElement => {
   return (
@@ -18,8 +18,9 @@ const makeTableau = (): ReactElement => {
       imageIndexes={[1, 1]}
       imageData={[mockIGif, mockIGif] as unknown as IGif[]}
       selectedCardIndexes={[]}
-      addSelectedCardIndex={jest.fn()}
-      resetSelectedCardIndexes={jest.fn()}
+      updateImageLoaded={jest.fn()}
+      setSelectedCardIndexes={jest.fn()}
+      showConfetti={jest.fn()}
     />
   );
 };

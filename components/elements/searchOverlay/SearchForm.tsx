@@ -8,12 +8,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/styles/elements/SearchForm.module.scss';
-import { GameState, GifErrorState } from '../layout/Game';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { GameState, GifErrorState } from '../../layout/Game';
+import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
 export type SearchFormProps = {
   tableauSize: number;

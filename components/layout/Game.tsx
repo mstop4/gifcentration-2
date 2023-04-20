@@ -1,18 +1,18 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import Confetti from 'react-confetti';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
-import Tableau from '../elements/Tableau';
+import { IGif } from '@giphy/js-types';
+import Tableau from '../elements/game/Tableau';
 import Header from './Header';
 import Footer from './Footer';
-import styles from '@/styles/layout/Game.module.scss';
 import SearchOverlay from './SearchOverlay';
-import { IGif } from '@giphy/js-types';
+import Alert from '../elements/ui/Alert';
 import {
   RectangleDimensions,
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import Alert from '../elements/Alert';
-import Confetti from 'react-confetti';
+import styles from '@/styles/layout/Game.module.scss';
 
 export enum GameState {
   Idle = 'idle',

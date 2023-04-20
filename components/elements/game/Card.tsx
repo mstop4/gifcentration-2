@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
+import { Measures, useMeasure } from '@react-hookz/web';
+import { Gif } from '@giphy/react-components';
+import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
-import { Measures, useMeasure } from '@react-hookz/web';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import styles from '@/styles/elements/Card.module.scss';
-import { Gif } from '@giphy/react-components';
-import { GameState } from '../layout/Game';
-import { IGif } from '@giphy/js-types';
+import { GameState } from '../../layout/Game';
+import styles from '@/styles/elements/game/Card.module.scss';
 
 export type CardProps = {
   gameState: GameState;

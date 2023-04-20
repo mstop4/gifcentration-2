@@ -3,8 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
-import { GameState } from '../layout/Game';
-import mockIGif from '../../mockData/IGif.json';
+import { GameState } from '../../layout/Game';
+import mockIGif from '../../../mockData/IGif.json';
 
 const handleClickMock = jest.fn();
 const makeCard = (
@@ -20,6 +20,7 @@ const makeCard = (
     active={active}
     matched={matched}
     handleCardClick={handleClickMock}
+    updateImageLoaded={jest.fn()}
   />
 );
 

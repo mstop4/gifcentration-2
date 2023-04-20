@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import ResetGameButton from './ResetGameButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../layout/Game';
+import { GameState } from '../../layout/Game';
 
 describe('ResetGameButton', () => {
   it('renders a ResetGameButton', () => {

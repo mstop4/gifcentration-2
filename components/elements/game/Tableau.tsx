@@ -5,10 +5,10 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import Card from './Card';
-import styles from '@/styles/elements/Tableau.module.scss';
-import { GameState } from '../layout/Game';
 import { IGif } from '@giphy/js-types';
+import Card from './Card';
+import { GameState } from '../../layout/Game';
+import styles from '@/styles/elements/game/Tableau.module.scss';
 
 export type TableauProps = {
   gameState: GameState;

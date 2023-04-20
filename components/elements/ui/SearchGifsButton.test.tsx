@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchGifsButton from './SearchGifsButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../layout/Game';
+import { GameState } from '../../layout/Game';
 
 describe('SearchGifsButton', () => {
   it('renders a SearchGifsButton', async () => {
