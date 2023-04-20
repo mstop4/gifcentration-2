@@ -110,10 +110,6 @@ export default function Game(): ReactElement {
     );
   };
 
-  const toggleSearchOverlay = (visible: boolean): void => {
-    setOverlayVisible(visible);
-  };
-
   const resetCards = (numCards: number = tableauSize): void => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
@@ -146,8 +142,11 @@ export default function Game(): ReactElement {
     setImageLoaded(() => new Array(numCards).fill(false));
   };
 
+  const toggleSearchOverlay = (visible: boolean): void => {
+    setOverlayVisible(visible);
+  };
+
   const toggleConfetti = (visible: boolean): void => {
-    console.log('confetti', visible);
     setShowConfetti(visible);
 
     if (confettiTimeout.current != null) {

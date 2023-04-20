@@ -117,9 +117,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     hideAlert();
     stopConfetti();
     setGameState(GameState.Searching);
-    console.log(
-      `Go! Search for: ${searchQuery}\nExpected Tableau Size: ${tableauSize}\nRating: ${rating}`
-    );
     const numResults = await getGifs();
     setGameState(GameState.Loading);
 
