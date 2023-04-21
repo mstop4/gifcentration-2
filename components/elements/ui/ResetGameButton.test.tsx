@@ -14,7 +14,7 @@ describe('ResetGameButton', () => {
     expect(card).toBeInTheDocument();
   });
 
-  it('calls resetCards when clicked', () => {
+  it('calls resetCards when clicked when playing', () => {
     const resetCardsMock = jest.fn();
     const { container } = render(
       <ResetGameButton
@@ -26,5 +26,19 @@ describe('ResetGameButton', () => {
     const button = container.querySelector('#resetGameButton') as Element;
     fireEvent.click(button);
     expect(resetCardsMock).toBeCalled();
+  });
+
+  it("doesn't call resetCards when clicked when not playing", () => {
+    const resetCardsMock = jest.fn();
+    const { container } = render(
+      <ResetGameButton
+        gameState={GameState.Loading}
+        resetCards={resetCardsMock}
+      />
+    );
+
+    const button = container.querySelector('#resetGameButton') as Element;
+    fireEvent.click(button);
+    expect(resetCardsMock).not.toBeCalled();
   });
 });

@@ -50,9 +50,7 @@
   text-align: center;
   font-weight: bold;
   user-select: none;
-  -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
 }
 
 .back {
@@ -62,9 +60,7 @@
   background-color: colours.$secondary-color;
   transform: rotateY(180deg);
   user-select: none;
-  -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
 }
 
 .matched {

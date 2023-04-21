@@ -1,7 +1,6 @@
 @use '../../globalVariables' as global;
 
 $container-padding: 1rem;
-$header-footer-space: 5rem;
 
 #tableau {
   padding: $container-padding;
@@ -30,7 +29,8 @@ $header-footer-space: 5rem;
     );
     $max_cell-height: calc(
       (
-          100dvh - #{$total-gap-height} - #{$container-padding} - #{$header-footer-space}
+          100dvh - #{$total-gap-height} - #{$container-padding} - #{global.$header-space} -
+            #{global.$footer-space}
         ) / var(--minor-axis-size)
     );
 
@@ -55,7 +55,8 @@ $header-footer-space: 5rem;
     );
     $max_cell-height: calc(
       (
-          100dvh - #{$total-gap-height} - #{$container-padding} - #{$header-footer-space}
+          100dvh - #{$total-gap-height} - #{$container-padding} - #{global.$header-space} -
+            #{global.$footer-space}
         ) / var(--major-axis-size)
     );
 

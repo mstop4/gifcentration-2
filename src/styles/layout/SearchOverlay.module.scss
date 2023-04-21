@@ -17,8 +17,16 @@
 
 .overlayClosed {
   top: -100dvh;
+  opacity: 100%;
 }
 
 .overlayOpen {
   top: 0;
+  opacity: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #searchOverlay {
+    transition: none;
+  }
 }

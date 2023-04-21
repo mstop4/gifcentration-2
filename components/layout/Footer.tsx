@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styles from '@/styles/layout/Footer.module.scss';
 
-const Footer: React.FC = () => <footer id={styles.footer}>2023</footer>;
-
-export default Footer;
+export default function Footer(): ReactElement {
+  return <footer id={styles.footer}>2023</footer>;
+}

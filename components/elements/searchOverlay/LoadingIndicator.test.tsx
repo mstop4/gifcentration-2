@@ -24,7 +24,7 @@ describe('LoadingIndicator', () => {
     render(
       <LoadingIndicator
         gameState={GameState.Searching}
-        imageLoaded={new Array(numCards).fill(false)}
+        imageLoaded={new Array(numCards).fill(true)}
         actualTableauSize={numCards}
       />
     );

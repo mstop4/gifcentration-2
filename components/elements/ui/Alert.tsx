@@ -45,10 +45,6 @@ export default function Alert(props: AlertProps): ReactElement {
       bodyClass = '';
       bodyText = 'OK';
       break;
-
-    default:
-      bodyClass = '';
-      bodyText = null;
   }
 
   return (

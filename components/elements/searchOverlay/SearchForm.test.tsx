@@ -5,16 +5,15 @@ import '@testing-library/jest-dom';
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
-    searchQuery={'foo'}
-    setSearchQuery={jest.fn()}
     tableauSize={2}
     setTableauSize={jest.fn()}
-    rating={'g'}
-    setRating={jest.fn()}
-    getGifs={jest.fn()}
     resetCards={jest.fn()}
     setGameState={jest.fn()}
-    hideSearchOverlay={jest.fn()}
+    updateImageData={jest.fn()}
+    resetImageLoaded={jest.fn()}
+    setGifErrorState={jest.fn()}
+    setAlertVisible={jest.fn()}
+    stopConfetti={jest.fn()}
   />
 );
 

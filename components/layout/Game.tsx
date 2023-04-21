@@ -13,6 +13,8 @@ import {
   pairShuffler,
 } from '../../helpers';
 import styles from '@/styles/layout/Game.module.scss';
+import Title from '../elements/ui/Title';
+import ClickHere from '../elements/ui/ClickHere';
 
 export enum GameState {
   Idle = 'idle',
@@ -20,6 +22,13 @@ export enum GameState {
   Loading = 'loading',
   Playing = 'playing',
   Finished = 'finished',
+}
+
+export enum TitleState {
+  Hidden,
+  MainTitleOnly,
+  MainFull,
+  Mini,
 }
 
 export enum GifErrorState {
@@ -51,7 +60,9 @@ export default function Game(): ReactElement {
 
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [confettiVisible, setConfettiVisible] = useState<boolean>(false);
+  const [clickHereVisible, setClickHereVisible] = useState<boolean>(true);
+  const [titleState, setTitleState] = useState<TitleState>(TitleState.Hidden);
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
@@ -62,8 +73,6 @@ export default function Game(): ReactElement {
   const { width: appWidth, height: appHeight } = useWindowSize();
 
   useMountEffect(() => {
-    setTimeout(() => toggleSearchOverlay(true), 500);
-
     // Determine window size if on client
     if (typeof window !== undefined) {
       windowSize.current = {
@@ -153,7 +162,7 @@ export default function Game(): ReactElement {
 
   // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
-    setShowConfetti(visible);
+    setConfettiVisible(visible);
 
     if (confettiTimeout.current != null) {
       clearTimeout(confettiTimeout.current);
@@ -161,7 +170,7 @@ export default function Game(): ReactElement {
 
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
-        setShowConfetti(false);
+        setConfettiVisible(false);
       }, confettiDuration);
     }
   };
@@ -171,9 +180,17 @@ export default function Game(): ReactElement {
       <Header
         gameState={gameState}
         resetCards={resetCards}
+        setClickHereVisible={setClickHereVisible}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
+        <Title />
+        {clickHereVisible && (
+          <ClickHere
+            setVisible={setClickHereVisible}
+            showSearchOverlay={(): void => toggleSearchOverlay(true)}
+          />
+        )}
         <Tableau
           gameState={gameState}
           setGameState={setGameState}
@@ -193,7 +210,7 @@ export default function Game(): ReactElement {
       <Confetti
         width={windowSize.current.appWidth}
         height={windowSize.current.appHeight}
-        numberOfPieces={showConfetti ? confettiAmount : 0}
+        numberOfPieces={confettiVisible ? confettiAmount : 0}
       />
       <SearchOverlay
         gameState={gameState}
