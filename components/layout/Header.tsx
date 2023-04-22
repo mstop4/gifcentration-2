@@ -1,5 +1,5 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
-import { GameState } from './Game';
+import React, { Dispatch, ReactElement } from 'react';
+import { ElementVisibilityAction, GameState } from './Game';
 import SearchGifsButton from '../elements/ui/SearchGifsButton';
 import ResetGameButton from '../elements/ui/ResetGameButton';
 import styles from '@/styles/layout/Header.module.scss';
@@ -7,7 +7,7 @@ import styles from '@/styles/layout/Header.module.scss';
 export type HeaderProps = {
   gameState: GameState;
   resetCards: () => void;
-  setClickHereVisible: Dispatch<SetStateAction<boolean>>;
+  dispatchVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
@@ -18,7 +18,7 @@ export default function Footer(props: HeaderProps): ReactElement {
       <span id={styles.headerButtons}>
         <SearchGifsButton
           gameState={props.gameState}
-          setClickHereVisible={props.setClickHereVisible}
+          dispatchVisible={props.dispatchVisible}
           showSearchOverlay={props.showSearchOverlay}
         />
         <ResetGameButton

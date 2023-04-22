@@ -1,4 +1,10 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactElement,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import Confetti from 'react-confetti';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
 import { IGif } from '@giphy/js-types';
@@ -24,19 +30,28 @@ export enum GameState {
   Finished = 'finished',
 }
 
-export enum TitleState {
-  Hidden,
-  MainTitleOnly,
-  MainFull,
-  Mini,
-}
-
 export enum GifErrorState {
   Ok,
   NotEnoughGifs,
   NoGifs,
   UnknownError,
 }
+
+export type ElementVisibility = {
+  visible: boolean;
+  rendered: boolean;
+};
+
+export type ElementVisibilityAction = {
+  prop: 'visible' | 'rendered';
+  value: boolean;
+};
+
+export type TitleVisibility = {
+  header: ElementVisibility;
+  title: ElementVisibility;
+  subtitle: ElementVisibility;
+};
 
 const defaultTableauSize = 18;
 const confettiAmount = 200;
@@ -61,8 +76,21 @@ export default function Game(): ReactElement {
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
   const [confettiVisible, setConfettiVisible] = useState<boolean>(false);
-  const [clickHereVisible, setClickHereVisible] = useState<boolean>(true);
-  const [titleState, setTitleState] = useState<TitleState>(TitleState.Hidden);
+
+  const clickHereVisibleReducer = (
+    state: ElementVisibility,
+    action: ElementVisibilityAction
+  ): ElementVisibility => ({ ...state, [action.prop]: action.value });
+
+  const [clickHereVisible, dispatchClickHereVisible] = useReducer(
+    clickHereVisibleReducer,
+    {
+      visible: true,
+      rendered: true,
+    }
+  );
+
+  // const [titleState, setTitleState] = useState<TitleState>(TitleState.Hidden);
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
@@ -180,14 +208,15 @@ export default function Game(): ReactElement {
       <Header
         gameState={gameState}
         resetCards={resetCards}
-        setClickHereVisible={setClickHereVisible}
+        dispatchVisible={dispatchClickHereVisible}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
         <Title />
-        {clickHereVisible && (
+        {clickHereVisible.rendered && (
           <ClickHere
-            setVisible={setClickHereVisible}
+            visible={clickHereVisible.visible}
+            dispatchVisible={dispatchClickHereVisible}
             showSearchOverlay={(): void => toggleSearchOverlay(true)}
           />
         )}

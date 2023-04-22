@@ -1,21 +1,32 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, { Dispatch, ReactElement } from 'react';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
+import { ElementVisibilityAction } from '../../layout/Game';
 
 export type ClickHereProps = {
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  visible: boolean;
+  dispatchVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const { setVisible, showSearchOverlay } = props;
+  const { visible, dispatchVisible, showSearchOverlay } = props;
 
   const handleClick = (): void => {
-    setVisible(false);
     showSearchOverlay();
+    dispatchVisible({ prop: 'visible', value: false });
+  };
+
+  const handleTransitionEnd = (): void => {
+    dispatchVisible({ prop: 'rendered', value: false });
   };
 
   return (
-    <div id={styles.clickHere} onClick={handleClick}>
+    <div
+      id={styles.clickHere}
+      className={visible ? styles.clickHereVisible : styles.clickHereHidden}
+      onClick={handleClick}
+      onTransitionEnd={handleTransitionEnd}
+    >
       Click here to start!
     </div>
   );

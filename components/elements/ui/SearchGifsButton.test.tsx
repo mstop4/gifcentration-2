@@ -10,7 +10,7 @@ describe('SearchGifsButton', () => {
       <SearchGifsButton
         gameState={GameState.Playing}
         showSearchOverlay={jest.fn()}
-        setClickHereVisible={jest.fn()}
+        dispatchVisible={jest.fn()}
       />
     );
     const card = container.querySelector('#searchGifsButton');
@@ -20,13 +20,15 @@ describe('SearchGifsButton', () => {
     });
   });
 
-  it('calls showSearchOverlay when clicked when not busy', async () => {
+  it('calls showSearchOverlay and dispatchVisible when clicked when not busy', async () => {
     const showSearchOverlayMock = jest.fn();
+    const dispatchVisibleMock = jest.fn();
+
     const { container } = render(
       <SearchGifsButton
         gameState={GameState.Playing}
         showSearchOverlay={showSearchOverlayMock}
-        setClickHereVisible={jest.fn()}
+        dispatchVisible={dispatchVisibleMock}
       />
     );
 
@@ -35,16 +37,22 @@ describe('SearchGifsButton', () => {
 
     await waitFor(() => {
       expect(showSearchOverlayMock).toBeCalled();
+      expect(dispatchVisibleMock).toBeCalledWith({
+        prop: 'visible',
+        value: false,
+      });
     });
   });
 
   it("doesn't call showSearchOverlay when clicked when already searching/loading", async () => {
     const showSearchOverlayMock = jest.fn();
+    const dispatchVisibleMock = jest.fn();
+
     const { container } = render(
       <SearchGifsButton
         gameState={GameState.Searching}
         showSearchOverlay={showSearchOverlayMock}
-        setClickHereVisible={jest.fn()}
+        dispatchVisible={dispatchVisibleMock}
       />
     );
 
@@ -53,6 +61,7 @@ describe('SearchGifsButton', () => {
 
     await waitFor(() => {
       expect(showSearchOverlayMock).not.toBeCalled();
+      expect(dispatchVisibleMock).not.toBeCalled();
     });
   });
 });
