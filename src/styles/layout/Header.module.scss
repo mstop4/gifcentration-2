@@ -3,8 +3,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: green;
+  background: none;
   width: 100%;
   padding: 0.5rem;
   flex: 0 1 2rem;
+}
+
+#headerTitle {
+  transition: 1s;
 }

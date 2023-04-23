@@ -11,14 +11,6 @@ $container-padding: 1rem;
   transition: 1s;
 }
 
-.tableauVisible {
-  opacity: 1;
-}
-
-.tableauHidden {
-  opacity: 0;
-}
-
 @media screen and (min-aspect-ratio: 1/1) {
   #tableau {
     $total-gap-width: calc((var(--major-axis-size)) * #{global.$card-gap});

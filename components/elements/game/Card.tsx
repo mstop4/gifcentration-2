@@ -13,7 +13,6 @@ export type CardProps = {
   index: number;
   imageData: IGif;
   flipped: boolean;
-  active: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
   updateImageLoaded: (index: number) => void;
@@ -27,7 +26,6 @@ export default function Card(props: CardProps): ReactElement {
     index,
     imageData,
     flipped,
-    active,
     matched,
     handleCardClick,
     updateImageLoaded,
@@ -43,10 +41,7 @@ export default function Card(props: CardProps): ReactElement {
   };
 
   // Determine CSS classes
-  const cardBodyClasses = `${styles.cardBody} ${
-    active ? styles.active : styles.inactive
-  } ${flipped ? styles.flipped : ''}`;
-
+  const cardBodyClasses = `${styles.cardBody} ${flipped ? styles.flipped : ''}`;
   const cardBackClasses = `${styles.cardFace} ${styles.back} ${
     matched ? styles.matched : ''
   }`;

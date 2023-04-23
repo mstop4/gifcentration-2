@@ -1,26 +1,59 @@
 import React, { Dispatch, ReactElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { ElementVisibilityAction, GameState } from '../../layout/Game';
+import {
+  ElementVisibilityAction,
+  GameState,
+  TitleVisibility,
+  TitleVisibilityAction,
+} from '../../layout/Game';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {
   gameState: GameState;
-  dispatchVisible: Dispatch<ElementVisibilityAction>;
+  titleVisible: TitleVisibility;
+  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
+  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function SearchGifsButton(
   props: SearchGifsButtonProps
 ): ReactElement {
-  const { gameState, dispatchVisible, showSearchOverlay } = props;
+  const {
+    gameState,
+    titleVisible,
+    dispatchTitleVisible,
+    dispatchClickHereVisible,
+    showSearchOverlay,
+  } = props;
 
   const handleClick = async (): Promise<void> => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
 
-    dispatchVisible({ prop: 'visible', value: false });
     showSearchOverlay();
+    dispatchClickHereVisible({ prop: 'visible', value: false });
+
+    if (titleVisible.titleRendered) {
+      dispatchTitleVisible({ type: 'hideTitle' });
+
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'hideSubtitle' });
+      }, 250);
+      setTimeout(() => {
+        dispatchClickHereVisible({ prop: 'rendered', value: false });
+      }, 1000);
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'removeTitle' });
+      }, 1250);
+    }
+
+    if (!titleVisible.headerVisible) {
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'showHeader' });
+      }, 1000);
+    }
   };
 
   return (

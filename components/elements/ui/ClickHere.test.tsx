@@ -1,14 +1,29 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
 
 describe('ClickHere', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   it('renders a ClickHere', () => {
     const { container } = render(
       <ClickHere
         visible={true}
-        dispatchVisible={jest.fn()}
+        titleVisible={{
+          headerVisible: false,
+          titleRendered: true,
+          titleVisible: true,
+          subtitleVisible: true,
+        }}
+        dispatchClickHereVisible={jest.fn()}
+        dispatchTitleVisible={jest.fn()}
         showSearchOverlay={jest.fn()}
       />
     );
@@ -17,42 +32,62 @@ describe('ClickHere', () => {
     expect(clickHere).toBeInTheDocument();
   });
 
-  it('should be visible', async () => {
+  it('should be visible', () => {
     const { container } = render(
       <ClickHere
         visible={true}
-        dispatchVisible={jest.fn()}
+        titleVisible={{
+          headerVisible: false,
+          titleRendered: true,
+          titleVisible: true,
+          subtitleVisible: true,
+        }}
+        dispatchClickHereVisible={jest.fn()}
+        dispatchTitleVisible={jest.fn()}
         showSearchOverlay={jest.fn()}
       />
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;
-
-    expect(clickHere).toHaveClass('clickHereVisible');
+    expect(clickHere).toHaveClass('elementVisible');
   });
 
-  it('should be hidden', async () => {
+  it('should be hidden', () => {
     const { container } = render(
       <ClickHere
         visible={false}
-        dispatchVisible={jest.fn()}
+        titleVisible={{
+          headerVisible: false,
+          titleRendered: true,
+          titleVisible: true,
+          subtitleVisible: true,
+        }}
+        dispatchClickHereVisible={jest.fn()}
+        dispatchTitleVisible={jest.fn()}
         showSearchOverlay={jest.fn()}
       />
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;
-
-    expect(clickHere).toHaveClass('clickHereHidden');
+    expect(clickHere).toHaveClass('elementHidden');
   });
 
-  it('calls setVisible and showSearchOverlay when clicked', async () => {
-    const dispatchVisibleMock = jest.fn();
+  it('calls dispatches and callbacks when clicked', () => {
+    const dispatchClickHereVisibleMock = jest.fn();
+    const dispatchTitleVisibleMock = jest.fn();
     const showSearchOverlayMock = jest.fn();
 
     const { container } = render(
       <ClickHere
         visible={true}
-        dispatchVisible={dispatchVisibleMock}
+        titleVisible={{
+          headerVisible: false,
+          titleRendered: true,
+          titleVisible: true,
+          subtitleVisible: true,
+        }}
+        dispatchClickHereVisible={dispatchClickHereVisibleMock}
+        dispatchTitleVisible={dispatchTitleVisibleMock}
         showSearchOverlay={showSearchOverlayMock}
       />
     );
@@ -60,34 +95,10 @@ describe('ClickHere', () => {
     const clickHere = container.querySelector('#clickHere') as Element;
     fireEvent.click(clickHere);
 
-    await waitFor(() => {
-      expect(dispatchVisibleMock).toBeCalledWith({
-        prop: 'visible',
-        value: false,
-      });
-      expect(showSearchOverlayMock).toBeCalled();
-    });
-  });
+    jest.runAllTimers();
 
-  it('calls dispatchVisibleMock on transition end', async () => {
-    const dispatchVisibleMock = jest.fn();
-
-    const { container } = render(
-      <ClickHere
-        visible={true}
-        dispatchVisible={dispatchVisibleMock}
-        showSearchOverlay={jest.fn()}
-      />
-    );
-
-    const clickHere = container.querySelector('#clickHere') as Element;
-    fireEvent.transitionEnd(clickHere);
-
-    await waitFor(() => {
-      expect(dispatchVisibleMock).toBeCalledWith({
-        prop: 'rendered',
-        value: false,
-      });
-    });
+    expect(dispatchClickHereVisibleMock).toBeCalledTimes(2);
+    expect(dispatchTitleVisibleMock).toBeCalledTimes(4);
+    expect(showSearchOverlayMock).toBeCalled();
   });
 });

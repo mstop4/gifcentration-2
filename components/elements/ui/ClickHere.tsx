@@ -1,31 +1,61 @@
 import React, { Dispatch, ReactElement } from 'react';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
-import { ElementVisibilityAction } from '../../layout/Game';
+import genericStyles from '@/styles/GenericStyles.module.scss';
+import {
+  ElementVisibilityAction,
+  TitleVisibility,
+  TitleVisibilityAction,
+} from '../../layout/Game';
 
 export type ClickHereProps = {
   visible: boolean;
-  dispatchVisible: Dispatch<ElementVisibilityAction>;
+  titleVisible: TitleVisibility;
+  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
+  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const { visible, dispatchVisible, showSearchOverlay } = props;
+  const {
+    visible,
+    titleVisible,
+    dispatchTitleVisible,
+    dispatchClickHereVisible,
+    showSearchOverlay,
+  } = props;
 
   const handleClick = (): void => {
     showSearchOverlay();
-    dispatchVisible({ prop: 'visible', value: false });
-  };
+    dispatchClickHereVisible({ prop: 'visible', value: false });
 
-  const handleTransitionEnd = (): void => {
-    dispatchVisible({ prop: 'rendered', value: false });
+    if (titleVisible.titleRendered) {
+      dispatchTitleVisible({ type: 'hideTitle' });
+
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'hideSubtitle' });
+      }, 250);
+      setTimeout(() => {
+        dispatchClickHereVisible({ prop: 'rendered', value: false });
+      }, 1000);
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'removeTitle' });
+      }, 1250);
+    }
+
+    if (!titleVisible.headerVisible) {
+      setTimeout(() => {
+        dispatchTitleVisible({ type: 'showHeader' });
+      }, 1000);
+    }
   };
 
   return (
     <div
       id={styles.clickHere}
-      className={visible ? styles.clickHereVisible : styles.clickHereHidden}
+      className={
+        visible ? genericStyles.elementVisible : genericStyles.elementHidden
+      }
       onClick={handleClick}
-      onTransitionEnd={handleTransitionEnd}
     >
       Click here to start!
     </div>

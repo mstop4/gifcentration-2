@@ -48,9 +48,20 @@ export type ElementVisibilityAction = {
 };
 
 export type TitleVisibility = {
-  header: ElementVisibility;
-  title: ElementVisibility;
-  subtitle: ElementVisibility;
+  headerVisible: boolean;
+  titleRendered: boolean;
+  titleVisible: boolean;
+  subtitleVisible: boolean;
+};
+
+export type TitleVisibilityAction = {
+  type:
+    | 'showHeader'
+    | 'showTitle'
+    | 'showSubtitle'
+    | 'hideTitle'
+    | 'hideSubtitle'
+    | 'removeTitle';
 };
 
 const defaultTableauSize = 18;
@@ -85,12 +96,53 @@ export default function Game(): ReactElement {
   const [clickHereVisible, dispatchClickHereVisible] = useReducer(
     clickHereVisibleReducer,
     {
-      visible: true,
+      visible: false,
       rendered: true,
     }
   );
 
-  // const [titleState, setTitleState] = useState<TitleState>(TitleState.Hidden);
+  const titleVisibleReducer = (
+    state: TitleVisibility,
+    action: TitleVisibilityAction
+  ): TitleVisibility => {
+    const newState = { ...state };
+
+    switch (action.type) {
+      case 'showHeader':
+        newState.headerVisible = true;
+        break;
+
+      case 'showTitle':
+        newState.titleVisible = true;
+        break;
+
+      case 'showSubtitle':
+        newState.subtitleVisible = true;
+        break;
+
+      case 'hideTitle':
+        newState.titleVisible = false;
+        break;
+
+      case 'hideSubtitle':
+        newState.subtitleVisible = false;
+        break;
+
+      case 'removeTitle':
+        newState.titleRendered = false;
+        break;
+    }
+
+    return newState;
+  };
+
+  const [titleVisible, dispatchTitleVisible] = useReducer(titleVisibleReducer, {
+    headerVisible: false,
+    titleRendered: true,
+    titleVisible: false,
+    subtitleVisible: false,
+  });
+
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
@@ -108,6 +160,13 @@ export default function Game(): ReactElement {
         appHeight,
       };
     }
+
+    setTimeout(() => dispatchTitleVisible({ type: 'showTitle' }), 250);
+    setTimeout(() => dispatchTitleVisible({ type: 'showSubtitle' }), 1250);
+    setTimeout(
+      () => dispatchClickHereVisible({ prop: 'visible', value: true }),
+      2250
+    );
   });
 
   useEffect(() => {
@@ -208,15 +267,19 @@ export default function Game(): ReactElement {
       <Header
         gameState={gameState}
         resetCards={resetCards}
-        dispatchVisible={dispatchClickHereVisible}
+        titleVisible={titleVisible}
+        dispatchTitleVisible={dispatchTitleVisible}
+        dispatchClickHereVisible={dispatchClickHereVisible}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
-        <Title />
+        {titleVisible.titleRendered && <Title titleVisible={titleVisible} />}
         {clickHereVisible.rendered && (
           <ClickHere
             visible={clickHereVisible.visible}
-            dispatchVisible={dispatchClickHereVisible}
+            titleVisible={titleVisible}
+            dispatchTitleVisible={dispatchTitleVisible}
+            dispatchClickHereVisible={dispatchClickHereVisible}
             showSearchOverlay={(): void => toggleSearchOverlay(true)}
           />
         )}
