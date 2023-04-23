@@ -1,19 +1,18 @@
 import React, { ReactElement } from 'react';
+import { Measures, useMeasure } from '@react-hookz/web';
+import { Gif } from '@giphy/react-components';
+import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
-import { Measures, useMeasure } from '@react-hookz/web';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import styles from '@/styles/elements/Card.module.scss';
-import { Gif } from '@giphy/react-components';
-import { GameState } from '../layout/Game';
-import { IGif } from '@giphy/js-types';
+import { GameState } from '../../layout/Game';
+import styles from '@/styles/elements/game/Card.module.scss';
 
 export type CardProps = {
   gameState: GameState;
   index: number;
   imageData: IGif;
   flipped: boolean;
-  active: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
   updateImageLoaded: (index: number) => void;
@@ -27,7 +26,6 @@ export default function Card(props: CardProps): ReactElement {
     index,
     imageData,
     flipped,
-    active,
     matched,
     handleCardClick,
     updateImageLoaded,
@@ -43,10 +41,7 @@ export default function Card(props: CardProps): ReactElement {
   };
 
   // Determine CSS classes
-  const cardBodyClasses = `${styles.cardBody} ${
-    active ? styles.active : styles.inactive
-  } ${flipped ? styles.flipped : ''}`;
-
+  const cardBodyClasses = `${styles.cardBody} ${flipped ? styles.flipped : ''}`;
   const cardBackClasses = `${styles.cardFace} ${styles.back} ${
     matched ? styles.matched : ''
   }`;

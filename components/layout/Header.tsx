@@ -1,28 +1,51 @@
-import React, { ReactElement } from 'react';
-import SearchGifsButton from '../elements/SearchGifsButton';
-import ResetGameButton from '../elements/ResetGameButton';
+import React, { Dispatch, ReactElement } from 'react';
+import {
+  ElementVisibilityAction,
+  GameState,
+  TitleVisibility,
+  TitleVisibilityAction,
+} from './Game';
+import SearchGifsButton from '../elements/ui/SearchGifsButton';
+import ResetGameButton from '../elements/ui/ResetGameButton';
+import { Architects_Daughter } from 'next/font/google';
 import styles from '@/styles/layout/Header.module.scss';
-import { GameState } from './Game';
+import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type HeaderProps = {
   gameState: GameState;
   resetCards: () => void;
+  titleVisible: TitleVisibility;
+  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
+  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
+const titleFont = Architects_Daughter({ subsets: ['latin'], weight: '400' });
+
 export default function Header(props: HeaderProps): ReactElement {
-  const { gameState, resetCards, showSearchOverlay } = props;
+  const titleClasses = `${titleFont.className} ${
+    props.titleVisible.headerVisible
+      ? genericStyles.elementVisible
+      : genericStyles.elementHidden
+  }`;
 
   return (
     <header id={styles.header}>
-      <span id={styles.headerTitle}>GIFcentration 2</span>
-      {/* <span id={styles.headerQuery}>543tr4t3t43t34t43aat3434tt43t4aa34t4ag3ga434ga3 </span> */}
+      <span id={styles.headerTitle} className={titleClasses}>
+        GIFcentration 2
+      </span>
       <span id={styles.headerButtons}>
         <SearchGifsButton
-          gameState={gameState}
-          showSearchOverlay={showSearchOverlay}
+          gameState={props.gameState}
+          titleVisible={props.titleVisible}
+          dispatchTitleVisible={props.dispatchTitleVisible}
+          dispatchClickHereVisible={props.dispatchClickHereVisible}
+          showSearchOverlay={props.showSearchOverlay}
         />
-        <ResetGameButton gameState={gameState} resetCards={resetCards} />
+        <ResetGameButton
+          gameState={props.gameState}
+          resetCards={props.resetCards}
+        />
       </span>
     </header>
   );

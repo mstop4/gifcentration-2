@@ -5,10 +5,11 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import Card from './Card';
-import styles from '@/styles/elements/Tableau.module.scss';
-import { GameState } from '../layout/Game';
 import { IGif } from '@giphy/js-types';
+import Card from './Card';
+import { GameState } from '../../layout/Game';
+import styles from '@/styles/elements/game/Tableau.module.scss';
+import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type TableauProps = {
   gameState: GameState;
@@ -103,7 +104,6 @@ export default function Tableau(props: TableauProps): ReactElement {
         index={i}
         imageData={imageData[imageIndexes[i]]}
         flipped={flipped[i]}
-        active={true}
         matched={matched[i]}
         handleCardClick={handleCardClick}
         updateImageLoaded={updateImageLoaded}
@@ -119,8 +119,8 @@ export default function Tableau(props: TableauProps): ReactElement {
         gameState === GameState.Idle ||
         gameState === GameState.Searching ||
         gameState === GameState.Loading
-          ? styles.tableauHidden
-          : styles.tableauVisible
+          ? genericStyles.elementHidden
+          : genericStyles.elementVisible
       }
     >
       {cardArray}

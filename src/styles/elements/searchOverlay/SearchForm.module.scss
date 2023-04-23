@@ -1,0 +1,106 @@
+@use '../../colourScheme' as colours;
+
+$field-font-size: 1.25rem;
+
+#searchForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchL1Label {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.searchL2Label {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.searchFieldInput {
+  font-size: $field-font-size;
+  font-weight: 400;
+  background: none;
+  color: white;
+  margin: 1rem 1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid white;
+  border-radius: 1.5rem;
+  height: 3rem;
+  outline: none;
+}
+
+.searchFieldInput:focus {
+  border: 2px solid colours.$highlight-color;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 10px colours.$highlight-color;
+}
+
+#searchClear {
+  font-size: $field-font-size;
+  color: white;
+  border-radius: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: colours.$highlight-color;
+}
+
+#searchClear:disabled {
+  color: white;
+  background-color: #888;
+}
+
+#searchOtherSettings {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.searchRatingLabel {
+  font-size: $field-font-size;
+  font-weight: 400;
+  margin: 0.5rem;
+}
+
+#searchRatingList {
+  appearance: none;
+  display: inline-block;
+  margin: 1rem;
+  padding: 0.5rem 3rem 0.5rem 1rem;
+  height: 3rem;
+  line-height: 27px;
+  border: 2px solid white;
+  border-radius: 1.5rem;
+  font-size: $field-font-size;
+  background: none;
+  color: white;
+  outline: none;
+}
+
+.searchRatingOption {
+  color: white;
+  background-color: colours.$primary-bgcolor;
+}
+
+#searchRatingList:focus {
+  border: 2px solid colours.$highlight-color;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 10px colours.$highlight-color;
+}
+
+#searchNumCards {
+  width: 10ch;
+}
+
+#searchSubmit {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  border-radius: 2rem;
+  padding: 0.5rem;
+  width: 10rem;
+  margin: 1rem;
+  background-color: colours.$highlight-color;
+}

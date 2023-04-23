@@ -8,12 +8,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/styles/elements/SearchForm.module.scss';
-import { GameState, GifErrorState } from '../layout/Game';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { GameState, GifErrorState } from '../../layout/Game';
+import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
 export type SearchFormProps = {
   tableauSize: number;
@@ -104,7 +104,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setSearchQuery(() => '');
   };
 
-  const handleRatingChange: ChangeEventHandler<HTMLInputElement> = e => {
+  const handleRatingChange: ChangeEventHandler<HTMLSelectElement> = e => {
     const newRating = e.target.value as Rating;
     setRating(() => newRating);
   };
@@ -140,7 +140,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
-      <label className={styles.searchMajorLabel} htmlFor="searchQuery">
+      <label className={styles.searchL1Label} htmlFor="searchQuery">
         Search for GIFs
       </label>
       <div>
@@ -163,80 +163,57 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           <FontAwesomeIcon icon={faDeleteLeft} />
         </button>
       </div>
-      <label className={styles.searchMajorLabel}>Rating</label>
-      <div>
-        <input
-          type="radio"
-          id="ratingY"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="y"
-          checked={rating === 'y'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingY" className={styles.searchRatingLabel}>
-          Y
+      <div id={styles.searchOtherSettings}>
+        <label className={styles.searchL2Label} htmlFor="searchRatingList">
+          Rating
         </label>
-
-        <input
-          type="radio"
-          id="ratingG"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="g"
-          checked={rating === 'g'}
+        <select
+          id={styles.searchRatingList}
+          name="searchRatingList"
           onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingG" className={styles.searchRatingLabel}>
-          G
-        </label>
-
-        <input
-          type="radio"
-          id="ratingPG"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="pg"
-          checked={rating === 'pg'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
-          PG
-        </label>
-
-        <input
-          type="radio"
-          id="ratingPG13"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="pg-13"
-          checked={rating === 'pg-13'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
-          PG-13
-        </label>
-
-        <input
-          type="radio"
-          id="ratingR"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="r"
-          checked={rating === 'r'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingR" className={styles.searchRatingLabel}>
-          R
-        </label>
-      </div>
-      <div>
-        <label htmlFor="searchNumCards" className={styles.searchMajorLabel}>
+        >
+          <option
+            value="y"
+            className={styles.searchRatingOption}
+            selected={rating === 'y'}
+          >
+            Y
+          </option>
+          <option
+            value="g"
+            className={styles.searchRatingOption}
+            selected={rating === 'g'}
+          >
+            G
+          </option>
+          <option
+            value="pg"
+            className={styles.searchRatingOption}
+            selected={rating === 'pg'}
+          >
+            PG
+          </option>
+          <option
+            value="pg-13"
+            className={styles.searchRatingOption}
+            selected={rating === 'pg-13'}
+          >
+            PG-13
+          </option>
+          <option
+            value="r"
+            className={styles.searchRatingOption}
+            selected={rating === 'r'}
+          >
+            R
+          </option>
+        </select>
+        <label htmlFor="searchNumCards" className={styles.searchL2Label}>
           Tableau Size
         </label>
         <input
           type="number"
-          id="searchNumCards"
+          id={styles.searchNumCards}
           className={styles.searchFieldInput}
           name="tableauSize"
           value={tableauSize}

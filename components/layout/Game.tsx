@@ -1,18 +1,26 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactElement,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
+import Confetti from 'react-confetti';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
-import Tableau from '../elements/Tableau';
+import { IGif } from '@giphy/js-types';
+import Tableau from '../elements/game/Tableau';
 import Header from './Header';
 import Footer from './Footer';
-import styles from '@/styles/layout/Game.module.scss';
 import SearchOverlay from './SearchOverlay';
-import { IGif } from '@giphy/js-types';
+import Alert from '../elements/ui/Alert';
 import {
   RectangleDimensions,
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import Alert from '../elements/Alert';
-import Confetti from 'react-confetti';
+import styles from '@/styles/layout/Game.module.scss';
+import Title from '../elements/ui/Title';
+import ClickHere from '../elements/ui/ClickHere';
 
 export enum GameState {
   Idle = 'idle',
@@ -28,6 +36,33 @@ export enum GifErrorState {
   NoGifs,
   UnknownError,
 }
+
+export type ElementVisibility = {
+  visible: boolean;
+  rendered: boolean;
+};
+
+export type ElementVisibilityAction = {
+  prop: 'visible' | 'rendered';
+  value: boolean;
+};
+
+export type TitleVisibility = {
+  headerVisible: boolean;
+  titleRendered: boolean;
+  titleVisible: boolean;
+  subtitleVisible: boolean;
+};
+
+export type TitleVisibilityAction = {
+  type:
+    | 'showHeader'
+    | 'showTitle'
+    | 'showSubtitle'
+    | 'hideTitle'
+    | 'hideSubtitle'
+    | 'removeTitle';
+};
 
 const defaultTableauSize = 18;
 const confettiAmount = 200;
@@ -51,7 +86,63 @@ export default function Game(): ReactElement {
 
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [confettiVisible, setConfettiVisible] = useState<boolean>(false);
+
+  const clickHereVisibleReducer = (
+    state: ElementVisibility,
+    action: ElementVisibilityAction
+  ): ElementVisibility => ({ ...state, [action.prop]: action.value });
+
+  const [clickHereVisible, dispatchClickHereVisible] = useReducer(
+    clickHereVisibleReducer,
+    {
+      visible: false,
+      rendered: true,
+    }
+  );
+
+  const titleVisibleReducer = (
+    state: TitleVisibility,
+    action: TitleVisibilityAction
+  ): TitleVisibility => {
+    const newState = { ...state };
+
+    switch (action.type) {
+      case 'showHeader':
+        newState.headerVisible = true;
+        break;
+
+      case 'showTitle':
+        newState.titleVisible = true;
+        break;
+
+      case 'showSubtitle':
+        newState.subtitleVisible = true;
+        break;
+
+      case 'hideTitle':
+        newState.titleVisible = false;
+        break;
+
+      case 'hideSubtitle':
+        newState.subtitleVisible = false;
+        break;
+
+      case 'removeTitle':
+        newState.titleRendered = false;
+        break;
+    }
+
+    return newState;
+  };
+
+  const [titleVisible, dispatchTitleVisible] = useReducer(titleVisibleReducer, {
+    headerVisible: false,
+    titleRendered: true,
+    titleVisible: false,
+    subtitleVisible: false,
+  });
+
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
@@ -62,8 +153,6 @@ export default function Game(): ReactElement {
   const { width: appWidth, height: appHeight } = useWindowSize();
 
   useMountEffect(() => {
-    setTimeout(() => toggleSearchOverlay(true), 500);
-
     // Determine window size if on client
     if (typeof window !== undefined) {
       windowSize.current = {
@@ -71,6 +160,13 @@ export default function Game(): ReactElement {
         appHeight,
       };
     }
+
+    setTimeout(() => dispatchTitleVisible({ type: 'showTitle' }), 0);
+    setTimeout(() => dispatchTitleVisible({ type: 'showSubtitle' }), 750);
+    setTimeout(
+      () => dispatchClickHereVisible({ prop: 'visible', value: true }),
+      2000
+    );
   });
 
   useEffect(() => {
@@ -153,7 +249,7 @@ export default function Game(): ReactElement {
 
   // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
-    setShowConfetti(visible);
+    setConfettiVisible(visible);
 
     if (confettiTimeout.current != null) {
       clearTimeout(confettiTimeout.current);
@@ -161,7 +257,7 @@ export default function Game(): ReactElement {
 
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
-        setShowConfetti(false);
+        setConfettiVisible(false);
       }, confettiDuration);
     }
   };
@@ -171,9 +267,22 @@ export default function Game(): ReactElement {
       <Header
         gameState={gameState}
         resetCards={resetCards}
+        titleVisible={titleVisible}
+        dispatchTitleVisible={dispatchTitleVisible}
+        dispatchClickHereVisible={dispatchClickHereVisible}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
+        {titleVisible.titleRendered && <Title titleVisible={titleVisible} />}
+        {clickHereVisible.rendered && (
+          <ClickHere
+            visible={clickHereVisible.visible}
+            titleVisible={titleVisible}
+            dispatchTitleVisible={dispatchTitleVisible}
+            dispatchClickHereVisible={dispatchClickHereVisible}
+            showSearchOverlay={(): void => toggleSearchOverlay(true)}
+          />
+        )}
         <Tableau
           gameState={gameState}
           setGameState={setGameState}
@@ -189,11 +298,11 @@ export default function Game(): ReactElement {
           showConfetti={(): void => toggleConfetti(true)}
         />
       </div>
-      <Footer />
+      {/* <Footer /> */}
       <Confetti
         width={windowSize.current.appWidth}
         height={windowSize.current.appHeight}
-        numberOfPieces={showConfetti ? confettiAmount : 0}
+        numberOfPieces={confettiVisible ? confettiAmount : 0}
       />
       <SearchOverlay
         gameState={gameState}

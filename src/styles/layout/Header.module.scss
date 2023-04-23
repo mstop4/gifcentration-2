@@ -3,22 +3,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: green;
+  background: none;
   width: 100%;
   padding: 0.5rem;
   flex: 0 1 2rem;
 }
 
 #headerTitle {
-  // flex: 2 1 auto;
-}
-
-#headerQuery {
-  flex: 1 1 auto;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-#headerButtons {
-  // flex: 2 1 auto;
+  font-size: 1.5rem;
+  transition: 1s;
 }

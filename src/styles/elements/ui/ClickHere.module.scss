@@ -1,0 +1,64 @@
+@use '../../globalVariables' as global;
+
+$pointer-size: 18px;
+$bob-distance: 5px;
+
+#clickHere {
+  position: fixed;
+  top: global.$header-space;
+  right: 0;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background: blue;
+  border: 2px solid white;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  animation: bobbing 2s ease-in-out infinite;
+  transition: 1s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #clickHere {
+    animation: none;
+  }
+}
+
+#clickHere:before {
+  content: '';
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: $pointer-size solid transparent;
+  border-right: $pointer-size solid transparent;
+  border-top: $pointer-size solid transparent;
+  border-bottom: $pointer-size solid white;
+  left: 63%;
+  bottom: calc(100% + 2px);
+}
+
+#clickHere:after {
+  content: '';
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: $pointer-size solid transparent;
+  border-right: $pointer-size solid transparent;
+  border-top: $pointer-size solid transparent;
+  border-bottom: $pointer-size solid blue;
+  left: 63%;
+  bottom: calc(100% - 1px);
+}
+
+@keyframes bobbing {
+  0% {
+    transform: translate(0px, $bob-distance);
+  }
+  50% {
+    transform: translate(0px, -$bob-distance);
+  }
+  100% {
+    transform: translate(0px, $bob-distance);
+  }
+}

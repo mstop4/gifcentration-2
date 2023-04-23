@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
-import { GameState } from '../layout/Game';
-import Spinner from './Spinner';
-import styles from '@/styles/elements/LoadingIndicator.module.scss';
+import { GameState } from '../../layout/Game';
+import Spinner from '../ui/Spinner';
+import styles from '@/styles/elements/searchOverlay/LoadingIndicator.module.scss';
 
 export type LoadingIndicatorProps = {
   gameState: GameState;
