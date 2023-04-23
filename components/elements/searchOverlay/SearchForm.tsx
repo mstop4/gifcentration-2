@@ -104,7 +104,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setSearchQuery(() => '');
   };
 
-  const handleRatingChange: ChangeEventHandler<HTMLInputElement> = e => {
+  const handleRatingChange: ChangeEventHandler<HTMLSelectElement> = e => {
     const newRating = e.target.value as Rating;
     setRating(() => newRating);
   };
@@ -163,90 +163,57 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           <FontAwesomeIcon icon={faDeleteLeft} />
         </button>
       </div>
-      <label className={styles.searchL2Label}>Rating</label>
-      <div>
-        <span className={styles.searchRadioGroup}>
-          <input
-            type="radio"
-            id="ratingY"
-            className={styles.searchFilterButton}
-            name="rating"
+      <div id={styles.searchOtherSettings}>
+        <label className={styles.searchL2Label} htmlFor="searchRatingList">
+          Rating
+        </label>
+        <select
+          id={styles.searchRatingList}
+          name="searchRatingList"
+          onChange={handleRatingChange}
+        >
+          <option
             value="y"
-            checked={rating === 'y'}
-            onChange={handleRatingChange}
-          />
-          <label htmlFor="ratingY" className={styles.searchRatingLabel}>
+            className={styles.searchRatingOption}
+            selected={rating === 'y'}
+          >
             Y
-          </label>
-        </span>
-
-        <span className={styles.searchRadioGroup}>
-          <input
-            type="radio"
-            id="ratingG"
-            className={styles.searchFilterButton}
-            name="rating"
+          </option>
+          <option
             value="g"
-            checked={rating === 'g'}
-            onChange={handleRatingChange}
-          />
-          <label htmlFor="ratingG" className={styles.searchRatingLabel}>
+            className={styles.searchRatingOption}
+            selected={rating === 'g'}
+          >
             G
-          </label>
-        </span>
-
-        <span className={styles.searchRadioGroup}>
-          <input
-            type="radio"
-            id="ratingPG"
-            className={styles.searchFilterButton}
-            name="rating"
+          </option>
+          <option
             value="pg"
-            checked={rating === 'pg'}
-            onChange={handleRatingChange}
-          />
-          <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
+            className={styles.searchRatingOption}
+            selected={rating === 'pg'}
+          >
             PG
-          </label>
-        </span>
-
-        <span className={styles.searchRadioGroup}>
-          <input
-            type="radio"
-            id="ratingPG13"
-            className={styles.searchFilterButton}
-            name="rating"
+          </option>
+          <option
             value="pg-13"
-            checked={rating === 'pg-13'}
-            onChange={handleRatingChange}
-          />
-          <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
+            className={styles.searchRatingOption}
+            selected={rating === 'pg-13'}
+          >
             PG-13
-          </label>
-        </span>
-
-        <span className={styles.searchRadioGroup}>
-          <input
-            type="radio"
-            id="ratingR"
-            className={styles.searchFilterButton}
-            name="rating"
+          </option>
+          <option
             value="r"
-            checked={rating === 'r'}
-            onChange={handleRatingChange}
-          />
-          <label htmlFor="ratingR" className={styles.searchRatingLabel}>
+            className={styles.searchRatingOption}
+            selected={rating === 'r'}
+          >
             R
-          </label>
-        </span>
-      </div>
-      <div>
+          </option>
+        </select>
         <label htmlFor="searchNumCards" className={styles.searchL2Label}>
           Tableau Size
         </label>
         <input
           type="number"
-          id="searchNumCards"
+          id={styles.searchNumCards}
           className={styles.searchFieldInput}
           name="tableauSize"
           value={tableauSize}
