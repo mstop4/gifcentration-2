@@ -32,3 +32,8 @@ button {
   background: transparent;
   border: none;
 }
+
+button,
+input {
+  font-family: inherit;
+}

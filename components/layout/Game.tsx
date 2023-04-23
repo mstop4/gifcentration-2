@@ -161,11 +161,11 @@ export default function Game(): ReactElement {
       };
     }
 
-    setTimeout(() => dispatchTitleVisible({ type: 'showTitle' }), 250);
-    setTimeout(() => dispatchTitleVisible({ type: 'showSubtitle' }), 1250);
+    setTimeout(() => dispatchTitleVisible({ type: 'showTitle' }), 0);
+    setTimeout(() => dispatchTitleVisible({ type: 'showSubtitle' }), 750);
     setTimeout(
       () => dispatchClickHereVisible({ prop: 'visible', value: true }),
-      2250
+      2000
     );
   });
 
@@ -298,7 +298,7 @@ export default function Game(): ReactElement {
           showConfetti={(): void => toggleConfetti(true)}
         />
       </div>
-      <Footer />
+      {/* <Footer /> */}
       <Confetti
         width={windowSize.current.appWidth}
         height={windowSize.current.appHeight}

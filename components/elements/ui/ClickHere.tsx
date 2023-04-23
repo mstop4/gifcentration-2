@@ -25,7 +25,6 @@ export default function ClickHere(props: ClickHereProps): ReactElement {
   } = props;
 
   const handleClick = (): void => {
-    showSearchOverlay();
     dispatchClickHereVisible({ prop: 'visible', value: false });
 
     if (titleVisible.titleRendered) {
@@ -35,11 +34,16 @@ export default function ClickHere(props: ClickHereProps): ReactElement {
         dispatchTitleVisible({ type: 'hideSubtitle' });
       }, 250);
       setTimeout(() => {
+        showSearchOverlay();
+      }, 500);
+      setTimeout(() => {
         dispatchClickHereVisible({ prop: 'rendered', value: false });
       }, 1000);
       setTimeout(() => {
         dispatchTitleVisible({ type: 'removeTitle' });
       }, 1250);
+    } else {
+      showSearchOverlay();
     }
 
     if (!titleVisible.headerVisible) {

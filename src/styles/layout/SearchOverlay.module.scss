@@ -17,11 +17,13 @@
 
 .overlayClosed {
   top: -100dvh;
+  pointer-events: none;
   opacity: 1;
 }
 
 .overlayOpen {
   top: 0;
+  pointer-events: all;
   opacity: 1;
 }
 

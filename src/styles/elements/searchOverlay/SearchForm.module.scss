@@ -1,7 +1,6 @@
 @use '../../colourScheme' as colours;
 
-$label-font-size: 2rem;
-$field-font-size: 1.5rem;
+$field-font-size: 1.25rem;
 
 #searchForm {
   display: flex;
@@ -9,17 +8,25 @@ $field-font-size: 1.5rem;
   align-items: center;
 }
 
-.searchMajorLabel {
-  font-size: $label-font-size;
+.searchL1Label {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.searchL2Label {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .searchRatingLabel {
   font-size: $field-font-size;
+  font-weight: 400;
   margin: 0.5rem;
 }
 
 .searchFieldInput {
   font-size: $field-font-size;
+  font-weight: 400;
   background: none;
   color: white;
   margin: 1rem 1rem;
@@ -35,9 +42,13 @@ $field-font-size: 1.5rem;
   box-shadow: 0 0 10px colours.$highlight-color;
 }
 
+.searchRadioGroup {
+  margin: 0 0.4rem;
+}
+
 .searchFilterButton {
-  margin-left: 0.5rem;
-  transform: scale(1.5);
+  margin-right: 0.5rem;
+  transform: scale(2);
 }
 
 #searchClear {

@@ -140,7 +140,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
-      <label className={styles.searchMajorLabel} htmlFor="searchQuery">
+      <label className={styles.searchL1Label} htmlFor="searchQuery">
         Search for GIFs
       </label>
       <div>
@@ -163,75 +163,85 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           <FontAwesomeIcon icon={faDeleteLeft} />
         </button>
       </div>
-      <label className={styles.searchMajorLabel}>Rating</label>
+      <label className={styles.searchL2Label}>Rating</label>
       <div>
-        <input
-          type="radio"
-          id="ratingY"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="y"
-          checked={rating === 'y'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingY" className={styles.searchRatingLabel}>
-          Y
-        </label>
+        <span className={styles.searchRadioGroup}>
+          <input
+            type="radio"
+            id="ratingY"
+            className={styles.searchFilterButton}
+            name="rating"
+            value="y"
+            checked={rating === 'y'}
+            onChange={handleRatingChange}
+          />
+          <label htmlFor="ratingY" className={styles.searchRatingLabel}>
+            Y
+          </label>
+        </span>
 
-        <input
-          type="radio"
-          id="ratingG"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="g"
-          checked={rating === 'g'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingG" className={styles.searchRatingLabel}>
-          G
-        </label>
+        <span className={styles.searchRadioGroup}>
+          <input
+            type="radio"
+            id="ratingG"
+            className={styles.searchFilterButton}
+            name="rating"
+            value="g"
+            checked={rating === 'g'}
+            onChange={handleRatingChange}
+          />
+          <label htmlFor="ratingG" className={styles.searchRatingLabel}>
+            G
+          </label>
+        </span>
 
-        <input
-          type="radio"
-          id="ratingPG"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="pg"
-          checked={rating === 'pg'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
-          PG
-        </label>
+        <span className={styles.searchRadioGroup}>
+          <input
+            type="radio"
+            id="ratingPG"
+            className={styles.searchFilterButton}
+            name="rating"
+            value="pg"
+            checked={rating === 'pg'}
+            onChange={handleRatingChange}
+          />
+          <label htmlFor="ratingPG" className={styles.searchRatingLabel}>
+            PG
+          </label>
+        </span>
 
-        <input
-          type="radio"
-          id="ratingPG13"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="pg-13"
-          checked={rating === 'pg-13'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
-          PG-13
-        </label>
+        <span className={styles.searchRadioGroup}>
+          <input
+            type="radio"
+            id="ratingPG13"
+            className={styles.searchFilterButton}
+            name="rating"
+            value="pg-13"
+            checked={rating === 'pg-13'}
+            onChange={handleRatingChange}
+          />
+          <label htmlFor="ratingPG13" className={styles.searchRatingLabel}>
+            PG-13
+          </label>
+        </span>
 
-        <input
-          type="radio"
-          id="ratingR"
-          className={styles.searchFilterButton}
-          name="rating"
-          value="r"
-          checked={rating === 'r'}
-          onChange={handleRatingChange}
-        />
-        <label htmlFor="ratingR" className={styles.searchRatingLabel}>
-          R
-        </label>
+        <span className={styles.searchRadioGroup}>
+          <input
+            type="radio"
+            id="ratingR"
+            className={styles.searchFilterButton}
+            name="rating"
+            value="r"
+            checked={rating === 'r'}
+            onChange={handleRatingChange}
+          />
+          <label htmlFor="ratingR" className={styles.searchRatingLabel}>
+            R
+          </label>
+        </span>
       </div>
       <div>
-        <label htmlFor="searchNumCards" className={styles.searchMajorLabel}>
+        <label htmlFor="searchNumCards" className={styles.searchL2Label}>
           Tableau Size
         </label>
         <input

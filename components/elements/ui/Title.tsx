@@ -2,15 +2,18 @@ import React, { ReactElement } from 'react';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 import { TitleVisibility } from '../../layout/Game';
+import { Architects_Daughter } from 'next/font/google';
 
 export type TitleProps = {
   titleVisible: TitleVisibility;
 };
 
+const titleFont = Architects_Daughter({ subsets: ['latin'], weight: '400' });
+
 export default function Title(props: TitleProps): ReactElement {
   const { titleVisible } = props;
 
-  const mainTitleClasses = `${styles.mainTitle} ${
+  const mainTitleClasses = `${styles.mainTitle} ${titleFont.className} ${
     titleVisible.titleVisible
       ? genericStyles.elementVisible
       : genericStyles.elementHidden

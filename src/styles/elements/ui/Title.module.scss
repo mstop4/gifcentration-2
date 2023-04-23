@@ -1,7 +1,17 @@
+#title {
+  position: fixed;
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .mainTitle {
+  font-size: 2.5rem;
   transition: 1s;
 }
 
 .subtitle {
+  text-align: center;
   transition: 1s;
 }
