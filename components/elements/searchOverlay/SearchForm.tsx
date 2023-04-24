@@ -170,41 +170,22 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         <select
           id={styles.searchRatingList}
           name="searchRatingList"
+          value={rating}
           onChange={handleRatingChange}
         >
-          <option
-            value="y"
-            className={styles.searchRatingOption}
-            selected={rating === 'y'}
-          >
+          <option value="y" className={styles.searchRatingOption}>
             Y
           </option>
-          <option
-            value="g"
-            className={styles.searchRatingOption}
-            selected={rating === 'g'}
-          >
+          <option value="g" className={styles.searchRatingOption}>
             G
           </option>
-          <option
-            value="pg"
-            className={styles.searchRatingOption}
-            selected={rating === 'pg'}
-          >
+          <option value="pg" className={styles.searchRatingOption}>
             PG
           </option>
-          <option
-            value="pg-13"
-            className={styles.searchRatingOption}
-            selected={rating === 'pg-13'}
-          >
+          <option value="pg-13" className={styles.searchRatingOption}>
             PG-13
           </option>
-          <option
-            value="r"
-            className={styles.searchRatingOption}
-            selected={rating === 'r'}
-          >
+          <option value="r" className={styles.searchRatingOption}>
             R
           </option>
         </select>
