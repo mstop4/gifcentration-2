@@ -59,7 +59,11 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
       rating,
     });
 
-    const response = await fetch('/api/search?' + searchParams);
+    const response = await fetch('/api/search?' + searchParams, {
+      headers: {
+        'x-api-key': process.env.NEXT_PUBLIC_GIFCENTRATION_API_KEY ?? '',
+      },
+    });
     const json = await response.json();
     updateImageData(json);
 
