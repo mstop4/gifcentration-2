@@ -6,7 +6,7 @@ import {
   GameState,
   TitleVisibility,
   TitleVisibilityAction,
-} from '../../layout/Game';
+} from '../../layout/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {

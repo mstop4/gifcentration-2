@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import { IGif } from '@giphy/js-types';
-import { GameState, GifErrorState } from './Game';
+import { GameState, GifErrorState } from './Game.typedefs';
 import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';

@@ -5,7 +5,7 @@ import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Card.module.scss';
 
 export type CardProps = {

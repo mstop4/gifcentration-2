@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { IGif } from '@giphy/js-types';
 import Card from './Card';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

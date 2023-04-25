@@ -5,7 +5,7 @@ import {
   ElementVisibilityAction,
   TitleVisibility,
   TitleVisibilityAction,
-} from '../../layout/Game';
+} from '../../layout/Game.typedefs';
 
 export type ClickHereProps = {
   visible: boolean;

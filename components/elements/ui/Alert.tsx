@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { GifErrorState } from '../../layout/Game';
+import { GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/ui/Alert.module.scss';
 
 export type AlertProps = {

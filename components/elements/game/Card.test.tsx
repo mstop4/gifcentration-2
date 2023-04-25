@@ -3,21 +3,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 import mockIGif from '../../../mockData/IGif.json';
 
 const handleClickMock = jest.fn();
-const makeCard = (
-  flipped = false,
-  active = true,
-  matched = false
-): ReactElement => (
+const makeCard = (flipped = false, matched = false): ReactElement => (
   <Card
     gameState={GameState.Playing}
     index={0}
     imageData={mockIGif as unknown as IGif}
     flipped={flipped}
-    active={active}
     matched={matched}
     handleCardClick={handleClickMock}
     updateImageLoaded={jest.fn()}
@@ -72,7 +67,7 @@ describe('Card', () => {
   });
 
   it('should have a matched class on cardBack when matched', () => {
-    const cardComp = makeCard(false, true, true);
+    const cardComp = makeCard(false, true);
     const { container } = render(cardComp);
     const cardBack = container.querySelector('.back') as Element;
     expect(cardBack).toHaveClass('matched');

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import Tableau from './Tableau';
 import '@testing-library/jest-dom';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 import { IGif } from '@giphy/js-types';
 import mockIGif from '../../../mockData/IGif.json';
 

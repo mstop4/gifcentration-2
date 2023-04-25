@@ -4,7 +4,7 @@ import {
   GameState,
   TitleVisibility,
   TitleVisibilityAction,
-} from './Game';
+} from './Game.typedefs';
 import SearchGifsButton from '../elements/ui/SearchGifsButton';
 import ResetGameButton from '../elements/ui/ResetGameButton';
 import { Architects_Daughter } from 'next/font/google';
