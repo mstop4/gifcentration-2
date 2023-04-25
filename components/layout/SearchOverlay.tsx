@@ -11,9 +11,9 @@ export type SearchOverlayProps = {
   imageLoaded: boolean[];
   resetImageLoaded: (numCards: number) => void;
   overlayVisible: boolean;
-  tableauSize: number;
+  tableauSize: string;
   actualTableauSize: number;
-  setTableauSize: Dispatch<SetStateAction<number>>;
+  setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: IGif[]) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;

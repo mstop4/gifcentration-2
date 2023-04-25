@@ -16,8 +16,8 @@ import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
 export type SearchFormProps = {
-  tableauSize: number;
-  setTableauSize: Dispatch<SetStateAction<number>>;
+  tableauSize: string;
+  setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: IGif[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
@@ -51,11 +51,12 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   // Gets GIFs from API service
   const getGifs = async (): Promise<number> => {
-    console.log(`Getting ${tableauSize / 2} pairs...`);
+    const tableauSizeInt = parseInt(tableauSize);
+    console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
     const searchParams = new URLSearchParams({
       q: searchQuery,
-      limit: (tableauSize / 2).toString(),
+      limit: (tableauSizeInt / 2).toString(),
       rating,
     });
 
@@ -114,7 +115,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   };
 
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setTableauSize(parseInt(e.target.value));
+    setTableauSize(e.target.value);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -123,19 +124,21 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e.preventDefault();
     hideAlert();
     stopConfetti();
+
     setGameState(GameState.Searching);
     const numResults = await getGifs();
     setGameState(GameState.Loading);
+    const tableauSizeInt = parseInt(tableauSize);
 
     if (numResults === 0) {
       // No GIFs found
       setGameState(GameState.Idle);
       showAlert(GifErrorState.NoGifs);
-    } else if (numResults === tableauSize / 2) {
+    } else if (numResults === tableauSizeInt / 2) {
       // There are enough GIFs for every card in the tableau
-      postGifSearchSetup(tableauSize);
+      postGifSearchSetup(tableauSizeInt);
       setGifErrorState(GifErrorState.Ok);
-    } else if (numResults < tableauSize / 2) {
+    } else if (numResults < tableauSizeInt / 2) {
       // There aren't enough GIFs for every card in the tableau, reduce tableau size
       postGifSearchSetup(numResults * 2);
       showAlert(GifErrorState.NotEnoughGifs);

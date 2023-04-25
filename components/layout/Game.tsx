@@ -35,24 +35,22 @@ const confettiAmount = 200;
 const confettiDuration = 10000;
 
 export default function Game(): ReactElement {
-  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+  const [gameState, setGameState] = useState(GameState.Idle);
 
   const [flipped, setFlipped] = useState<boolean[]>([]);
   const [matched, setMatched] = useState<boolean[]>([]);
   const [selectedCardIndexes, setSelectedCardIndexes] = useState<number[]>([]);
-  const [tableauSize, setTableauSize] = useState(defaultTableauSize);
-  const actualTableauSize = useRef<number>(defaultTableauSize);
+  const [tableauSize, setTableauSize] = useState(defaultTableauSize.toString());
+  const actualTableauSize = useRef(defaultTableauSize);
 
   const imageData = useRef<IGif[]>([]);
   const imageIndexes = useRef<number[]>([]);
   const [imageLoaded, setImageLoaded] = useState<boolean[]>([]);
-  const [gifErrorState, setGifErrorState] = useState<GifErrorState>(
-    GifErrorState.Ok
-  );
+  const [gifErrorState, setGifErrorState] = useState(GifErrorState.Ok);
 
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [alertVisible, setAlertVisible] = useState<boolean>(false);
-  const [confettiVisible, setConfettiVisible] = useState<boolean>(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [confettiVisible, setConfettiVisible] = useState(false);
 
   const clickHereVisibleReducer = (
     state: ElementVisibility,
@@ -174,7 +172,7 @@ export default function Game(): ReactElement {
   };
 
   // Resets and reshuffles states passed to tableau
-  const resetCards = (numCards: number = tableauSize): void => {
+  const resetCards = (numCards: number = parseInt(tableauSize)): void => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
     console.log(`Has ${numCards} cards...`);
