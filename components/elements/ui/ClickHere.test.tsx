@@ -72,6 +72,28 @@ describe('ClickHere', () => {
     expect(clickHere).toHaveClass('elementHidden');
   });
 
+  it('should show search overlay when not rendered', () => {
+    const showSearchOverlayMock = jest.fn();
+    const { container } = render(
+      <ClickHere
+        visible={false}
+        titleVisible={{
+          headerVisible: false,
+          titleRendered: false,
+          titleVisible: true,
+          subtitleVisible: true,
+        }}
+        dispatchClickHereVisible={jest.fn()}
+        dispatchTitleVisible={jest.fn()}
+        showSearchOverlay={showSearchOverlayMock}
+      />
+    );
+
+    const clickHere = container.querySelector('#clickHere') as Element;
+    fireEvent.click(clickHere);
+    expect(showSearchOverlayMock).toBeCalled();
+  });
+
   it('calls dispatches and callbacks when clicked', () => {
     const dispatchClickHereVisibleMock = jest.fn();
     const dispatchTitleVisibleMock = jest.fn();

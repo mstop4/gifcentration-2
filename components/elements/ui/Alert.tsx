@@ -36,6 +36,39 @@ export default function Alert(props: AlertProps): ReactElement {
       );
       break;
 
+    case GifErrorState.BadRequest:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Bad Request
+        </>
+      );
+      break;
+
+    case GifErrorState.Forbidden:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Forbidden
+        </>
+      );
+      break;
+
+    case GifErrorState.InternalServerError:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Internal Server Error
+        </>
+      );
+      break;
+
     case GifErrorState.UnknownError:
       bodyClass = styles.alertError;
       bodyText = <>An unknown error occured</>;

@@ -60,6 +60,51 @@ describe('Alert', () => {
     expect(alertBottomText).toBeInTheDocument();
   });
 
+  it('renders the bad request message', () => {
+    const { container } = render(
+      <Alert gifErrorState={GifErrorState.BadRequest} alertVisible={false} />
+    );
+
+    const alert = container.querySelector('.alertBody');
+    const alertTopText = screen.getByText(/could not search for gifs./i);
+    const alertBottomText = screen.getByText(/bad request/i);
+
+    expect(alert).toHaveClass('alertError');
+    expect(alertTopText).toBeInTheDocument();
+    expect(alertBottomText).toBeInTheDocument();
+  });
+
+  it('renders the forbidden message', () => {
+    const { container } = render(
+      <Alert gifErrorState={GifErrorState.Forbidden} alertVisible={false} />
+    );
+
+    const alert = container.querySelector('.alertBody');
+    const alertTopText = screen.getByText(/could not search for gifs./i);
+    const alertBottomText = screen.getByText(/forbidden/i);
+
+    expect(alert).toHaveClass('alertError');
+    expect(alertTopText).toBeInTheDocument();
+    expect(alertBottomText).toBeInTheDocument();
+  });
+
+  it('renders the internal server error message', () => {
+    const { container } = render(
+      <Alert
+        gifErrorState={GifErrorState.InternalServerError}
+        alertVisible={false}
+      />
+    );
+
+    const alert = container.querySelector('.alertBody');
+    const alertTopText = screen.getByText(/could not search for gifs./i);
+    const alertBottomText = screen.getByText(/internal server error/i);
+
+    expect(alert).toHaveClass('alertError');
+    expect(alertTopText).toBeInTheDocument();
+    expect(alertBottomText).toBeInTheDocument();
+  });
+
   it('renders the unknown error message', () => {
     const { container } = render(
       <Alert gifErrorState={GifErrorState.UnknownError} alertVisible={false} />

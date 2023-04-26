@@ -10,6 +10,9 @@ export enum GifErrorState {
   Ok,
   NotEnoughGifs,
   NoGifs,
+  BadRequest,
+  Forbidden,
+  InternalServerError,
   UnknownError,
 }
 

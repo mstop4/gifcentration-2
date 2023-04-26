@@ -15,6 +15,19 @@ import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
+export enum ServerHTTPStatus {
+  Ok = 200,
+  BadRequest = 400,
+  Forbidden = 403,
+  InternalServerError = 500,
+  UnknownError = -1,
+}
+
+export type GifFetchResults = {
+  numResults: number;
+  status: ServerHTTPStatus;
+};
+
 export type SearchFormProps = {
   tableauSize: string;
   setTableauSize: Dispatch<SetStateAction<string>>;
@@ -50,7 +63,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Gets GIFs from API service
-  const getGifs = async (): Promise<number> => {
+  const getGifs = async (): Promise<GifFetchResults> => {
     const tableauSizeInt = parseInt(tableauSize);
     console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
@@ -66,9 +79,30 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
       },
     });
     const json = await response.json();
-    updateImageData(json);
+    const { status } = response;
 
-    return json.length;
+    switch (status) {
+      case ServerHTTPStatus.BadRequest:
+      case ServerHTTPStatus.Forbidden:
+      case ServerHTTPStatus.InternalServerError:
+        return {
+          numResults: 0,
+          status,
+        };
+
+      case ServerHTTPStatus.Ok:
+        updateImageData(json);
+        return {
+          numResults: json.length,
+          status,
+        };
+
+      default:
+        return {
+          numResults: 0,
+          status: ServerHTTPStatus.UnknownError,
+        };
+    }
   };
 
   // Sets up game after receiving gif data
@@ -126,11 +160,31 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     stopConfetti();
 
     setGameState(GameState.Searching);
-    const numResults = await getGifs();
+    const { numResults, status } = await getGifs();
     setGameState(GameState.Loading);
     const tableauSizeInt = parseInt(tableauSize);
 
-    if (numResults === 0) {
+    if (status !== ServerHTTPStatus.Ok) {
+      // Something went wrong with the request
+      setGameState(GameState.Idle);
+
+      switch (status) {
+        case ServerHTTPStatus.BadRequest:
+          showAlert(GifErrorState.BadRequest);
+          break;
+
+        case ServerHTTPStatus.Forbidden:
+          showAlert(GifErrorState.Forbidden);
+          break;
+
+        case ServerHTTPStatus.InternalServerError:
+          showAlert(GifErrorState.InternalServerError);
+          break;
+
+        default:
+          showAlert(GifErrorState.UnknownError);
+      }
+    } else if (numResults === 0) {
       // No GIFs found
       setGameState(GameState.Idle);
       showAlert(GifErrorState.NoGifs);
