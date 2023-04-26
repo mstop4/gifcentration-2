@@ -5,8 +5,13 @@ import '@testing-library/jest-dom';
 import { GameState } from '../../layout/Game.typedefs';
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/IGifs.json';
+import { organizeImages } from '../../../helpers/gif';
 
 const makeTableau = (): ReactElement => {
+  const imageData = mockIGifs.map((imageData: unknown) =>
+    organizeImages(imageData as IGif)
+  );
+
   return (
     <Tableau
       gameState={GameState.Playing}
@@ -16,7 +21,7 @@ const makeTableau = (): ReactElement => {
       matched={[false, false]}
       setMatched={jest.fn()}
       imageIndexes={[0, 0]}
-      imageData={[mockIGifs[0], mockIGifs[1]] as unknown as IGif[]}
+      imageData={imageData}
       selectedCardIndexes={[]}
       updateImageLoaded={jest.fn()}
       setSelectedCardIndexes={jest.fn()}

@@ -10,7 +10,6 @@ import {
   calculateTargetSize,
   findBestRepresentations,
 } from '../../../helpers/gif';
-import Image from 'next/image';
 
 export type CardProps = {
   gameState: GameState;
@@ -39,8 +38,8 @@ export default function Card(props: CardProps): ReactElement {
     handleCardClick(index);
   };
 
-  // Callback for onGifSeen event in Giphy Gif component
-  const handleGifSeen = (): void => {
+  // Callback for onLoad event in picture element
+  const handleGifLoad = (): void => {
     updateImageLoaded(index);
   };
 
@@ -64,13 +63,7 @@ export default function Card(props: CardProps): ReactElement {
   );
 
   // Find best representations
-  const { gif, webp, mp4 } = findBestRepresentations(
-    imageData,
-    targetWidth,
-    true
-  );
-
-  const hideLinks = true; // gameState === GameState.Playing;
+  const { gif, webp } = findBestRepresentations(imageData, targetWidth, true);
 
   return (
     <div className={styles.cardContainer} onClick={handleClick}>
@@ -83,27 +76,15 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          <picture onLoad={handleGifSeen}>
-            {webp.url && <source srcSet={webp.url} />}
-            {mp4.url && <source srcSet={mp4.url} />}
-            {/* <img
+          <picture onLoad={handleGifLoad}>
+            {webp.url && <source type="image/webp" srcSet={webp.url} />}
+            <img
               src={gif.url ?? ''}
-              alt={index.toString()}
+              alt={`${index}. ${imageData.title}`}
               width={targetWidth}
               height={targetHeight}
-            /> */}
-          </picture>
-
-          {/* {imageData && (
-            <Gif
-              gif={imageData}
-              width={newWidth}
-              height={newHeight}
-              hideAttribution={hideLinks}
-              noLink={hideLinks}
-              onGifSeen={handleGifSeen}
             />
-          )} */}
+          </picture>
         </div>
       </div>
     </div>

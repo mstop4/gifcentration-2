@@ -1,20 +1,20 @@
 import { IGif, IImage, IImages } from '@giphy/js-types';
-import { IMP4, IWebP } from '@giphy/js-types/dist/images';
+import { IWebP } from '@giphy/js-types/dist/images';
 
 export type GifData = {
   width: number;
   height: number;
   gifUrl?: string;
-  mp4Url?: string;
   webpUrl?: string;
   originalKey: string;
 };
 
-export type GifDataUrlKeys = 'gifUrl' | 'webpUrl' | 'mp4Url';
+export type GifDataUrlKeys = 'gifUrl' | 'webpUrl';
 
 export type SortedGifData = {
   stills: GifData[];
   animated: GifData[];
+  title: string;
 };
 
 export type BestGifData = {
@@ -27,7 +27,6 @@ export type BestGifData = {
 export type BestGifsResults = {
   gif: BestGifData;
   webp: BestGifData;
-  mp4: BestGifData;
 };
 
 export type BesGifResultsKeys = keyof BestGifsResults;
@@ -41,23 +40,25 @@ const stillKeys = [
   'fixed_height_still',
   '480w_still',
 ];
+
+// Keys commented out only have URLS to MP4s, which are currently unused
 const animatedKeys = [
-  'hd',
+  // 'hd',
   'fixed_height_downsampled',
   'preview_gif',
-  'preview',
+  // 'preview',
   'fixed_height_small',
   'downsized',
   'fixed_width_downsampled',
   'fixed_width',
   'downsized_medium',
-  'original_mp4',
+  // 'original_mp4',
   'downsized_large',
   'preview_webp',
   'original',
   'fixed_width_small',
-  'looping',
-  'downsized_small',
+  // 'looping',
+  // 'downsized_small',
   'fixed_height',
 ];
 
@@ -65,6 +66,7 @@ export const organizeImages = (gifData: IGif): SortedGifData => {
   const sortedData: SortedGifData = {
     stills: [],
     animated: [],
+    title: gifData.title ?? '',
   };
 
   const { images } = gifData;
@@ -94,7 +96,6 @@ export const organizeImages = (gifData: IGif): SortedGifData => {
       width: imageData.width,
       height: imageData.height,
       gifUrl: (imageData as IImage)?.url,
-      mp4Url: (imageData as IMP4)?.mp4,
       webpUrl: (imageData as IWebP)?.webp,
       originalKey: key,
     };
@@ -116,8 +117,8 @@ export const calculateTargetSize = (
   let targetWidth = 100;
   let targetHeight = 100;
 
-  const originalGif = imageData.animated.find(
-    image => image.originalKey === 'original'
+  const originalGif = imageData?.animated?.find(
+    image => image?.originalKey === 'original'
   );
 
   if (originalGif) {
@@ -163,12 +164,6 @@ export const findBestRepresentations = (
       height: 0,
       originalKey: '',
     },
-    mp4: {
-      url: '',
-      width: 0,
-      height: 0,
-      originalKey: '',
-    },
   };
 
   const _assignProps = (
@@ -186,7 +181,6 @@ export const findBestRepresentations = (
     if (image.width >= targetWidth) {
       if (image.gifUrl) _assignProps('gif', image, 'gifUrl');
       if (image.webpUrl) _assignProps('webp', image, 'webpUrl');
-      if (image.mp4Url) _assignProps('mp4', image, 'mp4Url');
     } else {
       if (!Object.values(results).some(key => key.url === '')) {
         // If all urls are filled in, return results object
@@ -198,9 +192,6 @@ export const findBestRepresentations = (
 
         if (results.webp.url === '' && image.webpUrl)
           _assignProps('webp', image, 'webpUrl');
-
-        if (results.mp4.url === '' && image.mp4Url)
-          _assignProps('mp4', image, 'mp4Url');
       }
     }
   }
