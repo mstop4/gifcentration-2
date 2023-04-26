@@ -5,11 +5,11 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { IGif } from '@giphy/js-types';
 import Card from './Card';
 import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
+import { SortedGifData } from '../../../helpers/gif';
 
 export type TableauProps = {
   gameState: GameState;
@@ -19,7 +19,7 @@ export type TableauProps = {
   matched: boolean[];
   setMatched: Dispatch<SetStateAction<boolean[]>>;
   imageIndexes: number[];
-  imageData: IGif[];
+  imageData: SortedGifData[];
   updateImageLoaded: (index: number) => void;
   selectedCardIndexes: number[];
   setSelectedCardIndexes: Dispatch<SetStateAction<number[]>>;

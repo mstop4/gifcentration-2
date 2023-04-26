@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import Confetti from 'react-confetti';
 import { useMountEffect, useWindowSize } from '@react-hookz/web';
-import { IGif } from '@giphy/js-types';
 import Tableau from '../elements/game/Tableau';
 import Header from './Header';
 import Footer from './Footer';
@@ -29,6 +28,7 @@ import {
   TitleVisibility,
   TitleVisibilityAction,
 } from './Game.typedefs';
+import { SortedGifData } from '../../helpers/gif';
 
 const defaultTableauSize = 18;
 const confettiAmount = 200;
@@ -43,7 +43,7 @@ export default function Game(): ReactElement {
   const [tableauSize, setTableauSize] = useState(defaultTableauSize.toString());
   const actualTableauSize = useRef(defaultTableauSize);
 
-  const imageData = useRef<IGif[]>([]);
+  const imageData = useRef<SortedGifData[]>([]);
   const imageIndexes = useRef<number[]>([]);
   const [imageLoaded, setImageLoaded] = useState<boolean[]>([]);
   const [gifErrorState, setGifErrorState] = useState(GifErrorState.Ok);
@@ -150,7 +150,7 @@ export default function Game(): ReactElement {
     }, 1000);
   }, [imageLoaded, gameState]);
 
-  const updateImageData = (data: IGif[]): void => {
+  const updateImageData = (data: SortedGifData[]): void => {
     imageData.current = data;
     actualTableauSize.current = data.length * 2;
     console.log(data);

@@ -1,17 +1,21 @@
 import React, { ReactElement } from 'react';
 import { Measures, useMeasure } from '@react-hookz/web';
-import { Gif } from '@giphy/react-components';
-import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Card.module.scss';
+import {
+  SortedGifData,
+  calculateTargetSize,
+  findBestRepresentations,
+} from '../../../helpers/gif';
+import Image from 'next/image';
 
 export type CardProps = {
   gameState: GameState;
   index: number;
-  imageData: IGif;
+  imageData: SortedGifData;
   flipped: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
@@ -52,28 +56,19 @@ export default function Card(props: CardProps): ReactElement {
   const sizeMultipler = Math.round(Math.min(10, width / 25)) || 1;
   const size = `${sizeMultipler}x` as SizeProp;
 
-  // Determine aspect ratio of image and resize
-  let newWidth = 100;
-  let newHeight = 100;
+  const { targetWidth, targetHeight } = calculateTargetSize(
+    imageData,
+    width,
+    gifSizeScale,
+    defaultSize
+  );
 
-  if (imageData?.images?.original) {
-    const { width: originalWidth, height: originalHeight } =
-      imageData.images.original;
-
-    if (originalWidth >= originalHeight) {
-      // Wide
-      newWidth = (width ?? defaultSize) * gifSizeScale;
-      newHeight =
-        (((width ?? defaultSize) * originalHeight) / originalWidth) *
-        gifSizeScale;
-    } else {
-      // Tall
-      newHeight = (width ?? defaultSize) * gifSizeScale;
-      newWidth =
-        (((width ?? defaultSize) * originalWidth) / originalHeight) *
-        gifSizeScale;
-    }
-  }
+  // Find best representations
+  const { gif, webp, mp4 } = findBestRepresentations(
+    imageData,
+    targetWidth,
+    true
+  );
 
   const hideLinks = true; // gameState === GameState.Playing;
 
@@ -88,7 +83,18 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          {imageData && (
+          <picture onLoad={handleGifSeen}>
+            {webp.url && <source srcSet={webp.url} />}
+            {mp4.url && <source srcSet={mp4.url} />}
+            {/* <img
+              src={gif.url ?? ''}
+              alt={index.toString()}
+              width={targetWidth}
+              height={targetHeight}
+            /> */}
+          </picture>
+
+          {/* {imageData && (
             <Gif
               gif={imageData}
               width={newWidth}
@@ -97,7 +103,7 @@ export default function Card(props: CardProps): ReactElement {
               noLink={hideLinks}
               onGifSeen={handleGifSeen}
             />
-          )}
+          )} */}
         </div>
       </div>
     </div>

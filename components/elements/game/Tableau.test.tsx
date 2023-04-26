@@ -4,7 +4,7 @@ import Tableau from './Tableau';
 import '@testing-library/jest-dom';
 import { GameState } from '../../layout/Game.typedefs';
 import { IGif } from '@giphy/js-types';
-import mockIGif from '../../../mockData/IGif.json';
+import mockIGifs from '../../../mockData/IGifs.json';
 
 const makeTableau = (): ReactElement => {
   return (
@@ -15,8 +15,8 @@ const makeTableau = (): ReactElement => {
       setFlipped={jest.fn()}
       matched={[false, false]}
       setMatched={jest.fn()}
-      imageIndexes={[1, 1]}
-      imageData={[mockIGif, mockIGif] as unknown as IGif[]}
+      imageIndexes={[0, 0]}
+      imageData={[mockIGifs[0], mockIGifs[1]] as unknown as IGif[]}
       selectedCardIndexes={[]}
       updateImageLoaded={jest.fn()}
       setSelectedCardIndexes={jest.fn()}

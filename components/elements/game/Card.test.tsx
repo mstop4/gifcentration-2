@@ -4,14 +4,14 @@ import Card from './Card';
 import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
 import { GameState } from '../../layout/Game.typedefs';
-import mockIGif from '../../../mockData/IGif.json';
+import mockIGifs from '../../../mockData/IGifs.json';
 
 const handleClickMock = jest.fn();
 const makeCard = (flipped = false, matched = false): ReactElement => (
   <Card
     gameState={GameState.Playing}
     index={0}
-    imageData={mockIGif as unknown as IGif}
+    imageData={mockIGifs[0] as unknown as IGif}
     flipped={flipped}
     matched={matched}
     handleCardClick={handleClickMock}

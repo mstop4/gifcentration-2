@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
+import { SortedGifData, organizeImages } from '../../../helpers/gif';
 
 export enum ServerHTTPStatus {
   Ok = 200,
@@ -31,7 +32,7 @@ export type GifFetchResults = {
 export type SearchFormProps = {
   tableauSize: string;
   setTableauSize: Dispatch<SetStateAction<string>>;
-  updateImageData: (data: IGif[]) => void;
+  updateImageData: (data: SortedGifData[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;
@@ -91,7 +92,12 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         };
 
       case ServerHTTPStatus.Ok:
-        updateImageData(json);
+        // Organize image data
+        const organizedData = json.map((imageData: IGif) =>
+          organizeImages(imageData)
+        );
+
+        updateImageData(organizedData);
         return {
           numResults: json.length,
           status,
