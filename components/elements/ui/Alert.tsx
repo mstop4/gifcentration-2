@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { GifErrorState } from '../../layout/Game';
+import { GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/ui/Alert.module.scss';
 
 export type AlertProps = {
@@ -32,6 +32,39 @@ export default function Alert(props: AlertProps): ReactElement {
           Not enough GIFs found.
           <br />
           Reducing tableau size.
+        </>
+      );
+      break;
+
+    case GifErrorState.BadRequest:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Bad Request
+        </>
+      );
+      break;
+
+    case GifErrorState.Forbidden:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Forbidden
+        </>
+      );
+      break;
+
+    case GifErrorState.InternalServerError:
+      bodyClass = styles.alertError;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Internal Server Error
         </>
       );
       break;

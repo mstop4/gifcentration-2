@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import LoadingIndicator from './LoadingIndicator';
 import '@testing-library/jest-dom';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 
 describe('LoadingIndicator', () => {
   it('renders a LoadingIndicator', () => {

@@ -1,3 +1,5 @@
+import { scryptSync, timingSafeEqual } from 'crypto';
+
 export type RectangleDimensions = {
   majorAxisSize: number;
   minorAxisSize: number;
@@ -51,4 +53,11 @@ export const randomIntegerRange = (min: number, max: number): number => {
 
 export const sleep = (duration: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, duration));
+};
+
+export const checkKey = (hash: string, key: string) => {
+  const [hashedPassword, salt] = hash.split('.');
+
+  const buffer = scryptSync(key, salt, 64);
+  return timingSafeEqual(Buffer.from(hashedPassword, 'hex'), buffer);
 };

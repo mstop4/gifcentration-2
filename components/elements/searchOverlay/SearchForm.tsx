@@ -12,12 +12,25 @@ import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
-import { GameState, GifErrorState } from '../../layout/Game';
+import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
+export enum ServerHTTPStatus {
+  Ok = 200,
+  BadRequest = 400,
+  Forbidden = 403,
+  InternalServerError = 500,
+  UnknownError = -1,
+}
+
+export type GifFetchResults = {
+  numResults: number;
+  status: ServerHTTPStatus;
+};
+
 export type SearchFormProps = {
-  tableauSize: number;
-  setTableauSize: Dispatch<SetStateAction<number>>;
+  tableauSize: string;
+  setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: IGif[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
@@ -50,20 +63,46 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Gets GIFs from API service
-  const getGifs = async (): Promise<number> => {
-    console.log(`Getting ${tableauSize / 2} pairs...`);
+  const getGifs = async (): Promise<GifFetchResults> => {
+    const tableauSizeInt = parseInt(tableauSize);
+    console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
     const searchParams = new URLSearchParams({
       q: searchQuery,
-      limit: (tableauSize / 2).toString(),
+      limit: (tableauSizeInt / 2).toString(),
       rating,
     });
 
-    const response = await fetch('/api/search?' + searchParams);
+    const response = await fetch('/api/search?' + searchParams, {
+      headers: {
+        'x-api-key': process.env.NEXT_PUBLIC_GIFCENTRATION_API_KEY ?? '',
+      },
+    });
     const json = await response.json();
-    updateImageData(json);
+    const { status } = response;
 
-    return json.length;
+    switch (status) {
+      case ServerHTTPStatus.BadRequest:
+      case ServerHTTPStatus.Forbidden:
+      case ServerHTTPStatus.InternalServerError:
+        return {
+          numResults: 0,
+          status,
+        };
+
+      case ServerHTTPStatus.Ok:
+        updateImageData(json);
+        return {
+          numResults: json.length,
+          status,
+        };
+
+      default:
+        return {
+          numResults: 0,
+          status: ServerHTTPStatus.UnknownError,
+        };
+    }
   };
 
   // Sets up game after receiving gif data
@@ -110,7 +149,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   };
 
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setTableauSize(parseInt(e.target.value));
+    setTableauSize(e.target.value);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -119,19 +158,41 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     e.preventDefault();
     hideAlert();
     stopConfetti();
-    setGameState(GameState.Searching);
-    const numResults = await getGifs();
-    setGameState(GameState.Loading);
 
-    if (numResults === 0) {
+    setGameState(GameState.Searching);
+    const { numResults, status } = await getGifs();
+    setGameState(GameState.Loading);
+    const tableauSizeInt = parseInt(tableauSize);
+
+    if (status !== ServerHTTPStatus.Ok) {
+      // Something went wrong with the request
+      setGameState(GameState.Idle);
+
+      switch (status) {
+        case ServerHTTPStatus.BadRequest:
+          showAlert(GifErrorState.BadRequest);
+          break;
+
+        case ServerHTTPStatus.Forbidden:
+          showAlert(GifErrorState.Forbidden);
+          break;
+
+        case ServerHTTPStatus.InternalServerError:
+          showAlert(GifErrorState.InternalServerError);
+          break;
+
+        default:
+          showAlert(GifErrorState.UnknownError);
+      }
+    } else if (numResults === 0) {
       // No GIFs found
       setGameState(GameState.Idle);
       showAlert(GifErrorState.NoGifs);
-    } else if (numResults === tableauSize / 2) {
+    } else if (numResults === tableauSizeInt / 2) {
       // There are enough GIFs for every card in the tableau
-      postGifSearchSetup(tableauSize);
+      postGifSearchSetup(tableauSizeInt);
       setGifErrorState(GifErrorState.Ok);
-    } else if (numResults < tableauSize / 2) {
+    } else if (numResults < tableauSizeInt / 2) {
       // There aren't enough GIFs for every card in the tableau, reduce tableau size
       postGifSearchSetup(numResults * 2);
       showAlert(GifErrorState.NotEnoughGifs);
@@ -170,41 +231,22 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         <select
           id={styles.searchRatingList}
           name="searchRatingList"
+          value={rating}
           onChange={handleRatingChange}
         >
-          <option
-            value="y"
-            className={styles.searchRatingOption}
-            selected={rating === 'y'}
-          >
+          <option value="y" className={styles.searchRatingOption}>
             Y
           </option>
-          <option
-            value="g"
-            className={styles.searchRatingOption}
-            selected={rating === 'g'}
-          >
+          <option value="g" className={styles.searchRatingOption}>
             G
           </option>
-          <option
-            value="pg"
-            className={styles.searchRatingOption}
-            selected={rating === 'pg'}
-          >
+          <option value="pg" className={styles.searchRatingOption}>
             PG
           </option>
-          <option
-            value="pg-13"
-            className={styles.searchRatingOption}
-            selected={rating === 'pg-13'}
-          >
+          <option value="pg-13" className={styles.searchRatingOption}>
             PG-13
           </option>
-          <option
-            value="r"
-            className={styles.searchRatingOption}
-            selected={rating === 'r'}
-          >
+          <option value="r" className={styles.searchRatingOption}>
             R
           </option>
         </select>

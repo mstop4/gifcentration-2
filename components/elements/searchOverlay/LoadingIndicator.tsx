@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { GameState } from '../../layout/Game';
+import { GameState } from '../../layout/Game.typedefs';
 import Spinner from '../ui/Spinner';
 import styles from '@/styles/elements/searchOverlay/LoadingIndicator.module.scss';
 

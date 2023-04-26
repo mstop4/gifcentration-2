@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import { IGif } from '@giphy/js-types';
-import { GameState, GifErrorState } from './Game';
+import { GameState, GifErrorState } from './Game.typedefs';
 import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
@@ -11,9 +11,9 @@ export type SearchOverlayProps = {
   imageLoaded: boolean[];
   resetImageLoaded: (numCards: number) => void;
   overlayVisible: boolean;
-  tableauSize: number;
+  tableauSize: string;
   actualTableauSize: number;
-  setTableauSize: Dispatch<SetStateAction<number>>;
+  setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: IGif[]) => void;
   resetCards: (numCards: number) => void;
   setGameState: Dispatch<SetStateAction<GameState>>;

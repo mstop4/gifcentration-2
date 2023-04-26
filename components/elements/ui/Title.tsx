@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
-import { TitleVisibility } from '../../layout/Game';
+import { TitleVisibility } from '../../layout/Game.typedefs';
 import { Architects_Daughter } from 'next/font/google';
 
 export type TitleProps = {

@@ -3,6 +3,7 @@ import {
   getRectangleDimensions,
   pairShuffler,
   sleep,
+  checkKey,
 } from '.';
 
 describe('pairShuffler', () => {
@@ -84,5 +85,34 @@ describe('randomIntegerRange', () => {
 
   afterAll(() => {
     jest.spyOn(global.Math, 'random').mockRestore();
+  });
+});
+
+describe('checkKey', () => {
+  it('should return true', () => {
+    const key =
+      'd0f103c3b16c337d8a03616e775356599fd19b4bb45820d0832dcb047c6b787c';
+    const hash =
+      'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d7751f.6fd8f6789cfebce0';
+    const result = checkKey(hash, key);
+    expect(result).toBeTruthy();
+  });
+
+  it('should return false due to incorrect key', () => {
+    const key =
+      'd0f103c3b16c337d8a03616e775356599fd19b4bb45820d0832dcb047c6b787d';
+    const hash =
+      'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d7751f.6fd8f6789cfebce0';
+    const result = checkKey(hash, key);
+    expect(result).toBeFalsy();
+  });
+
+  it('should return false due to incorrect hash', () => {
+    const key =
+      'd0f103c3b16c337d8a03616e775356599fd19b4bb45820d0832dcb047c6b787c';
+    const hash =
+      'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d77510.6fd8f6789cfebce1';
+    const result = checkKey(hash, key);
+    expect(result).toBeFalsy();
   });
 });

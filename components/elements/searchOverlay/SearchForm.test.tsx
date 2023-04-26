@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
-    tableauSize={2}
+    tableauSize={'2'}
     setTableauSize={jest.fn()}
     resetCards={jest.fn()}
     setGameState={jest.fn()}
