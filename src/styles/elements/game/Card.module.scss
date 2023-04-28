@@ -41,6 +41,10 @@
   transition: background-color 0.3s ease-out;
 }
 
+.cardImage {
+  display: block;
+}
+
 .front {
   display: flex;
   justify-content: center;
@@ -59,6 +63,8 @@
   justify-content: center;
   background-color: colours.$secondary-color;
   transform: rotateY(180deg);
+  overflow-x: hidden;
+  overflow-y: hidden;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -72,10 +78,34 @@
   transform: rotateY(180deg);
 }
 
-.active {
-  opacity: 1;
-}
+@media (prefers-reduced-motion: reduce) {
+  .back {
+    transform: none;
+    opacity: 0;
+    transition: 0.25s;
+  }
 
-.inactive {
-  opacity: 0;
+  .matched {
+    transform: none;
+  }
+
+  .matched .front {
+    opacity: 0;
+  }
+
+  .matched .back {
+    opacity: 1;
+  }
+
+  .flipped {
+    transform: none;
+  }
+
+  .flipped .front {
+    opacity: 1;
+  }
+
+  .flipped .back {
+    opacity: 1;
+  }
 }

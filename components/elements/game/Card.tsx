@@ -1,17 +1,20 @@
 import React, { ReactElement } from 'react';
 import { Measures, useMeasure } from '@react-hookz/web';
-import { Gif } from '@giphy/react-components';
-import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Card.module.scss';
+import {
+  SortedGifData,
+  calculateTargetSize,
+  findBestRepresentations,
+} from '../../../helpers/gif';
+import GifOverlay from './GifOverlay';
 
 export type CardProps = {
-  gameState: GameState;
+  reduceMotions: boolean;
   index: number;
-  imageData: IGif;
+  imageData: SortedGifData;
   flipped: boolean;
   matched: boolean;
   handleCardClick: (index: number) => void;
@@ -23,6 +26,7 @@ const gifSizeScale = 0.9;
 
 export default function Card(props: CardProps): ReactElement {
   const {
+    reduceMotions,
     index,
     imageData,
     flipped,
@@ -35,8 +39,8 @@ export default function Card(props: CardProps): ReactElement {
     handleCardClick(index);
   };
 
-  // Callback for onGifSeen event in Giphy Gif component
-  const handleGifSeen = (): void => {
+  // Callback for onLoad event in picture element
+  const handleGifLoad = (): void => {
     updateImageLoaded(index);
   };
 
@@ -52,30 +56,19 @@ export default function Card(props: CardProps): ReactElement {
   const sizeMultipler = Math.round(Math.min(10, width / 25)) || 1;
   const size = `${sizeMultipler}x` as SizeProp;
 
-  // Determine aspect ratio of image and resize
-  let newWidth = 100;
-  let newHeight = 100;
+  const { targetWidth, targetHeight } = calculateTargetSize(
+    imageData,
+    width,
+    gifSizeScale,
+    defaultSize
+  );
 
-  if (imageData?.images?.original) {
-    const { width: originalWidth, height: originalHeight } =
-      imageData.images.original;
-
-    if (originalWidth >= originalHeight) {
-      // Wide
-      newWidth = (width ?? defaultSize) * gifSizeScale;
-      newHeight =
-        (((width ?? defaultSize) * originalHeight) / originalWidth) *
-        gifSizeScale;
-    } else {
-      // Tall
-      newHeight = (width ?? defaultSize) * gifSizeScale;
-      newWidth =
-        (((width ?? defaultSize) * originalWidth) / originalHeight) *
-        gifSizeScale;
-    }
-  }
-
-  const hideLinks = true; // gameState === GameState.Playing;
+  // Find best representations
+  const { gif, webp } = findBestRepresentations(
+    imageData,
+    targetWidth,
+    !reduceMotions
+  );
 
   return (
     <div className={styles.cardContainer} onClick={handleClick}>
@@ -88,16 +81,18 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          {imageData && (
-            <Gif
-              gif={imageData}
-              width={newWidth}
-              height={newHeight}
-              hideAttribution={hideLinks}
-              noLink={hideLinks}
-              onGifSeen={handleGifSeen}
-            />
-          )}
+          <GifOverlay active={matched} linkUrl={imageData.linkUrl}>
+            <picture onLoad={handleGifLoad} data-testid="card picture">
+              {webp.url && <source type="image/webp" srcSet={webp.url} />}
+              <img
+                className={styles.cardImage}
+                src={gif.url}
+                alt={`${index}. ${imageData.title}`}
+                width={targetWidth}
+                height={targetHeight}
+              />
+            </picture>
+          </GifOverlay>
         </div>
       </div>
     </div>
