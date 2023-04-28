@@ -7,7 +7,9 @@ let isReady = false;
 
 async function getCache(): Promise<RedisClientType> {
   if (!isReady) {
-    redisClient = createClient();
+    redisClient = createClient({
+      url: `redis://${process.env.REDIS_SERVER_URL}`,
+    });
     redisClient.on('error', err => console.log(`Redis Error: ${err}`));
     redisClient.on('connect', () => console.log('Redis connected'));
     redisClient.on('reconnecting', () => console.log('Redis reconnecting'));
