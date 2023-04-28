@@ -3,16 +3,16 @@ import { Measures, useMeasure } from '@react-hookz/web';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Card.module.scss';
 import {
   SortedGifData,
   calculateTargetSize,
   findBestRepresentations,
 } from '../../../helpers/gif';
+import GifOverlay from './GifOverlay';
 
 export type CardProps = {
-  gameState: GameState;
+  reduceMotions: boolean;
   index: number;
   imageData: SortedGifData;
   flipped: boolean;
@@ -26,6 +26,7 @@ const gifSizeScale = 0.9;
 
 export default function Card(props: CardProps): ReactElement {
   const {
+    reduceMotions,
     index,
     imageData,
     flipped,
@@ -63,7 +64,11 @@ export default function Card(props: CardProps): ReactElement {
   );
 
   // Find best representations
-  const { gif, webp } = findBestRepresentations(imageData, targetWidth, true);
+  const { gif, webp } = findBestRepresentations(
+    imageData,
+    targetWidth,
+    !reduceMotions
+  );
 
   return (
     <div className={styles.cardContainer} onClick={handleClick}>
@@ -76,15 +81,18 @@ export default function Card(props: CardProps): ReactElement {
           />
         </div>
         <div className={cardBackClasses}>
-          <picture onLoad={handleGifLoad}>
-            {webp.url && <source type="image/webp" srcSet={webp.url} />}
-            <img
-              src={gif.url ?? ''}
-              alt={`${index}. ${imageData.title}`}
-              width={targetWidth}
-              height={targetHeight}
-            />
-          </picture>
+          <GifOverlay active={matched} linkUrl={imageData.linkUrl}>
+            <picture onLoad={handleGifLoad}>
+              {webp.url && <source type="image/webp" srcSet={webp.url} />}
+              <img
+                className={styles.cardImage}
+                src={gif.url ?? ''}
+                alt={`${index}. ${imageData.title}`}
+                width={targetWidth}
+                height={targetHeight}
+              />
+            </picture>
+          </GifOverlay>
         </div>
       </div>
     </div>

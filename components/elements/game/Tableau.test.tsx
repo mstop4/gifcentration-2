@@ -4,7 +4,7 @@ import Tableau from './Tableau';
 import '@testing-library/jest-dom';
 import { GameState } from '../../layout/Game.typedefs';
 import { IGif } from '@giphy/js-types';
-import mockIGifs from '../../../mockData/IGifs.json';
+import mockIGifs from '../../../mocks/IGifs.json';
 import { organizeImages } from '../../../helpers/gif';
 
 const makeTableau = (): ReactElement => {
@@ -14,6 +14,7 @@ const makeTableau = (): ReactElement => {
 
   return (
     <Tableau
+      reduceMotions={false}
       gameState={GameState.Playing}
       setGameState={jest.fn()}
       flipped={[false, false]}

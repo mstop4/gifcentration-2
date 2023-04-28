@@ -15,6 +15,7 @@ export type SortedGifData = {
   stills: GifData[];
   animated: GifData[];
   title: string;
+  linkUrl: string;
 };
 
 export type BestGifData = {
@@ -67,6 +68,7 @@ export const organizeImages = (gifData: IGif): SortedGifData => {
     stills: [],
     animated: [],
     title: gifData.title ?? '',
+    linkUrl: gifData.url ?? '',
   };
 
   const { images } = gifData;
@@ -150,7 +152,7 @@ export const findBestRepresentations = (
   targetWidth: number,
   isAnimated: boolean
 ) => {
-  const gifDataArray = isAnimated ? imageData.animated : imageData.stills;
+  const gifDataArray = isAnimated ? imageData?.animated : imageData?.stills;
   const results: BestGifsResults = {
     gif: {
       url: '',

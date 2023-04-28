@@ -1,15 +1,15 @@
 import React, {
   ReactElement,
   useEffect,
+  useMemo,
   useReducer,
   useRef,
   useState,
 } from 'react';
 import Confetti from 'react-confetti';
-import { useMountEffect, useWindowSize } from '@react-hookz/web';
+import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
 import Tableau from '../elements/game/Tableau';
 import Header from './Header';
-import Footer from './Footer';
 import SearchOverlay from './SearchOverlay';
 import Alert from '../elements/ui/Alert';
 import {
@@ -35,6 +35,7 @@ const confettiAmount = 200;
 const confettiDuration = 10000;
 
 export default function Game(): ReactElement {
+  const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [gameState, setGameState] = useState(GameState.Idle);
 
   const [flipped, setFlipped] = useState<boolean[]>([]);
@@ -250,6 +251,7 @@ export default function Game(): ReactElement {
         <Tableau
           gameState={gameState}
           setGameState={setGameState}
+          reduceMotions={reduceMotions ?? false}
           flipped={flipped}
           setFlipped={setFlipped}
           matched={matched}

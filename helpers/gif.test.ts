@@ -1,5 +1,5 @@
 import { IGif } from '@giphy/js-types';
-import mockIGifs from '../mockData/IGifs.json';
+import mockIGifs from '../mocks/IGifs.json';
 import { organizeImages } from './gif';
 
 describe.only('organizeImages', () => {

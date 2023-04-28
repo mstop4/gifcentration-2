@@ -3,8 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
-import { GameState } from '../../layout/Game.typedefs';
-import mockIGifs from '../../../mockData/IGifs.json';
+import mockIGifs from '../../../mocks/IGifs.json';
 import { organizeImages } from '../../../helpers/gif';
 
 const handleClickMock = jest.fn();
@@ -13,7 +12,7 @@ const makeCard = (flipped = false, matched = false): ReactElement => {
 
   return (
     <Card
-      gameState={GameState.Playing}
+      reduceMotions={false}
       index={0}
       imageData={imageData}
       flipped={flipped}

@@ -14,6 +14,7 @@ import { SortedGifData } from '../../../helpers/gif';
 export type TableauProps = {
   gameState: GameState;
   setGameState: Dispatch<SetStateAction<GameState>>;
+  reduceMotions: boolean;
   flipped: boolean[];
   setFlipped: Dispatch<SetStateAction<boolean[]>>;
   matched: boolean[];
@@ -32,6 +33,7 @@ export default function Tableau(props: TableauProps): ReactElement {
   const {
     gameState,
     setGameState,
+    reduceMotions,
     flipped,
     setFlipped,
     matched,
@@ -102,12 +104,12 @@ export default function Tableau(props: TableauProps): ReactElement {
       <Card
         key={i}
         index={i}
+        reduceMotions={reduceMotions}
         imageData={imageData[imageIndexes[i]]}
         flipped={flipped[i]}
         matched={matched[i]}
         handleCardClick={handleCardClick}
         updateImageLoaded={updateImageLoaded}
-        gameState={gameState}
       />
     );
   }
