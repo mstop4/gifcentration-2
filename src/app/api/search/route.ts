@@ -1,7 +1,8 @@
-import giphyFetch from '../../../../lib/giphySDK';
-import { checkKey, randomIntegerRange } from '../../../../helpers';
-import { Rating } from '@giphy/js-fetch-api';
 import { NextResponse } from 'next/server';
+import { Rating } from '@giphy/js-fetch-api';
+import giphyFetch from '../../../../lib/giphySDK';
+import { getCache } from '../../../../lib/redis';
+import { checkKey, randomIntegerRange } from '../../../../helpers';
 
 const maxLimit = 100;
 
@@ -23,6 +24,8 @@ export async function GET(request: Request): Promise<NextResponse> {
   const result = checkKey(process.env.GIFCENTRATION_API_HASH, key);
   if (!result)
     return NextResponse.json({ status: '403 Forbidden' }, { status: 403 });
+
+  const cache = await getCache();
 
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q') ?? '';

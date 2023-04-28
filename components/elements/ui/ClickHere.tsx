@@ -1,11 +1,11 @@
-import React, { Dispatch, ReactElement } from 'react';
-import styles from '@/styles/elements/ui/ClickHere.module.scss';
-import genericStyles from '@/styles/GenericStyles.module.scss';
+import type { Dispatch, ReactElement } from 'react';
 import {
   ElementVisibilityAction,
   TitleVisibility,
   TitleVisibilityAction,
 } from '../../layout/Game.typedefs';
+import styles from '@/styles/elements/ui/ClickHere.module.scss';
+import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type ClickHereProps = {
   visible: boolean;

@@ -1,15 +1,10 @@
-import React, {
-  Dispatch,
-  ReactElement,
-  SetStateAction,
-  useCallback,
-  useEffect,
-} from 'react';
+import { useCallback, useEffect } from 'react';
 import Card from './Card';
+import { SortedGifData } from '../../../helpers/gif';
+import type { ReactElement, Dispatch, SetStateAction } from 'react';
 import { GameState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
-import { SortedGifData } from '../../../helpers/gif';
 
 export type TableauProps = {
   gameState: GameState;

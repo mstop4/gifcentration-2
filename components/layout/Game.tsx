@@ -1,25 +1,18 @@
-import React, {
-  ReactElement,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import Confetti from 'react-confetti';
 import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
-import Tableau from '../elements/game/Tableau';
 import Header from './Header';
 import SearchOverlay from './SearchOverlay';
+import Tableau from '../elements/game/Tableau';
 import Alert from '../elements/ui/Alert';
+import Title from '../elements/ui/Title';
+import ClickHere from '../elements/ui/ClickHere';
 import {
   RectangleDimensions,
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import styles from '@/styles/layout/Game.module.scss';
-import Title from '../elements/ui/Title';
-import ClickHere from '../elements/ui/ClickHere';
+import { SortedGifData } from '../../helpers/gif';
 import {
   ElementVisibility,
   ElementVisibilityAction,
@@ -28,7 +21,8 @@ import {
   TitleVisibility,
   TitleVisibilityAction,
 } from './Game.typedefs';
-import { SortedGifData } from '../../helpers/gif';
+import type { ReactElement } from 'react';
+import styles from '@/styles/layout/Game.module.scss';
 
 const defaultTableauSize = 18;
 const confettiAmount = 200;

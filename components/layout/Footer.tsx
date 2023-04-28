@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import styles from '@/styles/layout/Footer.module.scss';
 
 export default function Footer(): ReactElement {

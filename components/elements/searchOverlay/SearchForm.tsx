@@ -1,20 +1,19 @@
-import React, {
+import React, { useRef, useState } from 'react';
+import type {
+  ReactElement,
   ChangeEventHandler,
   Dispatch,
   FormEventHandler,
   MouseEventHandler,
-  ReactElement,
   SetStateAction,
-  useRef,
-  useState,
 } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
-import { SortedGifData, organizeImages } from '../../../helpers/gif';
 
 export enum ServerHTTPStatus {
   Ok = 200,
