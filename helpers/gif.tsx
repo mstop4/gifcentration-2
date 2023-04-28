@@ -116,8 +116,8 @@ export const calculateTargetSize = (
   defaultSize: number
 ) => {
   // Determine aspect ratio of image and resize
-  let targetWidth = 100;
-  let targetHeight = 100;
+  let targetWidth = defaultSize;
+  let targetHeight = defaultSize;
 
   const originalGif = imageData?.animated?.find(
     image => image?.originalKey === 'original'

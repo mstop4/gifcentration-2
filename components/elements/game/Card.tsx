@@ -82,11 +82,11 @@ export default function Card(props: CardProps): ReactElement {
         </div>
         <div className={cardBackClasses}>
           <GifOverlay active={matched} linkUrl={imageData.linkUrl}>
-            <picture onLoad={handleGifLoad}>
+            <picture onLoad={handleGifLoad} data-testid="card picture">
               {webp.url && <source type="image/webp" srcSet={webp.url} />}
               <img
                 className={styles.cardImage}
-                src={gif.url ?? ''}
+                src={gif.url}
                 alt={`${index}. ${imageData.title}`}
                 width={targetWidth}
                 height={targetHeight}

@@ -643,5 +643,47 @@
     "is_realtime": false,
     "is_removed": false,
     "is_dynamic": false
+  },
+  {
+    "type": "gif",
+    "id": "bork",
+    "url": "https://giphy.com/gifs/keepupwithjaz-shiba-inu-kuwj-236NVNeNqG9AI05pgL",
+    "slug": "bork-borken",
+    "bitly_gif_url": "",
+    "bitly_url": "",
+    "embed_url": "",
+    "username": "",
+    "source": "",
+    "title": "Broken Gif",
+    "rating": "g",
+    "content_url": "",
+    "source_tld": "",
+    "source_post_url": "",
+    "is_sticker": false,
+    "import_datetime": "2023-02-19 15:40:25",
+    "trending_datetime": "2023-07-01 18:01:01",
+    "images": {},
+    "analytics_response_payload": "e=",
+    "analytics": {
+      "onload": {
+        "url": ""
+      },
+      "onclick": {
+        "url": ""
+      },
+      "onsent": {
+        "url": ""
+      }
+    },
+    "tags": [],
+    "is_anonymous": false,
+    "is_community": false,
+    "is_featured": false,
+    "is_hidden": false,
+    "is_indexable": false,
+    "is_preserve_size": false,
+    "is_realtime": false,
+    "is_removed": false,
+    "is_dynamic": false
   }
 ]
