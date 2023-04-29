@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import giphyFetch from '../../../../lib/giphySDK';
 import { getCache } from '../../../../lib/redis';
 import { checkKey, randomIntegerRange } from '../../../../helpers';
+import serverConfig from '../../../../config/serverConfig';
 import type { Rating } from '@giphy/js-fetch-api';
 
-const maxLimit = 100;
-const cacheExpiryTime = 60 * 60 * 30; // seconds
+const { maxLimit, cacheExpiryTime } = serverConfig.api.search;
 
 // GET /api/search
 // q: string

@@ -8,6 +8,7 @@ import {
   calculateTargetSize,
   findBestRepresentations,
 } from '../../../helpers/gif';
+import clientConfig from '../../../config/clientConfig';
 import type { ReactElement } from 'react';
 import styles from '@/styles/elements/game/Card.module.scss';
 
@@ -21,8 +22,7 @@ export type CardProps = {
   updateImageLoaded: (index: number) => void;
 };
 
-const defaultSize = 100;
-const gifSizeScale = 0.9;
+const { defaultSize, gifSizeScale } = clientConfig.card;
 
 export default function Card(props: CardProps): ReactElement {
   const {

@@ -8,12 +8,14 @@ export type LoadingIndicatorProps = {
   gameState: GameState;
   imageLoaded: boolean[];
   actualTableauSize: number;
+  longWaitMsgVisible: boolean;
 };
 
 export default function LoadingIndicator(
   props: LoadingIndicatorProps
 ): ReactElement {
-  const { gameState, imageLoaded, actualTableauSize } = props;
+  const { gameState, imageLoaded, actualTableauSize, longWaitMsgVisible } =
+    props;
   const numImagesLoaded = imageLoaded.reduce(
     (total, current) => (current ? total + 1 : total),
     0
@@ -25,7 +27,7 @@ export default function LoadingIndicator(
       {gameState === GameState.Searching && <span>Searching...</span>}
       {gameState === GameState.Loading && (
         <>
-          <span>Loading...</span>
+          <span>{longWaitMsgVisible ? 'Still ' : ''} Pre-loading GIFs...</span>
           <progress value={numImagesLoaded} max={actualTableauSize}></progress>
         </>
       )}
