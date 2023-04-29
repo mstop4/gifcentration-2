@@ -5,6 +5,7 @@ import { getCache } from '../../../../lib/redis';
 import { checkKey, randomIntegerRange } from '../../../../helpers';
 
 const maxLimit = 100;
+const cacheExpiryTime = 60 * 60 * 30; // seconds
 
 // GET /api/search
 // q: string
@@ -25,19 +26,32 @@ export async function GET(request: Request): Promise<NextResponse> {
   if (!result)
     return NextResponse.json({ status: '403 Forbidden' }, { status: 403 });
 
-  const cache = await getCache();
-
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q') ?? '';
   const rating = (searchParams.get('rating') ?? 'g') as Rating;
   const limit = parseInt(searchParams.get('limit') ?? '9');
+  let results;
 
-  const { data: results } = await giphyFetch.search(q, {
-    sort: 'relevant',
-    limit: maxLimit,
-    rating,
-  });
+  const cache = await getCache();
+  const queryIsCached = await cache.exists(`query:${q}:${rating}`);
 
+  if (queryIsCached) {
+    // Get cached search results from Redis
+    const jsonStr = await cache.get(`query:${q}:${rating}`);
+    results = jsonStr ? JSON.parse(jsonStr) : [];
+  } else {
+    // Get fresh search results from Giphy and cache it
+    ({ data: results } = await giphyFetch.search(q, {
+      sort: 'relevant',
+      limit: maxLimit,
+      rating,
+    }));
+    await cache.set(`query:${q}:${rating}`, JSON.stringify(results), {
+      EX: cacheExpiryTime,
+    });
+  }
+
+  // Take a random sample of `limit` gifs from results
   const selection = [];
   for (let i = 0; i < limit; i++) {
     // All gone :(
