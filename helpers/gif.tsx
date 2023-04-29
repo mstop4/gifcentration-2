@@ -30,7 +30,7 @@ export type BestGifsResults = {
   webp: BestGifData;
 };
 
-export type BesGifResultsKeys = keyof BestGifsResults;
+export type BestGifResultsKeys = keyof BestGifsResults;
 
 const stillKeys = [
   'fixed_width_still',
@@ -169,7 +169,7 @@ export const findBestRepresentations = (
   };
 
   const _assignProps = (
-    resultsKey: BesGifResultsKeys,
+    resultsKey: BestGifResultsKeys,
     image: GifData,
     urlKey: GifDataUrlKeys
   ) => {

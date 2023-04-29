@@ -1,5 +1,5 @@
 import { IGif } from '@giphy/js-types';
-import mockIGifs from '../mocks/IGifs.json';
+import mockIGifs from '../mocks/clientIGifs.json';
 import {
   calculateTargetSize,
   findBestRepresentations,

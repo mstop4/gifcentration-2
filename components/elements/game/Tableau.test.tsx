@@ -4,7 +4,7 @@ import Tableau from './Tableau';
 import '@testing-library/jest-dom';
 import { GameState } from '../../layout/Game.typedefs';
 import { IGif } from '@giphy/js-types';
-import mockIGifs from '../../../mocks/IGifs.json';
+import mockIGifs from '../../../mocks/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
 
 const makeTableau = (): ReactElement => {

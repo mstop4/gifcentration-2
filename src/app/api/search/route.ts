@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { Rating } from '@giphy/js-fetch-api';
 import giphyFetch from '../../../../lib/giphySDK';
 import { getCache } from '../../../../lib/redis';
 import { checkKey, randomIntegerRange } from '../../../../helpers';
+import type { Rating } from '@giphy/js-fetch-api';
 
 const maxLimit = 100;
 const cacheExpiryTime = 60 * 60 * 30; // seconds
@@ -41,11 +41,13 @@ export async function GET(request: Request): Promise<NextResponse> {
     results = jsonStr ? JSON.parse(jsonStr) : [];
   } else {
     // Get fresh search results from Giphy and cache it
-    ({ data: results } = await giphyFetch.search(q, {
+    const fetchResults = await giphyFetch.search(q, {
       sort: 'relevant',
       limit: maxLimit,
       rating,
-    }));
+    });
+
+    results = fetchResults.data;
     await cache.set(`query:${q}:${rating}`, JSON.stringify(results), {
       EX: cacheExpiryTime,
     });
