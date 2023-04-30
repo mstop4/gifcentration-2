@@ -33,7 +33,8 @@ export async function GET(request: Request): Promise<NextResponse> {
   let results;
 
   const cache = await getCache();
-  const queryIsCached = await cache.exists(`query:${q}:${rating}`);
+  const queryIsCached =
+    cache !== null && (await cache.exists(`query:${q}:${rating}`));
 
   if (queryIsCached) {
     // Get cached search results from Redis
@@ -48,9 +49,11 @@ export async function GET(request: Request): Promise<NextResponse> {
     });
 
     results = fetchResults.data;
-    await cache.set(`query:${q}:${rating}`, JSON.stringify(results), {
-      EX: cacheExpiryTime,
-    });
+    if (cache !== null) {
+      await cache.set(`query:${q}:${rating}`, JSON.stringify(results), {
+        EX: cacheExpiryTime,
+      });
+    }
   }
 
   // Take a random sample of `limit` gifs from results
