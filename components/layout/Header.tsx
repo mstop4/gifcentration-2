@@ -1,13 +1,13 @@
-import React, { Dispatch, ReactElement } from 'react';
+import { Architects_Daughter } from 'next/font/google';
+import SearchGifsButton from '../elements/ui/SearchGifsButton';
+import ResetGameButton from '../elements/ui/ResetGameButton';
+import type { Dispatch, ReactElement } from 'react';
 import {
   ElementVisibilityAction,
   GameState,
   TitleVisibility,
   TitleVisibilityAction,
 } from './Game.typedefs';
-import SearchGifsButton from '../elements/ui/SearchGifsButton';
-import ResetGameButton from '../elements/ui/ResetGameButton';
-import { Architects_Daughter } from 'next/font/google';
 import styles from '@/styles/layout/Header.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/ui/Alert.module.scss';
 

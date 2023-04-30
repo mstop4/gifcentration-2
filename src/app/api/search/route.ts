@@ -1,9 +1,11 @@
-import giphyFetch from '../../../../lib/giphySDK';
-import { checkKey, randomIntegerRange } from '../../../../helpers';
-import { Rating } from '@giphy/js-fetch-api';
 import { NextResponse } from 'next/server';
+import giphyFetch from '../../../../lib/giphySDK';
+import { getCache } from '../../../../lib/redis';
+import { checkKey, randomIntegerRange } from '../../../../helpers';
+import serverConfig from '../../../../config/serverConfig';
+import type { Rating } from '@giphy/js-fetch-api';
 
-const maxLimit = 100;
+const { maxLimit, cacheExpiryTime } = serverConfig.api.search;
 
 // GET /api/search
 // q: string
@@ -28,13 +30,30 @@ export async function GET(request: Request): Promise<NextResponse> {
   const q = searchParams.get('q') ?? '';
   const rating = (searchParams.get('rating') ?? 'g') as Rating;
   const limit = parseInt(searchParams.get('limit') ?? '9');
+  let results;
 
-  const { data: results } = await giphyFetch.search(q, {
-    sort: 'relevant',
-    limit: maxLimit,
-    rating,
-  });
+  const cache = await getCache();
+  const queryIsCached = await cache.exists(`query:${q}:${rating}`);
 
+  if (queryIsCached) {
+    // Get cached search results from Redis
+    const jsonStr = await cache.get(`query:${q}:${rating}`);
+    results = jsonStr ? JSON.parse(jsonStr) : [];
+  } else {
+    // Get fresh search results from Giphy and cache it
+    const fetchResults = await giphyFetch.search(q, {
+      sort: 'relevant',
+      limit: maxLimit,
+      rating,
+    });
+
+    results = fetchResults.data;
+    await cache.set(`query:${q}:${rating}`, JSON.stringify(results), {
+      EX: cacheExpiryTime,
+    });
+  }
+
+  // Take a random sample of `limit` gifs from results
   const selection = [];
   for (let i = 0; i < limit; i++) {
     // All gone :(

@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
+import { Architects_Daughter } from 'next/font/google';
+import type { ReactElement } from 'react';
+import { TitleVisibility } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
-import { TitleVisibility } from '../../layout/Game.typedefs';
-import { Architects_Daughter } from 'next/font/google';
 
 export type TitleProps = {
   titleVisible: TitleVisibility;

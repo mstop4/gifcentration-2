@@ -1,25 +1,19 @@
-import React, {
-  ReactElement,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import Confetti from 'react-confetti';
 import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
-import Tableau from '../elements/game/Tableau';
 import Header from './Header';
 import SearchOverlay from './SearchOverlay';
+import Tableau from '../elements/game/Tableau';
 import Alert from '../elements/ui/Alert';
+import Title from '../elements/ui/Title';
+import ClickHere from '../elements/ui/ClickHere';
 import {
   RectangleDimensions,
   getRectangleDimensions,
   pairShuffler,
 } from '../../helpers';
-import styles from '@/styles/layout/Game.module.scss';
-import Title from '../elements/ui/Title';
-import ClickHere from '../elements/ui/ClickHere';
+import { SortedGifData } from '../../helpers/gif';
+import clientConfig from '../../config/clientConfig';
 import {
   ElementVisibility,
   ElementVisibilityAction,
@@ -28,11 +22,15 @@ import {
   TitleVisibility,
   TitleVisibilityAction,
 } from './Game.typedefs';
-import { SortedGifData } from '../../helpers/gif';
+import type { ReactElement } from 'react';
+import styles from '@/styles/layout/Game.module.scss';
 
-const defaultTableauSize = 18;
-const confettiAmount = 200;
-const confettiDuration = 10000;
+const {
+  defaultTableauSize,
+  confettiAmount,
+  confettiDuration,
+  maxLoadWaitTime,
+} = clientConfig.game;
 
 export default function Game(): ReactElement {
   const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
@@ -113,6 +111,9 @@ export default function Game(): ReactElement {
     appWidth: 100,
     appHeight: 100,
   });
+  const loadingTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [longWaitMsgVisible, setLongWaitMsgVisible] = useState(false);
+  const longWaitTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize game
   const { width: appWidth, height: appHeight } = useWindowSize();
@@ -142,6 +143,16 @@ export default function Game(): ReactElement {
 
     if (!allLoaded) return;
     console.log('all ok');
+
+    if (loadingTimeout.current != null) {
+      clearTimeout(loadingTimeout.current);
+      loadingTimeout.current = null;
+    }
+
+    if (longWaitTimeout.current != null) {
+      clearTimeout(longWaitTimeout.current);
+      longWaitTimeout.current = null;
+    }
 
     setTimeout(() => {
       toggleSearchOverlay(false);
@@ -207,6 +218,20 @@ export default function Game(): ReactElement {
     setImageLoaded(() => new Array(numCards).fill(false));
   };
 
+  // Sets timers connected to loading UI indicators
+  const startLoadTimers = () => {
+    setLongWaitMsgVisible(false);
+    loadingTimeout.current = setTimeout(() => {
+      setOverlayVisible(false);
+      loadingTimeout.current = null;
+      setTimeout(() => setGameState(GameState.Playing), 500);
+    }, maxLoadWaitTime);
+    longWaitTimeout.current = setTimeout(() => {
+      setLongWaitMsgVisible(true);
+      longWaitTimeout.current = null;
+    }, maxLoadWaitTime / 2);
+  };
+
   // Shows/hides search overlay
   const toggleSearchOverlay = (visible: boolean): void => {
     setOverlayVisible(visible);
@@ -218,11 +243,13 @@ export default function Game(): ReactElement {
 
     if (confettiTimeout.current != null) {
       clearTimeout(confettiTimeout.current);
+      confettiTimeout.current = null;
     }
 
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
         setConfettiVisible(false);
+        confettiTimeout.current = null;
       }, confettiDuration);
     }
   };
@@ -276,6 +303,7 @@ export default function Game(): ReactElement {
         overlayVisible={overlayVisible}
         tableauSize={tableauSize}
         actualTableauSize={actualTableauSize.current}
+        longWaitMsgVisible={longWaitMsgVisible}
         setTableauSize={setTableauSize}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
@@ -284,6 +312,7 @@ export default function Game(): ReactElement {
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
         setGifErrorState={setGifErrorState}
         setAlertVisible={setAlertVisible}
+        startLoadTimers={startLoadTimers}
         stopConfetti={(): void => toggleConfetti(false)}
       />
       <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />

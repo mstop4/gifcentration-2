@@ -1,10 +1,10 @@
-import React, { Dispatch, ReactElement, SetStateAction } from 'react';
-import { GameState, GifErrorState } from './Game.typedefs';
 import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
-import styles from '@/styles/layout/SearchOverlay.module.scss';
 import { SortedGifData } from '../../helpers/gif';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import { GameState, GifErrorState } from './Game.typedefs';
+import styles from '@/styles/layout/SearchOverlay.module.scss';
 
 export type SearchOverlayProps = {
   gameState: GameState;
@@ -13,6 +13,7 @@ export type SearchOverlayProps = {
   overlayVisible: boolean;
   tableauSize: string;
   actualTableauSize: number;
+  longWaitMsgVisible: boolean;
   setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: SortedGifData[]) => void;
   resetCards: (numCards: number) => void;
@@ -21,6 +22,7 @@ export type SearchOverlayProps = {
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   stopConfetti: () => void;
+  startLoadTimers: () => void;
 };
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
@@ -31,6 +33,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     overlayVisible,
     tableauSize,
     actualTableauSize,
+    longWaitMsgVisible,
     setTableauSize,
     updateImageData,
     resetCards,
@@ -39,7 +42,9 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     setGifErrorState,
     setAlertVisible,
     stopConfetti,
+    startLoadTimers,
   } = props;
+
   const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
   }`;
@@ -61,6 +66,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             setGifErrorState={setGifErrorState}
             setAlertVisible={setAlertVisible}
             stopConfetti={stopConfetti}
+            startLoadTimers={startLoadTimers}
           />
           <OverlayCloseButton hideOverlay={hideSearchOverlay} />
         </>
@@ -70,6 +76,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
           gameState={gameState}
           imageLoaded={imageLoaded}
           actualTableauSize={actualTableauSize}
+          longWaitMsgVisible={longWaitMsgVisible}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
-import { ReactElement, ReactNode } from 'react';
-import { faHandPointer } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/styles/elements/game/GifOverlay.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandPointer } from '@fortawesome/free-solid-svg-icons';
+import type { ReactElement, ReactNode } from 'react';
+import styles from '@/styles/elements/game/GifOverlay.module.scss';
 
 export type GifOverlayProps = {
   children: ReactNode;

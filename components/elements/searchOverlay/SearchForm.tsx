@@ -1,20 +1,20 @@
-import React, {
+import React, { useRef, useState } from 'react';
+import type {
+  ReactElement,
   ChangeEventHandler,
   Dispatch,
   FormEventHandler,
   MouseEventHandler,
-  ReactElement,
   SetStateAction,
-  useRef,
-  useState,
 } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { SortedGifData, organizeImages } from '../../../helpers/gif';
+import clientConfig from '../../../config/clientConfig';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
-import { SortedGifData, organizeImages } from '../../../helpers/gif';
 
 export enum ServerHTTPStatus {
   Ok = 200,
@@ -39,11 +39,10 @@ export type SearchFormProps = {
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   stopConfetti: () => void;
+  startLoadTimers: () => void;
 };
 
-const minCards = 2;
-const maxCards = 100;
-const cardsStep = 2;
+const { minCards, maxCards, cardsStep } = clientConfig.searchForm;
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
@@ -56,6 +55,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setGifErrorState,
     setAlertVisible,
     stopConfetti,
+    startLoadTimers,
   } = props;
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,7 +115,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const postGifSearchSetup = (numCards: number): void => {
     resetCards(numCards);
     resetImageLoaded(numCards);
-    setSearchQuery('');
+    startLoadTimers();
   };
 
   // Shows alert with a given state

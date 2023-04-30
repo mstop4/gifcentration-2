@@ -1,15 +1,16 @@
-import React, { ReactElement } from 'react';
 import { Measures, useMeasure } from '@react-hookz/web';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import styles from '@/styles/elements/game/Card.module.scss';
+import GifOverlay from './GifOverlay';
 import {
   SortedGifData,
   calculateTargetSize,
   findBestRepresentations,
 } from '../../../helpers/gif';
-import GifOverlay from './GifOverlay';
+import clientConfig from '../../../config/clientConfig';
+import type { ReactElement } from 'react';
+import styles from '@/styles/elements/game/Card.module.scss';
 
 export type CardProps = {
   reduceMotions: boolean;
@@ -21,8 +22,7 @@ export type CardProps = {
   updateImageLoaded: (index: number) => void;
 };
 
-const defaultSize = 100;
-const gifSizeScale = 0.9;
+const { defaultSize, gifSizeScale } = clientConfig.card;
 
 export default function Card(props: CardProps): ReactElement {
   const {
