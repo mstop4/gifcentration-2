@@ -37,11 +37,8 @@ if (!isProd) {
 
 async function _setupMongooseDev() {
   if (cached.conn) {
-    console.log('cached');
     return cached.conn;
   }
-
-  console.log('not cached');
 
   if (!cached.promise) {
     mongoose.connection.on('connected', () => console.log('Connected to DB'));

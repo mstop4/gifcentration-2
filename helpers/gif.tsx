@@ -152,7 +152,8 @@ export const findBestRepresentations = (
   targetWidth: number,
   isAnimated: boolean
 ) => {
-  const gifDataArray = isAnimated ? imageData?.animated : imageData?.stills;
+  const gifDataArray =
+    (isAnimated ? imageData?.animated : imageData?.stills) ?? [];
   const results: BestGifsResults = {
     gif: {
       url: '',

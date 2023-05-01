@@ -69,12 +69,15 @@ export async function GET(request: Request): Promise<NextResponse> {
     results.splice(index, 1);
   }
 
-  await dbConnect();
-  const search = new Search({
-    query: q,
-    rating,
-  });
-  await search.save();
+  // Track search on db if there are results
+  if (selection.length > 0) {
+    await dbConnect();
+    const search = new Search({
+      query: q,
+      rating,
+    });
+    await search.save();
+  }
 
   return NextResponse.json(selection);
 }
