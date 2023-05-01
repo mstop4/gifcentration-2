@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { Rating } from '@giphy/js-fetch-api';
 
 export type TSearch = {
@@ -7,7 +7,7 @@ export type TSearch = {
   expireAt: Date;
 };
 
-const Search = new Schema<TSearch>(
+const SearchSchema = new Schema<TSearch>(
   {
     query: { type: String, required: true },
     rating: { type: String, required: true },
@@ -19,4 +19,9 @@ const Search = new Schema<TSearch>(
   { timestamps: true }
 );
 
-export default mongoose.models?.Search || model<TSearch>('Search', Search);
+// https://stackoverflow.com/questions/75697312/import-mongoose-lib-in-api-directory-in-next-js-13-2-app-directory-gives-error
+const Search =
+  mongoose.models && 'Search' in mongoose.models
+    ? mongoose.models.Search
+    : mongoose.model('Search', SearchSchema);
+export default Search;
