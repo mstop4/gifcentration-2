@@ -4,6 +4,8 @@ import { getCache } from '../../../../lib/redis';
 import { checkKey, randomIntegerRange } from '../../../../helpers';
 import serverConfig from '../../../../config/serverConfig';
 import type { Rating } from '@giphy/js-fetch-api';
+import dbConnect from '../../../../lib/mongodb/connect';
+import Search from '../../../../lib/mongodb/models/Search';
 
 const { maxLimit, cacheExpiryTime } = serverConfig.api.search;
 
@@ -66,6 +68,13 @@ export async function GET(request: Request): Promise<NextResponse> {
     selection.push(results[index]);
     results.splice(index, 1);
   }
+
+  await dbConnect();
+  const search = new Search({
+    query: q,
+    rating,
+  });
+  await search.save();
 
   return NextResponse.json(selection);
 }
