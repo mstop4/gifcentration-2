@@ -14,6 +14,7 @@ const makeSearchForm = (): ReactElement => (
     setGifErrorState={jest.fn()}
     setAlertVisible={jest.fn()}
     stopConfetti={jest.fn()}
+    startLoadTimers={jest.fn()}
   />
 );
 
