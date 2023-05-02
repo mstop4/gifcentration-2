@@ -10,8 +10,8 @@ const makeSearchRating = (): ReactElement => (
 describe('SearchRating', () => {
   it('renders a SearchRating', async () => {
     const { container } = render(makeSearchRating());
-    const form = container.querySelector('#searchRatingList');
+    const rating = container.querySelector('#searchRatingList');
 
-    expect(form).toBeInTheDocument();
+    expect(rating).toBeInTheDocument();
   });
 });

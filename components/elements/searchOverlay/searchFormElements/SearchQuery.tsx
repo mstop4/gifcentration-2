@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
-
 import type {
   ChangeEventHandler,
   Dispatch,
@@ -18,11 +17,11 @@ export default function SearchQuery(props: SearchQueryProps) {
   const { searchQuery, setSearchQuery } = props;
 
   const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setSearchQuery(() => e.target.value);
+    setSearchQuery(e.target.value);
   };
 
   const handleQueryClear: MouseEventHandler<HTMLButtonElement> = () => {
-    setSearchQuery(() => '');
+    setSearchQuery('');
   };
 
   return (
@@ -30,7 +29,7 @@ export default function SearchQuery(props: SearchQueryProps) {
       <label className={styles.searchL1Label} htmlFor="searchQuery">
         Search for GIFs
       </label>
-      <div>
+      <div className={styles.queryContainer}>
         <input
           type="text"
           id="searchQuery"

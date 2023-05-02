@@ -10,8 +10,8 @@ const makeSearchTableauSize = (): ReactElement => (
 describe('SearchTableauSize', () => {
   it('renders a SearchTableauSize', async () => {
     const { container } = render(makeSearchTableauSize());
-    const form = container.querySelector('#searchNumCards');
+    const size = container.querySelector('#searchNumCards');
 
-    expect(form).toBeInTheDocument();
+    expect(size).toBeInTheDocument();
   });
 });

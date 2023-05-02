@@ -10,8 +10,8 @@ const makeSearchQuery = (): ReactElement => (
 describe('SearchQuery', () => {
   it('renders a SearchQuery', async () => {
     const { container } = render(makeSearchQuery());
-    const form = container.querySelector('#searchQuery');
+    const query = container.querySelector('#searchQuery');
 
-    expect(form).toBeInTheDocument();
+    expect(query).toBeInTheDocument();
   });
 });

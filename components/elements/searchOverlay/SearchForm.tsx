@@ -1,4 +1,7 @@
 import React, { useRef, useState } from 'react';
+import SearchQuery from './searchFormElements/SearchQuery';
+import SearchRating from './searchFormElements/SearchRating';
+import SearchTableauSize from './searchFormElements/SearchTableauSize';
 import type {
   ReactElement,
   Dispatch,
@@ -10,9 +13,7 @@ import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
-import SearchQuery from './searchForm/SearchQuery';
-import SearchRating from './searchForm/SearchRating';
-import SearchTableauSize from './searchForm/SearchTableauSize';
+import SearchPopular from './searchFormElements/SearchPopular';
 
 export enum ServerHTTPStatus {
   Ok = 200,
@@ -186,6 +187,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
       <SearchQuery searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <SearchPopular queries={[]} setSearchQuery={setSearchQuery} />
       <div id={styles.searchOtherSettings}>
         <SearchRating rating={rating} setRating={setRating} />
         <SearchTableauSize
