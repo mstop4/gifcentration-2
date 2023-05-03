@@ -12,6 +12,7 @@ const clientConfig = {
     minCards: 2,
     maxCards: 50,
     cardsStep: 2,
+    maxPopularSearches: 10,
   },
 
   game: {

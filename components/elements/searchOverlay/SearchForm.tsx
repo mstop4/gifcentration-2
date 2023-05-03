@@ -1,20 +1,20 @@
 import React, { useRef, useState } from 'react';
+import SearchQuery from './searchFormElements/SearchQuery';
+import SearchRating from './searchFormElements/SearchRating';
+import SearchTableauSize from './searchFormElements/SearchTableauSize';
 import type {
   ReactElement,
-  ChangeEventHandler,
   Dispatch,
   FormEventHandler,
-  MouseEventHandler,
   SetStateAction,
 } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
-import clientConfig from '../../../config/clientConfig';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
+import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
+import SearchPopular from './searchFormElements/SearchPopular';
 
 export enum ServerHTTPStatus {
   Ok = 200,
@@ -31,6 +31,7 @@ export type GifFetchResults = {
 
 export type SearchFormProps = {
   tableauSize: string;
+  topSearches: TopSearchResult[];
   setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: SortedGifData[]) => void;
   resetImageLoaded: (numCards: number) => void;
@@ -42,11 +43,10 @@ export type SearchFormProps = {
   startLoadTimers: () => void;
 };
 
-const { minCards, maxCards, cardsStep } = clientConfig.searchForm;
-
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
     tableauSize,
+    topSearches,
     setTableauSize,
     updateImageData,
     resetImageLoaded,
@@ -140,24 +140,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setAlertVisible(false);
   };
 
-  // Event handlers
-  const handleQueryChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setSearchQuery(() => e.target.value);
-  };
-
-  const handleQueryClear: MouseEventHandler<HTMLButtonElement> = () => {
-    setSearchQuery(() => '');
-  };
-
-  const handleRatingChange: ChangeEventHandler<HTMLSelectElement> = e => {
-    const newRating = e.target.value as Rating;
-    setRating(() => newRating);
-  };
-
-  const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setTableauSize(e.target.value);
-  };
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
     e
   ): Promise<void> => {
@@ -207,70 +189,17 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
-      <label className={styles.searchL1Label} htmlFor="searchQuery">
-        Search for GIFs
-      </label>
-      <div>
-        <input
-          type="text"
-          id="searchQuery"
-          className={styles.searchFieldInput}
-          name="searchQuery"
-          placeholder="Enter your query here..."
-          value={searchQuery}
-          onChange={handleQueryChange}
-          required
-        />
-        <button
-          id={styles.searchClear}
-          type="button"
-          disabled={searchQuery.length === 0}
-          onClick={handleQueryClear}
-        >
-          <FontAwesomeIcon icon={faDeleteLeft} />
-        </button>
-      </div>
+      <SearchQuery searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <SearchPopular
+        topSearches={topSearches}
+        setSearchQuery={setSearchQuery}
+      />
       <div id={styles.searchOtherSettings}>
-        <label className={styles.searchL2Label} htmlFor="searchRatingList">
-          Rating
-        </label>
-        <select
-          id={styles.searchRatingList}
-          name="searchRatingList"
-          value={rating}
-          onChange={handleRatingChange}
-        >
-          <option value="y" className={styles.searchRatingOption}>
-            Y
-          </option>
-          <option value="g" className={styles.searchRatingOption}>
-            G
-          </option>
-          <option value="pg" className={styles.searchRatingOption}>
-            PG
-          </option>
-          <option value="pg-13" className={styles.searchRatingOption}>
-            PG-13
-          </option>
-          <option value="r" className={styles.searchRatingOption}>
-            R
-          </option>
-        </select>
-        <label htmlFor="searchNumCards" className={styles.searchL2Label}>
-          Tableau Size
-        </label>
-        <input
-          type="number"
-          id={styles.searchNumCards}
-          className={styles.searchFieldInput}
-          name="tableauSize"
-          value={tableauSize}
-          onChange={handleNumCardsChange}
-          min={minCards}
-          max={maxCards}
-          step={cardsStep}
-          required
-        ></input>
+        <SearchRating rating={rating} setRating={setRating} />
+        <SearchTableauSize
+          tableauSize={tableauSize}
+          setTableauSize={setTableauSize}
+        />
       </div>
       <button id={styles.searchSubmit} type="submit">
         Go!

@@ -8,6 +8,7 @@ const __dirname = dirname(__filename);
 const nextConfig = {
   experimental: {
     appDir: true,
+    serverComponentsExternalPackages: ['mongoose'], // https://stackoverflow.com/questions/75697312/import-mongoose-lib-in-api-directory-in-next-js-13-2-app-directory-gives-error
   },
   reactStrictMode: true,
   sassOptions: {
