@@ -1,6 +1,10 @@
 import { Metadata } from 'next';
-import Home from './home';
-import { ReactElement } from 'react';
+import Game from '../../components/layout/Game';
+import { getTopSearches } from '../../lib/mongodb/helpers';
+import type { ReactElement } from 'react';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; // revalidate this page every 60 seconds
 
 export const metadata: Metadata = {
   title: 'GIFcentration 2',
@@ -11,7 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(): Promise<ReactElement> {
-  // Next.js does accept async server components, despite what the linter expects
-  /* @ts-expect-error Server Component */
-  return <Home />;
+  const topSearches = await getTopSearches();
+  return <Game topSearches={topSearches} />;
 }
