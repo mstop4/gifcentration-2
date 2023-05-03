@@ -46,9 +46,6 @@ export default function Game(props: GameProps): ReactElement {
   const pathname = usePathname();
   const { topSearches } = props;
 
-  console.log('Top Searches:');
-  console.log(topSearches);
-
   const [gameState, setGameState] = useState(GameState.Idle);
 
   const [flipped, setFlipped] = useState<boolean[]>([]);

@@ -4,7 +4,7 @@ import { getTopSearches } from '../../lib/mongodb/helpers';
 import type { ReactElement } from 'react';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0; // revalidate this page every 60 seconds
+export const revalidate = 60; // revalidate this page every 60 seconds
 
 export const metadata: Metadata = {
   title: 'GIFcentration 2',
@@ -16,8 +16,5 @@ export const metadata: Metadata = {
 
 export default async function Page(): Promise<ReactElement> {
   const topSearches = await getTopSearches();
-  console.log('Top Searches:');
-  console.log(topSearches);
-  // Next.js does accept async server components, despite what the linter expects
   return <Game topSearches={topSearches} />;
 }
