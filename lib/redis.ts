@@ -26,9 +26,11 @@ async function getCache(): Promise<RedisClientType | null> {
       if (process.env.NODE_ENV !== 'production') {
         globalForRedis.redisClient = redisClient as RedisClientType;
       }
+    } else {
+      redisClient = globalForRedis.redisClient;
     }
 
-    return globalForRedis.redisClient;
+    return redisClient;
   } catch (err) {
     console.log({ err }, 'Failed to connect to Redis');
     return null;
