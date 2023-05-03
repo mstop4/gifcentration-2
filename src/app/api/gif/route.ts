@@ -19,10 +19,18 @@ export async function GET(request: Request): Promise<NextResponse> {
   if (!result)
     return NextResponse.json({ status: '403 Forbidden' }, { status: 403 });
 
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id') ?? '';
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id') ?? '';
 
-  const { data: gif } = await giphyFetch.gif(id);
+    const { data: gif } = await giphyFetch.gif(id);
 
-  return NextResponse.json(gif);
+    return NextResponse.json(gif);
+  } catch (err) {
+    console.log('Error in api/gif', err);
+    return NextResponse.json(
+      { status: '500 Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }
