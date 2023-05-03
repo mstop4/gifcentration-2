@@ -14,8 +14,6 @@ declare global {
 const opts = {
   bufferCommands: false,
   dbName: process.env.MONGODB_DBNAME,
-  user: process.env.MONGODB_USERNAME,
-  pass: process.env.MONGODB_PASSWORD,
 };
 
 /**
@@ -23,7 +21,7 @@ const opts = {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-const mongoDBURL = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}`;
+const mongoDBURL = process.env.MONGODB_URL as string;
 const isProd = process.env.NODE_ENV === 'production';
 let cached: MongooseSetupObj;
 
