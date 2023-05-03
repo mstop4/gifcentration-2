@@ -6,5 +6,7 @@ export const revalidate = 60; // revalidate this page every 60 seconds
 
 export default async function Home(): Promise<ReactElement> {
   const topSearches = await getTopSearches();
+  console.log('Top Searches:');
+  console.log(topSearches);
   return <Game topSearches={topSearches} />;
 }
