@@ -21,7 +21,7 @@ const opts = {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-const mongoDBURL = process.env.MONGODB_URL as string;
+const mongoDBURI = process.env.MONGODB_URI as string;
 const isProd = process.env.NODE_ENV === 'production';
 let cached: MongooseSetupObj;
 
@@ -39,7 +39,7 @@ async function _setupMongooseDev() {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(mongoDBURL, opts).then(mongoose => {
+    cached.promise = mongoose.connect(mongoDBURI, opts).then(mongoose => {
       return mongoose;
     });
 
@@ -65,7 +65,7 @@ async function _setupMongooseProd() {
   mongoose.connection.on('reconnected', () => console.log('Reconnected to DB'));
   mongoose.connection.on('error', () => console.log('Error in DB'));
 
-  const promise = mongoose.connect(mongoDBURL, opts).then(mongoose => {
+  const promise = mongoose.connect(mongoDBURI, opts).then(mongoose => {
     return mongoose;
   });
   let conn;
