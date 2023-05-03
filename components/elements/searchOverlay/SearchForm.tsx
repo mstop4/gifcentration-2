@@ -12,6 +12,7 @@ import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import { GameState, GifErrorState } from '../../layout/Game.typedefs';
+import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 import SearchPopular from './searchFormElements/SearchPopular';
 
@@ -30,6 +31,7 @@ export type GifFetchResults = {
 
 export type SearchFormProps = {
   tableauSize: string;
+  topSearches: TopSearchResult[];
   setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: SortedGifData[]) => void;
   resetImageLoaded: (numCards: number) => void;
@@ -44,6 +46,7 @@ export type SearchFormProps = {
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
     tableauSize,
+    topSearches,
     setTableauSize,
     updateImageData,
     resetImageLoaded,
@@ -187,7 +190,10 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   return (
     <form id={styles.searchForm} onSubmit={handleSubmit}>
       <SearchQuery searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <SearchPopular queries={[]} setSearchQuery={setSearchQuery} />
+      <SearchPopular
+        topSearches={topSearches}
+        setSearchQuery={setSearchQuery}
+      />
       <div id={styles.searchOtherSettings}>
         <SearchRating rating={rating} setRating={setRating} />
         <SearchTableauSize

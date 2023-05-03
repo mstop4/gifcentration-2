@@ -1,29 +1,37 @@
-import mockPopular from '../../../../mocks/popular.json';
 import type { Dispatch, SetStateAction } from 'react';
-import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 import SearchPopularChip from './SearchPopularChip';
+import clientConfig from '../../../../config/clientConfig';
+import { TopSearchResult } from '../../../../lib/mongodb/helpers';
+import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
 export type SearchPopularProps = {
-  queries: string[];
+  topSearches: TopSearchResult[];
   setSearchQuery: Dispatch<SetStateAction<string>>;
 };
 
 export default function SearchPopular(props: SearchPopularProps) {
-  const { queries, setSearchQuery } = props;
+  const { topSearches, setSearchQuery } = props;
 
-  const chips = mockPopular.slice(0, 10).map(query => (
-    // eslint-disable-next-line react/jsx-key
-    <SearchPopularChip
-      key={query}
-      query={query}
-      setSearchQuery={setSearchQuery}
-    />
-  ));
+  const chips = topSearches
+    ?.slice(0, clientConfig.searchForm.maxPopularSearches)
+    ?.map(query => (
+      <SearchPopularChip
+        key={query._id}
+        query={query._id}
+        setSearchQuery={setSearchQuery}
+      />
+    ));
 
   return (
     <div id={styles.searchPopular}>
       <label className={styles.searchL2Label}>Popular Searches</label>
-      <span className={styles.queryList}>{chips}</span>
+      <span className={styles.queryList}>
+        {chips.length > 0 ? (
+          chips
+        ) : (
+          <span className={styles.nothing}>Nothing here yet...</span>
+        )}
+      </span>
     </div>
   );
 }

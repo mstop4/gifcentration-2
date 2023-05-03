@@ -1,12 +1,42 @@
 [
-  "dogs",
-  "cats",
-  "cars",
-  "memes",
-  "games",
-  "ocean",
-  "trees",
-  "two words",
-  "three words yay",
-  "long long long long long long"
+  {
+    "_id": "dogs",
+    "count": 109
+  },
+  {
+    "_id": "cats",
+    "count": 98
+  },
+  {
+    "_id": "cars",
+    "count": 87
+  },
+  {
+    "_id": "memes",
+    "count": 79
+  },
+  {
+    "_id": "games",
+    "count": 63
+  },
+  {
+    "_id": "ocean",
+    "count": 54
+  },
+  {
+    "_id": "trees",
+    "count": 43
+  },
+  {
+    "_id": "two words",
+    "count": 38
+  },
+  {
+    "_id": "three words yay",
+    "count": 24
+  },
+  {
+    "_id": "long long long long long long",
+    "count": 11
+  }
 ]

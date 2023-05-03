@@ -1,4 +1,8 @@
 const serverConfig = {
+  home: {
+    topSearchesLimit: 10,
+  },
+
   api: {
     search: {
       maxLimit: 100,
@@ -8,7 +12,7 @@ const serverConfig = {
 
   mongoose: {
     documentExpiryTime: {
-      dev: '1m',
+      dev: '30m',
       prod: '30 days',
     },
   },

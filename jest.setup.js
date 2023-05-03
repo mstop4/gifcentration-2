@@ -1,7 +1,11 @@
 import 'jest-canvas-mock'; // Needed for compatibilty with react-confetti
+import { TextEncoder, TextDecoder } from 'util';
 // import jestFetchMock from 'jest-fetch-mock';
 
 // jestFetchMock.enableMocks(); // Needed to test API routes
+
+// Need for testing something in SearchPopularChip.test.tsx
+Object.assign(global, { TextDecoder, TextEncoder });
 
 Object.defineProperty(window, 'ResizeObserver', {
   writable: true,

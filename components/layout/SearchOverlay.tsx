@@ -4,6 +4,7 @@ import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
 import { SortedGifData } from '../../helpers/gif';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { GameState, GifErrorState } from './Game.typedefs';
+import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 
 export type SearchOverlayProps = {
@@ -14,6 +15,7 @@ export type SearchOverlayProps = {
   tableauSize: string;
   actualTableauSize: number;
   longWaitMsgVisible: boolean;
+  topSearches: TopSearchResult[];
   setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: SortedGifData[]) => void;
   resetCards: (numCards: number) => void;
@@ -34,6 +36,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     tableauSize,
     actualTableauSize,
     longWaitMsgVisible,
+    topSearches,
     setTableauSize,
     updateImageData,
     resetCards,
@@ -58,6 +61,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
         <>
           <SearchForm
             tableauSize={tableauSize}
+            topSearches={topSearches}
             setTableauSize={setTableauSize}
             updateImageData={updateImageData}
             resetImageLoaded={resetImageLoaded}

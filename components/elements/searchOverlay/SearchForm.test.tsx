@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import SearchForm from './SearchForm';
 import '@testing-library/jest-dom';
+import mockTopSearches from '../../../mocks/popular.json';
+import { TopSearchResult } from '../../../lib/mongodb/helpers';
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
@@ -15,6 +17,7 @@ const makeSearchForm = (): ReactElement => (
     setAlertVisible={jest.fn()}
     stopConfetti={jest.fn()}
     startLoadTimers={jest.fn()}
+    topSearches={mockTopSearches as unknown as TopSearchResult[]}
   />
 );
 

@@ -11,5 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(): Promise<ReactElement> {
+  // Next.js does accept async server components, despite what the linter expects
+  /* @ts-expect-error Server Component */
   return <Home />;
 }

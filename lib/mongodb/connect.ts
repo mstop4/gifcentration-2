@@ -41,15 +41,15 @@ async function _setupMongooseDev() {
   }
 
   if (!cached.promise) {
+    cached.promise = mongoose.connect(mongoDBURL, opts).then(mongoose => {
+      return mongoose;
+    });
+
     mongoose.connection.on('connected', () => console.log('Connected to DB'));
     mongoose.connection.on('reconnected', () =>
       console.log('Reconnected to DB')
     );
     mongoose.connection.on('error', () => console.log('Error in DB'));
-
-    cached.promise = mongoose.connect(mongoDBURL, opts).then(mongoose => {
-      return mongoose;
-    });
   }
 
   try {

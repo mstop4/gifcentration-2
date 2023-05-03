@@ -1,4 +1,7 @@
+'use client';
+
 import { useEffect, useReducer, useRef, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
 import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
 import Header from './Header';
@@ -23,7 +26,12 @@ import {
   TitleVisibilityAction,
 } from './Game.typedefs';
 import type { ReactElement } from 'react';
+import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
+
+export type GameProps = {
+  topSearches: TopSearchResult[];
+};
 
 const {
   defaultTableauSize,
@@ -32,8 +40,12 @@ const {
   maxLoadWaitTime,
 } = clientConfig.game;
 
-export default function Game(): ReactElement {
+export default function Game(props: GameProps): ReactElement {
   const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const router = useRouter();
+  const pathname = usePathname();
+  const { topSearches } = props;
+
   const [gameState, setGameState] = useState(GameState.Idle);
 
   const [flipped, setFlipped] = useState<boolean[]>([]);
@@ -235,6 +247,7 @@ export default function Game(): ReactElement {
   // Shows/hides search overlay
   const toggleSearchOverlay = (visible: boolean): void => {
     setOverlayVisible(visible);
+    if (visible) router.replace(pathname);
   };
 
   // Shows/hides confetti overlay
@@ -304,6 +317,7 @@ export default function Game(): ReactElement {
         tableauSize={tableauSize}
         actualTableauSize={actualTableauSize.current}
         longWaitMsgVisible={longWaitMsgVisible}
+        topSearches={topSearches}
         setTableauSize={setTableauSize}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
