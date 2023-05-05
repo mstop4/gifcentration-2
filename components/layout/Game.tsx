@@ -3,7 +3,12 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
-import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
+import {
+  useMediaQuery,
+  useMountEffect,
+  useRenderCount,
+  useWindowSize,
+} from '@react-hookz/web';
 import Header from './Header';
 import SearchOverlay from './SearchOverlay';
 import Tableau from '../elements/game/Tableau';
@@ -44,6 +49,8 @@ export default function Game(props: GameProps): ReactElement {
   const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
   const router = useRouter();
   const pathname = usePathname();
+  const renderCount = useRenderCount();
+  console.log('Render Count:', renderCount);
   const { topSearches } = props;
 
   const [gameState, setGameState] = useState(GameState.Idle);
