@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import LoadingIndicator from './LoadingIndicator';
 import '@testing-library/jest-dom';
-import { GameState } from '../../layout/Game.typedefs';
+import { GameState } from '../../game/Game.typedefs';
 
 describe('LoadingIndicator', () => {
   it('renders a LoadingIndicator', () => {
@@ -12,6 +12,7 @@ describe('LoadingIndicator', () => {
         gameState={GameState.Searching}
         imageLoaded={new Array(numCards).fill(false)}
         actualTableauSize={numCards}
+        longWaitMsgVisible={false}
       />
     );
 
@@ -26,6 +27,7 @@ describe('LoadingIndicator', () => {
         gameState={GameState.Searching}
         imageLoaded={new Array(numCards).fill(true)}
         actualTableauSize={numCards}
+        longWaitMsgVisible={false}
       />
     );
 
@@ -42,6 +44,7 @@ describe('LoadingIndicator', () => {
         gameState={GameState.Loading}
         imageLoaded={new Array(numCards).fill(false)}
         actualTableauSize={numCards}
+        longWaitMsgVisible={false}
       />
     );
 

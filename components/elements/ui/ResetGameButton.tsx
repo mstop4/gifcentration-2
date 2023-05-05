@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import type { ReactElement } from 'react';
-import { GameState } from '../../layout/Game.typedefs';
+import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type ResetGameButtonProps = {

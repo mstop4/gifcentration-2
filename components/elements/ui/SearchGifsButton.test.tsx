@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import SearchGifsButton from './SearchGifsButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../../layout/Game.typedefs';
+import { GameState } from '../../game/Game.typedefs';
 
 describe('SearchGifsButton', () => {
   beforeAll(() => {

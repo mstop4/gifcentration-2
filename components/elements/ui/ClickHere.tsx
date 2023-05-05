@@ -3,7 +3,7 @@ import {
   ElementVisibilityAction,
   TitleVisibility,
   TitleVisibilityAction,
-} from '../../layout/Game.typedefs';
+} from '../../game/Game.typedefs';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

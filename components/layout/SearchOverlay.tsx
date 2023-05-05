@@ -3,7 +3,7 @@ import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
 import { SortedGifData } from '../../helpers/gif';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
-import { GameState, GifErrorState } from './Game.typedefs';
+import { GameState, GifErrorState } from '../game/Game.typedefs';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 

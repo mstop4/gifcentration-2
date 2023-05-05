@@ -1,6 +1,6 @@
 import { Architects_Daughter } from 'next/font/google';
 import type { ReactElement } from 'react';
-import { TitleVisibility } from '../../layout/Game.typedefs';
+import { TitleVisibility } from '../../game/Game.typedefs';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

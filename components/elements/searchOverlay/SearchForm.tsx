@@ -11,7 +11,7 @@ import type {
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
-import { GameState, GifErrorState } from '../../layout/Game.typedefs';
+import { GameState, GifErrorState } from '../../game/Game.typedefs';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 import SearchPopular from './searchFormElements/SearchPopular';

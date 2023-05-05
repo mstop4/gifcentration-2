@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GifErrorState } from '../../layout/Game.typedefs';
+import { GifErrorState } from '../../game/Game.typedefs';
 import Alert from './Alert';
 
 const testHelper = (

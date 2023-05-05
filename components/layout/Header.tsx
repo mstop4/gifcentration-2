@@ -7,7 +7,7 @@ import {
   GameState,
   TitleVisibility,
   TitleVisibilityAction,
-} from './Game.typedefs';
+} from '../game/Game.typedefs';
 import styles from '@/styles/layout/Header.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ReactElement } from 'react';
-import { GameState } from '../../layout/Game.typedefs';
+import { GameState } from '../../game/Game.typedefs';
 import Spinner from '../ui/Spinner';
 import styles from '@/styles/elements/searchOverlay/LoadingIndicator.module.scss';
 

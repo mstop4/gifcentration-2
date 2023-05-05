@@ -9,8 +9,9 @@ import {
   useRenderCount,
   useWindowSize,
 } from '@react-hookz/web';
-import Header from './Header';
-import SearchOverlay from './SearchOverlay';
+import { clickHereVisibleReducer, titleVisibleReducer } from './Game.reducers';
+import Header from '../layout/Header';
+import SearchOverlay from '../layout/SearchOverlay';
 import Tableau from '../elements/game/Tableau';
 import Alert from '../elements/ui/Alert';
 import Title from '../elements/ui/Title';
@@ -22,14 +23,7 @@ import {
 } from '../../helpers';
 import { SortedGifData } from '../../helpers/gif';
 import clientConfig from '../../config/clientConfig';
-import {
-  ElementVisibility,
-  ElementVisibilityAction,
-  GameState,
-  GifErrorState,
-  TitleVisibility,
-  TitleVisibilityAction,
-} from './Game.typedefs';
+import { GameState, GifErrorState } from './Game.typedefs';
 import type { ReactElement } from 'react';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
@@ -70,11 +64,6 @@ export default function Game(props: GameProps): ReactElement {
   const [alertVisible, setAlertVisible] = useState(false);
   const [confettiVisible, setConfettiVisible] = useState(false);
 
-  const clickHereVisibleReducer = (
-    state: ElementVisibility,
-    action: ElementVisibilityAction
-  ): ElementVisibility => ({ ...state, [action.prop]: action.value });
-
   const [clickHereVisible, dispatchClickHereVisible] = useReducer(
     clickHereVisibleReducer,
     {
@@ -82,41 +71,6 @@ export default function Game(props: GameProps): ReactElement {
       rendered: true,
     }
   );
-
-  const titleVisibleReducer = (
-    state: TitleVisibility,
-    action: TitleVisibilityAction
-  ): TitleVisibility => {
-    const newState = { ...state };
-
-    switch (action.type) {
-      case 'showHeader':
-        newState.headerVisible = true;
-        break;
-
-      case 'showTitle':
-        newState.titleVisible = true;
-        break;
-
-      case 'showSubtitle':
-        newState.subtitleVisible = true;
-        break;
-
-      case 'hideTitle':
-        newState.titleVisible = false;
-        break;
-
-      case 'hideSubtitle':
-        newState.subtitleVisible = false;
-        break;
-
-      case 'removeTitle':
-        newState.titleRendered = false;
-        break;
-    }
-
-    return newState;
-  };
 
   const [titleVisible, dispatchTitleVisible] = useReducer(titleVisibleReducer, {
     headerVisible: false,
@@ -153,33 +107,6 @@ export default function Game(props: GameProps): ReactElement {
       2000
     );
   });
-
-  useEffect(() => {
-    if (gameState !== GameState.Loading) return;
-
-    // Check if all GIFs have been loaded, start game once that happens
-    const allLoaded = imageLoaded.every(value => value);
-
-    if (!allLoaded) return;
-    console.log('all ok');
-
-    if (loadingTimeout.current != null) {
-      clearTimeout(loadingTimeout.current);
-      loadingTimeout.current = null;
-    }
-
-    if (longWaitTimeout.current != null) {
-      clearTimeout(longWaitTimeout.current);
-      longWaitTimeout.current = null;
-    }
-
-    setTimeout(() => {
-      toggleSearchOverlay(false);
-    }, 500);
-    setTimeout(() => {
-      setGameState(GameState.Playing);
-    }, 1000);
-  }, [imageLoaded, gameState]);
 
   const updateImageData = (data: SortedGifData[]): void => {
     imageData.current = data;
@@ -273,6 +200,33 @@ export default function Game(props: GameProps): ReactElement {
       }, confettiDuration);
     }
   };
+
+  useEffect(() => {
+    if (gameState !== GameState.Loading) return;
+
+    // Check if all GIFs have been loaded, start game once that happens
+    const allLoaded = imageLoaded.every(value => value);
+
+    if (!allLoaded) return;
+    console.log('all ok');
+
+    if (loadingTimeout.current != null) {
+      clearTimeout(loadingTimeout.current);
+      loadingTimeout.current = null;
+    }
+
+    if (longWaitTimeout.current != null) {
+      clearTimeout(longWaitTimeout.current);
+      longWaitTimeout.current = null;
+    }
+
+    setTimeout(() => {
+      toggleSearchOverlay(false);
+    }, 500);
+    setTimeout(() => {
+      setGameState(GameState.Playing);
+    }, 1000);
+  }, [imageLoaded, gameState, toggleSearchOverlay]);
 
   return (
     <main className={styles.main}>
