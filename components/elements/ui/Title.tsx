@@ -1,27 +1,20 @@
 import { Architects_Daughter } from 'next/font/google';
+import { useTitleVisibleStore } from '../../game/Game.stores';
 import type { ReactElement } from 'react';
-import { TitleVisibility } from '../../game/Game.typedefs';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
-export type TitleProps = {
-  titleVisible: TitleVisibility;
-};
-
 const titleFont = Architects_Daughter({ subsets: ['latin'], weight: '400' });
 
-export default function Title(props: TitleProps): ReactElement {
-  const { titleVisible } = props;
+export default function Title(): ReactElement {
+  const titleVisible = useTitleVisibleStore(state => state.titleVisible);
+  const subtitleVisible = useTitleVisibleStore(state => state.subtitleVisible);
 
   const mainTitleClasses = `${styles.mainTitle} ${titleFont.className} ${
-    titleVisible.titleVisible
-      ? genericStyles.elementVisible
-      : genericStyles.elementHidden
+    titleVisible ? genericStyles.elementVisible : genericStyles.elementHidden
   }`;
   const subtitleClasses = `${styles.subtitle} ${
-    titleVisible.subtitleVisible
-      ? genericStyles.elementVisible
-      : genericStyles.elementHidden
+    subtitleVisible ? genericStyles.elementVisible : genericStyles.elementHidden
   }`;
 
   return (

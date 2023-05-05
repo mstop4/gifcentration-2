@@ -1,7 +1,14 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  waitFor,
+} from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
+import { useClickHereVisibleStore } from '../../game/Game.stores';
 
 describe('ClickHere', () => {
   beforeAll(() => {
@@ -13,114 +20,77 @@ describe('ClickHere', () => {
   });
 
   it('renders a ClickHere', () => {
-    const { container } = render(
-      <ClickHere
-        visible={true}
-        titleVisible={{
-          headerVisible: false,
-          titleRendered: true,
-          titleVisible: true,
-          subtitleVisible: true,
-        }}
-        dispatchClickHereVisible={jest.fn()}
-        dispatchTitleVisible={jest.fn()}
-        showSearchOverlay={jest.fn()}
-      />
-    );
+    const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
 
     const clickHere = container.querySelector('#clickHere');
     expect(clickHere).toBeInTheDocument();
   });
 
-  it('should be visible', () => {
-    const { container } = render(
-      <ClickHere
-        visible={true}
-        titleVisible={{
-          headerVisible: false,
-          titleRendered: true,
-          titleVisible: true,
-          subtitleVisible: true,
-        }}
-        dispatchClickHereVisible={jest.fn()}
-        dispatchTitleVisible={jest.fn()}
-        showSearchOverlay={jest.fn()}
-      />
+  it('should be visible', async () => {
+    const { result: setClickHereVisibility, unmount } = renderHook(() =>
+      useClickHereVisibleStore(state => state.setVisibilty)
     );
 
-    const clickHere = container.querySelector('#clickHere') as Element;
-    expect(clickHere).toHaveClass('elementVisible');
-  });
-
-  it('should be hidden', () => {
-    const { container } = render(
-      <ClickHere
-        visible={false}
-        titleVisible={{
-          headerVisible: false,
-          titleRendered: true,
-          titleVisible: true,
-          subtitleVisible: true,
-        }}
-        dispatchClickHereVisible={jest.fn()}
-        dispatchTitleVisible={jest.fn()}
-        showSearchOverlay={jest.fn()}
-      />
+    await act(() =>
+      setClickHereVisibility.current({ prop: 'visible', value: true })
     );
 
-    const clickHere = container.querySelector('#clickHere') as Element;
-    expect(clickHere).toHaveClass('elementHidden');
+    await waitFor(() => {
+      const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
+
+      const clickHere = container.querySelector('#clickHere') as Element;
+      expect(clickHere).toHaveClass('elementVisible');
+
+      unmount();
+    });
   });
 
-  it('should show search overlay when not rendered', () => {
+  it('should be hidden', async () => {
+    const { result: setClickHereVisibility, unmount } = renderHook(() =>
+      useClickHereVisibleStore(state => state.setVisibilty)
+    );
+
+    await act(() =>
+      setClickHereVisibility.current({ prop: 'visible', value: false })
+    );
+
+    await waitFor(() => {
+      const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
+
+      const clickHere = container.querySelector('#clickHere') as Element;
+      expect(clickHere).toHaveClass('elementHidden');
+
+      unmount();
+    });
+  });
+
+  it('should show search overlay when not rendered', async () => {
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <ClickHere
-        visible={false}
-        titleVisible={{
-          headerVisible: false,
-          titleRendered: false,
-          titleVisible: true,
-          subtitleVisible: true,
-        }}
-        dispatchClickHereVisible={jest.fn()}
-        dispatchTitleVisible={jest.fn()}
-        showSearchOverlay={showSearchOverlayMock}
-      />
-    );
-
-    const clickHere = container.querySelector('#clickHere') as Element;
-    fireEvent.click(clickHere);
-    expect(showSearchOverlayMock).toBeCalled();
-  });
-
-  it('calls dispatches and callbacks when clicked', () => {
-    const dispatchClickHereVisibleMock = jest.fn();
-    const dispatchTitleVisibleMock = jest.fn();
-    const showSearchOverlayMock = jest.fn();
-
-    const { container } = render(
-      <ClickHere
-        visible={true}
-        titleVisible={{
-          headerVisible: false,
-          titleRendered: true,
-          titleVisible: true,
-          subtitleVisible: true,
-        }}
-        dispatchClickHereVisible={dispatchClickHereVisibleMock}
-        dispatchTitleVisible={dispatchTitleVisibleMock}
-        showSearchOverlay={showSearchOverlayMock}
-      />
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;
     fireEvent.click(clickHere);
 
-    jest.runAllTimers();
+    await waitFor(() => {
+      expect(showSearchOverlayMock).toBeCalled();
+    });
+  });
 
-    expect(dispatchClickHereVisibleMock).toBeCalledTimes(2);
-    expect(dispatchTitleVisibleMock).toBeCalledTimes(4);
-    expect(showSearchOverlayMock).toBeCalled();
+  it('calls dispatches and callbacks when clicked', async () => {
+    const showSearchOverlayMock = jest.fn();
+    const { container } = render(
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />
+    );
+
+    const clickHere = container.querySelector('#clickHere') as Element;
+
+    fireEvent.click(clickHere);
+    await act(() => jest.runAllTimers());
+
+    await waitFor(() => {
+      expect(showSearchOverlayMock).toBeCalled();
+    });
   });
 });

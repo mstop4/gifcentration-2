@@ -1,54 +1,51 @@
-import type { Dispatch, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import {
-  ElementVisibilityAction,
-  TitleVisibility,
-  TitleVisibilityAction,
-} from '../../game/Game.typedefs';
+  useClickHereVisibleStore,
+  useTitleVisibleStore,
+} from '../../game/Game.stores';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type ClickHereProps = {
-  visible: boolean;
-  titleVisible: TitleVisibility;
-  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
-  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const {
-    visible,
-    titleVisible,
-    dispatchTitleVisible,
-    dispatchClickHereVisible,
-    showSearchOverlay,
-  } = props;
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
+  const visible = useClickHereVisibleStore(state => state.visible);
+  const setTitleVisibility = useTitleVisibleStore(state => state.setVisibilty);
+  const setClickHereVisibility = useClickHereVisibleStore(
+    state => state.setVisibilty
+  );
+
+  const { showSearchOverlay } = props;
 
   const handleClick = (): void => {
-    dispatchClickHereVisible({ prop: 'visible', value: false });
+    setClickHereVisibility({ prop: 'visible', value: false });
 
-    if (titleVisible.titleRendered) {
-      dispatchTitleVisible({ type: 'hideTitle' });
+    if (titleRendered) {
+      setTitleVisibility({ prop: 'titleVisible', value: false });
 
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'hideSubtitle' });
+        setTitleVisibility({ prop: 'subtitleVisible', value: false });
       }, 250);
       setTimeout(() => {
         showSearchOverlay();
       }, 500);
       setTimeout(() => {
-        dispatchClickHereVisible({ prop: 'rendered', value: false });
+        setClickHereVisibility({ prop: 'rendered', value: false });
       }, 1000);
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'removeTitle' });
+        setTitleVisibility({ prop: 'titleRendered', value: false });
       }, 1250);
     } else {
       showSearchOverlay();
     }
 
-    if (!titleVisible.headerVisible) {
+    if (!headerVisible) {
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'showHeader' });
+        setTitleVisibility({ prop: 'headerVisible', value: true });
       }, 1000);
     }
   };

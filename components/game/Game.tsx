@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
 import {
@@ -9,7 +9,7 @@ import {
   useRenderCount,
   useWindowSize,
 } from '@react-hookz/web';
-import { clickHereVisibleReducer, titleVisibleReducer } from './Game.reducers';
+import { useClickHereVisibleStore, useTitleVisibleStore } from './Game.stores';
 import Header from '../layout/Header';
 import SearchOverlay from '../layout/SearchOverlay';
 import Tableau from '../elements/game/Tableau';
@@ -64,21 +64,6 @@ export default function Game(props: GameProps): ReactElement {
   const [alertVisible, setAlertVisible] = useState(false);
   const [confettiVisible, setConfettiVisible] = useState(false);
 
-  const [clickHereVisible, dispatchClickHereVisible] = useReducer(
-    clickHereVisibleReducer,
-    {
-      visible: false,
-      rendered: true,
-    }
-  );
-
-  const [titleVisible, dispatchTitleVisible] = useReducer(titleVisibleReducer, {
-    headerVisible: false,
-    titleRendered: true,
-    titleVisible: false,
-    subtitleVisible: false,
-  });
-
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
     appWidth: 100,
@@ -87,6 +72,12 @@ export default function Game(props: GameProps): ReactElement {
   const loadingTimeout = useRef<NodeJS.Timeout | null>(null);
   const [longWaitMsgVisible, setLongWaitMsgVisible] = useState(false);
   const longWaitTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const setClickHereVisibility = useClickHereVisibleStore(
+    state => state.setVisibilty
+  );
+
+  const setTitleVisibility = useTitleVisibleStore(state => state.setVisibilty);
 
   // Initialize game
   const { width: appWidth, height: appHeight } = useWindowSize();
@@ -100,10 +91,16 @@ export default function Game(props: GameProps): ReactElement {
       };
     }
 
-    setTimeout(() => dispatchTitleVisible({ type: 'showTitle' }), 0);
-    setTimeout(() => dispatchTitleVisible({ type: 'showSubtitle' }), 750);
     setTimeout(
-      () => dispatchClickHereVisible({ prop: 'visible', value: true }),
+      () => setTitleVisibility({ prop: 'titleVisible', value: true }),
+      0
+    );
+    setTimeout(
+      () => setTitleVisibility({ prop: 'subtitleVisible', value: true }),
+      750
+    );
+    setTimeout(
+      () => setClickHereVisibility({ prop: 'visible', value: true }),
       2000
     );
   });
@@ -179,10 +176,13 @@ export default function Game(props: GameProps): ReactElement {
   };
 
   // Shows/hides search overlay
-  const toggleSearchOverlay = (visible: boolean): void => {
-    setOverlayVisible(visible);
-    if (visible) router.replace(pathname);
-  };
+  const toggleSearchOverlay = useCallback(
+    (visible: boolean): void => {
+      setOverlayVisible(visible);
+      if (visible) router.replace(pathname);
+    },
+    [pathname, router]
+  );
 
   // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
@@ -228,24 +228,20 @@ export default function Game(props: GameProps): ReactElement {
     }, 1000);
   }, [imageLoaded, gameState, toggleSearchOverlay]);
 
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const clickHereRendered = useClickHereVisibleStore(state => state.rendered);
+
   return (
     <main className={styles.main}>
       <Header
         gameState={gameState}
         resetCards={resetCards}
-        titleVisible={titleVisible}
-        dispatchTitleVisible={dispatchTitleVisible}
-        dispatchClickHereVisible={dispatchClickHereVisible}
         showSearchOverlay={(): void => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
-        {titleVisible.titleRendered && <Title titleVisible={titleVisible} />}
-        {clickHereVisible.rendered && (
+        {titleRendered && <Title />}
+        {clickHereRendered && (
           <ClickHere
-            visible={clickHereVisible.visible}
-            titleVisible={titleVisible}
-            dispatchTitleVisible={dispatchTitleVisible}
-            dispatchClickHereVisible={dispatchClickHereVisible}
             showSearchOverlay={(): void => toggleSearchOverlay(true)}
           />
         )}

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 import SearchPopular from './SearchPopular';
-import mockPopular from '../../../../mocks/popular.json';
+import mockPopular from '../../../../mockData/popular.json';
 import '@testing-library/jest-dom';
 import { TopSearchResult } from '../../../../lib/mongodb/helpers';
 

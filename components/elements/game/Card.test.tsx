@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
-import mockIGifs from '../../../mocks/clientIGifs.json';
+import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
 
 const handleClickMock = jest.fn();

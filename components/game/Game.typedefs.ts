@@ -19,6 +19,7 @@ export enum GifErrorState {
 export type ElementVisibility = {
   visible: boolean;
   rendered: boolean;
+  setVisibilty: (action: ElementVisibilityAction) => void;
 };
 
 export type ElementVisibilityAction = {
@@ -31,14 +32,10 @@ export type TitleVisibility = {
   titleRendered: boolean;
   titleVisible: boolean;
   subtitleVisible: boolean;
+  setVisibilty: (type: TitleVisibilityAction) => void;
 };
 
 export type TitleVisibilityAction = {
-  type:
-    | 'showHeader'
-    | 'showTitle'
-    | 'showSubtitle'
-    | 'hideTitle'
-    | 'hideSubtitle'
-    | 'removeTitle';
+  prop: 'headerVisible' | 'titleRendered' | 'titleVisible' | 'subtitleVisible';
+  value: boolean;
 };

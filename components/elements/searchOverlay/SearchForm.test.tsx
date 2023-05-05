@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import SearchForm from './SearchForm';
 import '@testing-library/jest-dom';
-import mockTopSearches from '../../../mocks/popular.json';
+import mockTopSearches from '../../../mockData/popular.json';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 
 const makeSearchForm = (): ReactElement => (
