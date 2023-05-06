@@ -3,28 +3,24 @@ import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
 import { useClickHereVisibleStore } from '../../game/Game.stores';
-import {
-  cleanupZustandHooks,
-  getZustandHooks,
-} from '../../../helpers/zustandTest';
+import { getZustandHooks } from '../../../helpers/zustandTest';
 
-const hookNames = ['setVisibilty'];
+let zustandHooks;
 
 describe('ClickHere', () => {
   beforeAll(() => {
+    zustandHooks = getZustandHooks(useClickHereVisibleStore);
     jest.useFakeTimers();
   });
 
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
   beforeEach(() => {
-    getZustandHooks(useClickHereVisibleStore, hookNames);
+    zustandHooks.reset();
   });
 
-  afterEach(() => {
-    cleanupZustandHooks(hookNames);
+  afterAll(() => {
+    zustandHooks.unmount();
+    zustandHooks = null;
+    jest.useRealTimers();
   });
 
   it('renders a ClickHere', () => {
@@ -35,9 +31,7 @@ describe('ClickHere', () => {
   });
 
   it('should be visible', async () => {
-    await act(() =>
-      global.zustandHooks.setVisibilty({ prop: 'visible', value: true })
-    );
+    await act(() => zustandHooks.setState({ visible: true }));
 
     await waitFor(() => {
       const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
@@ -48,9 +42,7 @@ describe('ClickHere', () => {
   });
 
   it('should be hidden', async () => {
-    await act(() =>
-      global.zustandHooks.setVisibilty({ prop: 'visible', value: false })
-    );
+    await act(() => zustandHooks.setState({ visible: false }));
 
     await waitFor(() => {
       const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);

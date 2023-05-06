@@ -6,21 +6,9 @@ import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
 import { useGameStore } from '../../game/Game.stores';
-import {
-  getZustandHooks,
-  cleanupZustandHooks,
-} from '../../../helpers/zustandTest';
+import { getZustandHooks } from '../../../helpers/zustandTest';
 
-const hookNames = [
-  'gameState',
-  'setGameState',
-  'flipped',
-  'setFlipped',
-  'matched',
-  'setMatched',
-  'selectedCardIndexes',
-  'setSelectedCardIndexes',
-];
+let zustandHooks;
 
 const makeTableau = (): ReactElement => {
   const imageData = mockIGifs.map((imageData: unknown) =>
@@ -40,11 +28,12 @@ const makeTableau = (): ReactElement => {
 
 describe('Tableau', () => {
   beforeEach(() => {
-    getZustandHooks(useGameStore, hookNames);
+    zustandHooks = getZustandHooks(useGameStore);
   });
 
   afterEach(() => {
-    cleanupZustandHooks(hookNames);
+    zustandHooks.unmount();
+    zustandHooks = null;
   });
 
   it('renders a Tableau', async () => {

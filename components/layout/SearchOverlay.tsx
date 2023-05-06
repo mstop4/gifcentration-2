@@ -1,4 +1,4 @@
-import { useGameStore } from '../game/Game.stores';
+import { useGameStore, useUIVisibleStore } from '../game/Game.stores';
 import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
@@ -11,15 +11,10 @@ import styles from '@/styles/layout/SearchOverlay.module.scss';
 export type SearchOverlayProps = {
   imageLoaded: boolean[];
   resetImageLoaded: (numCards: number) => void;
-  overlayVisible: boolean;
-  longWaitMsgVisible: boolean;
   topSearches: TopSearchResult[];
   updateImageData: (data: SortedGifData[]) => void;
   resetCards: (numCards: number) => void;
-  hideSearchOverlay: () => void;
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
-  setAlertVisible: Dispatch<SetStateAction<boolean>>;
-  stopConfetti: () => void;
   startLoadTimers: () => void;
 };
 
@@ -27,19 +22,16 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
     imageLoaded,
     resetImageLoaded,
-    overlayVisible,
-    longWaitMsgVisible,
     topSearches,
     updateImageData,
     resetCards,
-    hideSearchOverlay,
     setGifErrorState,
-    setAlertVisible,
-    stopConfetti,
     startLoadTimers,
   } = props;
 
   const gameState = useGameStore(state => state.gameState);
+  const overlayVisible = useUIVisibleStore(state => state.overlay);
+  const longWaitMsgVisible = useUIVisibleStore(state => state.longWaitMsg);
 
   const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
@@ -58,11 +50,9 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             resetImageLoaded={resetImageLoaded}
             resetCards={resetCards}
             setGifErrorState={setGifErrorState}
-            setAlertVisible={setAlertVisible}
-            stopConfetti={stopConfetti}
             startLoadTimers={startLoadTimers}
           />
-          <OverlayCloseButton hideOverlay={hideSearchOverlay} />
+          <OverlayCloseButton />
         </>
       )}
       {isFetchingGifs && (

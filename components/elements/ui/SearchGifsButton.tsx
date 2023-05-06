@@ -18,37 +18,34 @@ export default function SearchGifsButton(
 ): ReactElement {
   const { gameState, showSearchOverlay } = props;
 
-  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
-  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
-  const setTitleVisibility = useTitleVisibleStore(state => state.setVisibilty);
-  const setClickHereVisibility = useClickHereVisibleStore(
-    state => state.setVisibilty
-  );
+  const { titleRendered, headerVisible } = useTitleVisibleStore.getState();
+  const setTitleVisibility = useTitleVisibleStore.setState;
+  const setClickHereVisibility = useClickHereVisibleStore.setState;
 
   const handleClick = async (): Promise<void> => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
 
     showSearchOverlay();
-    setClickHereVisibility({ prop: 'visible', value: false });
+    setClickHereVisibility({ visible: false });
 
     if (titleRendered) {
-      setTitleVisibility({ prop: 'titleVisible', value: false });
+      setTitleVisibility({ titleVisible: false });
 
       setTimeout(() => {
-        setTitleVisibility({ prop: 'subtitleVisible', value: false });
+        setTitleVisibility({ subtitleVisible: false });
       }, 250);
       setTimeout(() => {
-        setClickHereVisibility({ prop: 'rendered', value: false });
+        setClickHereVisibility({ rendered: false });
       }, 1000);
       setTimeout(() => {
-        setTitleVisibility({ prop: 'titleRendered', value: false });
+        setTitleVisibility({ titleRendered: false });
       }, 1250);
     }
 
     if (!headerVisible) {
       setTimeout(() => {
-        setTitleVisibility({ prop: 'headerVisible', value: true });
+        setTitleVisibility({ headerVisible: true });
       }, 1000);
     }
   };

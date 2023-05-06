@@ -11,33 +11,30 @@ export type ClickHereProps = {
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
-  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
-  const visible = useClickHereVisibleStore(state => state.visible);
-  const setTitleVisibility = useTitleVisibleStore(state => state.setVisibilty);
-  const setClickHereVisibility = useClickHereVisibleStore(
-    state => state.setVisibilty
-  );
+  const { titleRendered, headerVisible } = useTitleVisibleStore.getState();
+  const setTitleVisibility = useTitleVisibleStore.setState;
+  const { visible } = useClickHereVisibleStore.getState();
+  const setClickHereVisibility = useClickHereVisibleStore.setState;
 
   const { showSearchOverlay } = props;
 
   const handleClick = (): void => {
-    setClickHereVisibility({ prop: 'visible', value: false });
+    setClickHereVisibility({ visible: false });
 
     if (titleRendered) {
-      setTitleVisibility({ prop: 'titleVisible', value: false });
+      setTitleVisibility({ titleVisible: false });
 
       setTimeout(() => {
-        setTitleVisibility({ prop: 'subtitleVisible', value: false });
+        setTitleVisibility({ subtitleVisible: false });
       }, 250);
       setTimeout(() => {
         showSearchOverlay();
       }, 500);
       setTimeout(() => {
-        setClickHereVisibility({ prop: 'rendered', value: false });
+        setClickHereVisibility({ rendered: false });
       }, 1000);
       setTimeout(() => {
-        setTitleVisibility({ prop: 'titleRendered', value: false });
+        setTitleVisibility({ titleRendered: false });
       }, 1250);
     } else {
       showSearchOverlay();
@@ -45,19 +42,17 @@ export default function ClickHere(props: ClickHereProps): ReactElement {
 
     if (!headerVisible) {
       setTimeout(() => {
-        setTitleVisibility({ prop: 'headerVisible', value: true });
+        setTitleVisibility({ headerVisible: true });
       }, 1000);
     }
   };
 
+  const className = visible
+    ? genericStyles.elementVisible
+    : genericStyles.elementHidden;
+
   return (
-    <div
-      id={styles.clickHere}
-      className={
-        visible ? genericStyles.elementVisible : genericStyles.elementHidden
-      }
-      onClick={handleClick}
-    >
+    <div id={styles.clickHere} className={className} onClick={handleClick}>
       Click here to start!
     </div>
   );

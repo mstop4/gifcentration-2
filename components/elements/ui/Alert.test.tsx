@@ -1,8 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { GifErrorState } from '../../game/Game.typedefs';
 import Alert from './Alert';
+import { useUIVisibleStore } from '../../game/Game.stores';
+import { getZustandHooks } from '../../../helpers/zustandTest';
+
+let zustandHooks;
 
 const testHelper = (
   container: HTMLElement,
@@ -18,28 +22,37 @@ const testHelper = (
 };
 
 describe('Alert', () => {
+  beforeAll(() => {
+    zustandHooks = getZustandHooks(useUIVisibleStore);
+  });
+
+  beforeEach(() => {
+    zustandHooks.reset();
+  });
+
+  afterAll(() => {
+    zustandHooks.unmount();
+    zustandHooks = null;
+  });
+
   it('renders an Alert', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />
-    );
+    const { container } = render(<Alert gifErrorState={GifErrorState.Ok} />);
 
     const alert = container.querySelector('#alert');
     expect(alert).toBeInTheDocument();
   });
 
   it('renders the Alert in a closed state', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />
-    );
+    const { container } = render(<Alert gifErrorState={GifErrorState.Ok} />);
 
     const alert = container.querySelector('#alert');
     expect(alert).toHaveClass('alertClosed');
   });
 
-  it('renders the Alert in a open state', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={true} />
-    );
+  it('renders the Alert in a open state', async () => {
+    await act(() => zustandHooks.setState({ alert: true }));
+
+    const { container } = render(<Alert gifErrorState={GifErrorState.Ok} />);
 
     const alert = container.querySelector('#alert');
     expect(alert).toHaveClass('alertOpen');
@@ -47,7 +60,7 @@ describe('Alert', () => {
 
   it('renders the no GIFs message', () => {
     const { container } = render(
-      <Alert gifErrorState={GifErrorState.NoGifs} alertVisible={false} />
+      <Alert gifErrorState={GifErrorState.NoGifs} />
     );
 
     const { alertElem, topText, bottomText } = testHelper(
@@ -64,7 +77,7 @@ describe('Alert', () => {
 
   it('renders the not enough GIFs message', () => {
     const { container } = render(
-      <Alert gifErrorState={GifErrorState.NotEnoughGifs} alertVisible={false} />
+      <Alert gifErrorState={GifErrorState.NotEnoughGifs} />
     );
 
     const { alertElem, topText, bottomText } = testHelper(
@@ -81,7 +94,7 @@ describe('Alert', () => {
 
   it('renders the bad request message', () => {
     const { container } = render(
-      <Alert gifErrorState={GifErrorState.BadRequest} alertVisible={false} />
+      <Alert gifErrorState={GifErrorState.BadRequest} />
     );
 
     const { alertElem, topText, bottomText } = testHelper(
@@ -98,7 +111,7 @@ describe('Alert', () => {
 
   it('renders the forbidden message', () => {
     const { container } = render(
-      <Alert gifErrorState={GifErrorState.Forbidden} alertVisible={false} />
+      <Alert gifErrorState={GifErrorState.Forbidden} />
     );
 
     const { alertElem, topText, bottomText } = testHelper(
@@ -115,10 +128,7 @@ describe('Alert', () => {
 
   it('renders the internal server error message', () => {
     const { container } = render(
-      <Alert
-        gifErrorState={GifErrorState.InternalServerError}
-        alertVisible={false}
-      />
+      <Alert gifErrorState={GifErrorState.InternalServerError} />
     );
 
     const { alertElem, topText, bottomText } = testHelper(
@@ -135,7 +145,7 @@ describe('Alert', () => {
 
   it('renders the unknown error message', () => {
     const { container } = render(
-      <Alert gifErrorState={GifErrorState.UnknownError} alertVisible={false} />
+      <Alert gifErrorState={GifErrorState.UnknownError} />
     );
 
     const { alertElem, topText } = testHelper(
@@ -149,7 +159,7 @@ describe('Alert', () => {
   });
 
   it('renders the OK message', () => {
-    render(<Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />);
+    render(<Alert gifErrorState={GifErrorState.Ok} />);
 
     const alertText = screen.getByText(/ok/i);
     expect(alertText).toBeInTheDocument();

@@ -14,9 +14,7 @@ export default function LoadingIndicator(
   props: LoadingIndicatorProps
 ): ReactElement {
   const { imageLoaded, longWaitMsgVisible } = props;
-
-  const gameState = useGameStore(state => state.gameState);
-  const actualTableauSize = useGameStore(state => state.actualTableauSize);
+  const { gameState, actualTableauSize } = useGameStore.getState();
 
   const numImagesLoaded = imageLoaded.reduce(
     (total, current) => (current ? total + 1 : total),

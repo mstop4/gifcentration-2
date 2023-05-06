@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import {
   CardArrayAction,
-  ElementVisibility,
+  ClickHereVisibility,
   GameState,
   GameStore,
   TitleVisibility,
+  UIVisibility,
 } from './Game.typedefs';
 import clientConfig from '../../config/clientConfig';
 
@@ -75,16 +76,21 @@ export const useGameStore = create<GameStore>(set => ({
   setActualTableauSize: size => set(() => ({ actualTableauSize: size })),
 }));
 
-export const useClickHereVisibleStore = create<ElementVisibility>(set => ({
-  visible: false,
-  rendered: true,
-  setVisibilty: action => set(() => ({ [action.prop]: action.value })),
+export const useUIVisibleStore = create<UIVisibility>(() => ({
+  overlay: false,
+  alert: false,
+  confetti: false,
+  longWaitMsg: false,
 }));
 
-export const useTitleVisibleStore = create<TitleVisibility>(set => ({
+export const useClickHereVisibleStore = create<ClickHereVisibility>(() => ({
+  visible: false,
+  rendered: true,
+}));
+
+export const useTitleVisibleStore = create<TitleVisibility>(() => ({
   headerVisible: false,
   titleRendered: true,
   titleVisible: false,
   subtitleVisible: false,
-  setVisibilty: action => set(() => ({ [action.prop]: action.value })),
 }));

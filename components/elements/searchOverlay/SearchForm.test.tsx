@@ -5,12 +5,9 @@ import '@testing-library/jest-dom';
 import mockTopSearches from '../../../mockData/popular.json';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import { useGameStore } from '../../game/Game.stores';
-import {
-  cleanupZustandHooks,
-  getZustandHooks,
-} from '../../../helpers/zustandTest';
+import { getZustandHooks } from '../../../helpers/zustandTest';
 
-const hookNames = ['idealTableauSize', 'setIdealTableauSize', 'setGameState'];
+let zustandHooks;
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
@@ -18,20 +15,23 @@ const makeSearchForm = (): ReactElement => (
     updateImageData={jest.fn()}
     resetImageLoaded={jest.fn()}
     setGifErrorState={jest.fn()}
-    setAlertVisible={jest.fn()}
-    stopConfetti={jest.fn()}
     startLoadTimers={jest.fn()}
     topSearches={mockTopSearches as unknown as TopSearchResult[]}
   />
 );
 
 describe('SearchForm', () => {
-  beforeEach(() => {
-    getZustandHooks(useGameStore, hookNames);
+  beforeAll(() => {
+    zustandHooks = getZustandHooks(useGameStore);
   });
 
-  afterEach(() => {
-    cleanupZustandHooks(hookNames);
+  beforeEach(() => {
+    zustandHooks.reset();
+  });
+
+  afterAll(() => {
+    zustandHooks.unmount();
+    zustandHooks = null;
   });
 
   it('renders a SearchForm', async () => {

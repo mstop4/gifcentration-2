@@ -49,15 +49,16 @@ export type GameStore = {
   setActualTableauSize: (size: number) => void;
 };
 
-export type ElementVisibility = {
-  visible: boolean;
-  rendered: boolean;
-  setVisibilty: (action: ElementVisibilityAction) => void;
+export type UIVisibility = {
+  overlay: boolean;
+  alert: boolean;
+  confetti: boolean;
+  longWaitMsg: boolean;
 };
 
-export type ElementVisibilityAction = {
-  prop: 'visible' | 'rendered';
-  value: boolean;
+export type ClickHereVisibility = {
+  visible: boolean;
+  rendered: boolean;
 };
 
 export type TitleVisibility = {
@@ -65,10 +66,4 @@ export type TitleVisibility = {
   titleRendered: boolean;
   titleVisible: boolean;
   subtitleVisible: boolean;
-  setVisibilty: (type: TitleVisibilityAction) => void;
-};
-
-export type TitleVisibilityAction = {
-  prop: 'headerVisible' | 'titleRendered' | 'titleVisible' | 'subtitleVisible';
-  value: boolean;
 };

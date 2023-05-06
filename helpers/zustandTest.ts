@@ -1,20 +1,14 @@
 import { renderHook } from '@testing-library/react';
+import type { StoreApi, UseBoundStore } from 'zustand';
 
-export const getZustandHooks = (store, hooks) => {
-  global.zustandHooks = {};
+export const getZustandHooks = (store: UseBoundStore<StoreApi<unknown>>) => {
+  const hook = renderHook(() => store);
+  const initialState = hook.result.current.getState();
 
-  for (const hookName of hooks) {
-    const storeHook = renderHook(() => store(state => state[hookName]));
-
-    global.zustandHooks[hookName] = storeHook.result.current;
-    global.zustandHooks[`unmount_${hookName}`] = storeHook.unmount;
-  }
-};
-
-export const cleanupZustandHooks = hooks => {
-  for (const hookName of hooks) {
-    global.zustandHooks[`unmount_${hookName}`]();
-  }
-
-  global.zustandHooks = null;
+  return {
+    getState: hook.result.current.getState,
+    setState: hook.result.current.setState,
+    reset: () => hook.result.current.setState(initialState),
+    unmount: hook.unmount,
+  };
 };

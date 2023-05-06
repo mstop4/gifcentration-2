@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useGameStore } from '../../game/Game.stores';
+import { useGameStore, useUIVisibleStore } from '../../game/Game.stores';
 import SearchQuery from './searchFormElements/SearchQuery';
 import SearchRating from './searchFormElements/SearchRating';
 import SearchTableauSize from './searchFormElements/SearchTableauSize';
@@ -36,8 +36,6 @@ export type SearchFormProps = {
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
-  setAlertVisible: Dispatch<SetStateAction<boolean>>;
-  stopConfetti: () => void;
   startLoadTimers: () => void;
 };
 
@@ -48,13 +46,11 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     resetImageLoaded,
     resetCards,
     setGifErrorState,
-    setAlertVisible,
-    stopConfetti,
     startLoadTimers,
   } = props;
 
-  const idealTableauSize = useGameStore(state => state.idealTableauSize);
-  const setGameState = useGameStore(state => state.setGameState);
+  const { idealTableauSize, setGameState } = useGameStore.getState();
+  const setUIVisibility = useUIVisibleStore.setState;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [rating, setRating] = useState<Rating>('g');
@@ -119,14 +115,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   // Shows alert with a given state
   const showAlert = (state: GifErrorState): void => {
     setGifErrorState(state);
-    setAlertVisible(true);
+    setUIVisibility({ alert: true });
 
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);
     }
 
     alertTimeout.current = setTimeout(() => {
-      setAlertVisible(false);
+      setUIVisibility({ alert: false });
     }, 5000);
   };
 
@@ -135,7 +131,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);
     }
-    setAlertVisible(false);
+    setUIVisibility({ alert: false });
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
@@ -143,7 +139,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   ): Promise<void> => {
     e.preventDefault();
     hideAlert();
-    stopConfetti();
+    setUIVisibility({ confetti: false });
 
     setGameState(GameState.Searching);
     const { numResults, status } = await getGifs();

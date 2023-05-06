@@ -1,14 +1,16 @@
 import type { ReactElement } from 'react';
 import { GifErrorState } from '../../game/Game.typedefs';
 import styles from '@/styles/elements/ui/Alert.module.scss';
+import { useUIVisibleStore } from '../../game/Game.stores';
 
 export type AlertProps = {
   gifErrorState: GifErrorState;
-  alertVisible: boolean;
 };
 
 export default function Alert(props: AlertProps): ReactElement {
-  const { gifErrorState, alertVisible } = props;
+  const { gifErrorState } = props;
+
+  const { alert: alertVisible } = useUIVisibleStore.getState();
 
   let bodyClass, bodyText;
   const containerClass = alertVisible ? styles.alertOpen : styles.alertClosed;

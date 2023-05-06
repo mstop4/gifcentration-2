@@ -13,6 +13,7 @@ import {
   useClickHereVisibleStore,
   useGameStore,
   useTitleVisibleStore,
+  useUIVisibleStore,
 } from './Game.stores';
 import Header from '../layout/Header';
 import SearchOverlay from '../layout/SearchOverlay';
@@ -36,12 +37,7 @@ export type GameProps = {
   topSearches: TopSearchResult[];
 };
 
-const {
-  defaultTableauSize,
-  confettiAmount,
-  confettiDuration,
-  maxLoadWaitTime,
-} = clientConfig.game;
+const { confettiAmount, confettiDuration, maxLoadWaitTime } = clientConfig.game;
 
 export default function Game(props: GameProps): ReactElement {
   const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
@@ -51,26 +47,26 @@ export default function Game(props: GameProps): ReactElement {
   console.log('Render Count:', renderCount);
   const { topSearches } = props;
 
-  const gameState = useGameStore(state => state.gameState);
-  const setGameState = useGameStore(state => state.setGameState);
-  const setFlipped = useGameStore(state => state.setFlipped);
-  const setMatched = useGameStore(state => state.setMatched);
-  const setSelectedCardIndexes = useGameStore(
-    state => state.setSelectedCardIndexes
-  );
-  const idealTableauSize = useGameStore(state => state.idealTableauSize);
-  const setActualTableauSize = useGameStore(
-    state => state.setActualTableauSize
-  );
+  const {
+    gameState,
+    setGameState,
+    setFlipped,
+    setMatched,
+    setSelectedCardIndexes,
+    idealTableauSize,
+    setActualTableauSize,
+  } = useGameStore.getState();
+
+  const setTitleVisibility = useTitleVisibleStore.setState;
+  const setClickHereVisibility = useClickHereVisibleStore.setState;
+  const setUIVisibility = useUIVisibleStore.setState;
 
   const imageData = useRef<SortedGifData[]>([]);
   const imageIndexes = useRef<number[]>([]);
   const [imageLoaded, setImageLoaded] = useState<boolean[]>([]);
   const [gifErrorState, setGifErrorState] = useState(GifErrorState.Ok);
 
-  const [overlayVisible, setOverlayVisible] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [confettiVisible, setConfettiVisible] = useState(false);
+  const confettiVisible = useUIVisibleStore(state => state.confetti);
 
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const windowSize = useRef<{ appWidth: number; appHeight: number }>({
@@ -78,14 +74,7 @@ export default function Game(props: GameProps): ReactElement {
     appHeight: 100,
   });
   const loadingTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [longWaitMsgVisible, setLongWaitMsgVisible] = useState(false);
   const longWaitTimeout = useRef<NodeJS.Timeout | null>(null);
-
-  const setClickHereVisibility = useClickHereVisibleStore(
-    state => state.setVisibilty
-  );
-
-  const setTitleVisibility = useTitleVisibleStore(state => state.setVisibilty);
 
   // Initialize game
   const { width: appWidth, height: appHeight } = useWindowSize();
@@ -99,18 +88,9 @@ export default function Game(props: GameProps): ReactElement {
       };
     }
 
-    setTimeout(
-      () => setTitleVisibility({ prop: 'titleVisible', value: true }),
-      0
-    );
-    setTimeout(
-      () => setTitleVisibility({ prop: 'subtitleVisible', value: true }),
-      750
-    );
-    setTimeout(
-      () => setClickHereVisibility({ prop: 'visible', value: true }),
-      2000
-    );
+    setTimeout(() => setTitleVisibility({ titleVisible: true }), 0);
+    setTimeout(() => setTitleVisibility({ subtitleVisible: true }), 750);
+    setTimeout(() => setClickHereVisibility({ visible: true }), 2000);
   });
 
   const updateImageData = (data: SortedGifData[]): void => {
@@ -171,14 +151,14 @@ export default function Game(props: GameProps): ReactElement {
 
   // Sets timers connected to loading UI indicators
   const startLoadTimers = () => {
-    setLongWaitMsgVisible(false);
+    setUIVisibility({ longWaitMsg: false });
     loadingTimeout.current = setTimeout(() => {
-      setOverlayVisible(false);
+      setUIVisibility({ overlay: false });
       loadingTimeout.current = null;
       setTimeout(() => setGameState(GameState.Playing), 500);
     }, maxLoadWaitTime);
     longWaitTimeout.current = setTimeout(() => {
-      setLongWaitMsgVisible(true);
+      setUIVisibility({ longWaitMsg: true });
       longWaitTimeout.current = null;
     }, maxLoadWaitTime / 2);
   };
@@ -186,15 +166,15 @@ export default function Game(props: GameProps): ReactElement {
   // Shows/hides search overlay
   const toggleSearchOverlay = useCallback(
     (visible: boolean): void => {
-      setOverlayVisible(visible);
+      setUIVisibility({ overlay: visible });
       if (visible) router.replace(pathname);
     },
-    [pathname, router]
+    [pathname, router, setUIVisibility]
   );
 
   // Shows/hides confetti overlay
   const toggleConfetti = (visible: boolean): void => {
-    setConfettiVisible(visible);
+    setUIVisibility({ confetti: visible });
 
     if (confettiTimeout.current != null) {
       clearTimeout(confettiTimeout.current);
@@ -203,7 +183,7 @@ export default function Game(props: GameProps): ReactElement {
 
     if (visible) {
       confettiTimeout.current = setTimeout(() => {
-        setConfettiVisible(false);
+        setUIVisibility({ confetti: false });
         confettiTimeout.current = null;
       }, confettiDuration);
     }
@@ -234,10 +214,10 @@ export default function Game(props: GameProps): ReactElement {
     setTimeout(() => {
       setGameState(GameState.Playing);
     }, 1000);
-  }, [imageLoaded, gameState, toggleSearchOverlay]);
+  }, [imageLoaded, gameState, setGameState, toggleSearchOverlay]);
 
-  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
-  const clickHereRendered = useClickHereVisibleStore(state => state.rendered);
+  const { titleRendered } = useTitleVisibleStore.getState();
+  const { rendered: clickHereRendered } = useClickHereVisibleStore.getState();
 
   return (
     <main className={styles.main}>
@@ -269,19 +249,14 @@ export default function Game(props: GameProps): ReactElement {
       />
       <SearchOverlay
         imageLoaded={imageLoaded}
-        overlayVisible={overlayVisible}
-        longWaitMsgVisible={longWaitMsgVisible}
         topSearches={topSearches}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
-        hideSearchOverlay={(): void => toggleSearchOverlay(false)}
         setGifErrorState={setGifErrorState}
-        setAlertVisible={setAlertVisible}
         startLoadTimers={startLoadTimers}
-        stopConfetti={(): void => toggleConfetti(false)}
       />
-      <Alert gifErrorState={gifErrorState} alertVisible={alertVisible} />
+      <Alert gifErrorState={gifErrorState} />
     </main>
   );
 }

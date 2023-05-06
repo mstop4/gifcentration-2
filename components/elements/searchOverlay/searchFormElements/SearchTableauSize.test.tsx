@@ -3,22 +3,20 @@ import { render } from '@testing-library/react';
 import SearchTableauSize from './SearchTableauSize';
 import '@testing-library/jest-dom';
 import { useGameStore } from '../../../game/Game.stores';
-import {
-  cleanupZustandHooks,
-  getZustandHooks,
-} from '../../../../helpers/zustandTest';
+import { getZustandHooks } from '../../../../helpers/zustandTest';
 
-const hookNames = ['idealTableauSize', 'setIdealTableauSize'];
+let zustandHooks;
 
 const makeSearchTableauSize = (): ReactElement => <SearchTableauSize />;
 
 describe('SearchTableauSize', () => {
   beforeEach(() => {
-    getZustandHooks(useGameStore, hookNames);
+    zustandHooks = getZustandHooks(useGameStore);
   });
 
   afterEach(() => {
-    cleanupZustandHooks(hookNames);
+    zustandHooks.unmount();
+    zustandHooks = null;
   });
 
   it('renders a SearchTableauSize', async () => {
