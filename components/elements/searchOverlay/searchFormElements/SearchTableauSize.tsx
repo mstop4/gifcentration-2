@@ -6,7 +6,8 @@ import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 const { minCards, maxCards, cardsStep } = clientConfig.searchForm;
 
 export default function SearchTableauSize() {
-  const { idealTableauSize, setIdealTableauSize } = useGameStore.getState();
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setIdealTableauSize = useGameStore(state => state.setIdealTableauSize);
 
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
     setIdealTableauSize(e.target.value);

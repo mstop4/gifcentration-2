@@ -47,16 +47,23 @@ export default function Game(props: GameProps): ReactElement {
   console.log('Render Count:', renderCount);
   const { topSearches } = props;
 
-  const {
-    gameState,
-    setGameState,
-    setFlipped,
-    setMatched,
-    setSelectedCardIndexes,
-    idealTableauSize,
-    setActualTableauSize,
-  } = useGameStore.getState();
+  // Picking states from stores must be done this way (i.e no destructuring store.getState())
+  // Otherwise, Zustand might not trigger a rerender on React due to some shallow comparision
+  // the store. https://medium.com/@nfailla93/zustand-in-react-dos-and-donts-5a608c26c68
+  const gameState = useGameStore(state => state.gameState);
+  const setGameState = useGameStore(state => state.setGameState);
+  const setFlipped = useGameStore(state => state.setFlipped);
+  const setMatched = useGameStore(state => state.setMatched);
+  const setSelectedCardIndexes = useGameStore(
+    state => state.setSelectedCardIndexes
+  );
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setActualTableauSize = useGameStore(
+    state => state.setActualTableauSize
+  );
 
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const clickHereRendered = useClickHereVisibleStore(state => state.rendered);
   const setTitleVisibility = useTitleVisibleStore.setState;
   const setClickHereVisibility = useClickHereVisibleStore.setState;
   const setUIVisibility = useUIVisibleStore.setState;
@@ -215,9 +222,6 @@ export default function Game(props: GameProps): ReactElement {
       setGameState(GameState.Playing);
     }, 1000);
   }, [imageLoaded, gameState, setGameState, toggleSearchOverlay]);
-
-  const { titleRendered } = useTitleVisibleStore.getState();
-  const { rendered: clickHereRendered } = useClickHereVisibleStore.getState();
 
   return (
     <main className={styles.main}>

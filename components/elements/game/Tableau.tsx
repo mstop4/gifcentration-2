@@ -27,16 +27,16 @@ export default function Tableau(props: TableauProps): ReactElement {
     showConfetti,
   } = props;
 
-  const {
-    gameState,
-    setGameState,
-    flipped,
-    setFlipped,
-    matched,
-    setMatched,
-    selectedCardIndexes,
-    setSelectedCardIndexes,
-  } = useGameStore.getState();
+  const gameState = useGameStore(state => state.gameState);
+  const setGameState = useGameStore(state => state.setGameState);
+  const flipped = useGameStore(state => state.flipped);
+  const setFlipped = useGameStore(state => state.setFlipped);
+  const matched = useGameStore(state => state.matched);
+  const setMatched = useGameStore(state => state.setMatched);
+  const selectedCardIndexes = useGameStore(state => state.selectedCardIndexes);
+  const setSelectedCardIndexes = useGameStore(
+    state => state.setSelectedCardIndexes
+  );
 
   useEffect(() => {
     if (gameState !== GameState.Playing) return;

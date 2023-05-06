@@ -10,7 +10,7 @@ export type AlertProps = {
 export default function Alert(props: AlertProps): ReactElement {
   const { gifErrorState } = props;
 
-  const { alert: alertVisible } = useUIVisibleStore.getState();
+  const alertVisible = useUIVisibleStore(state => state.alert);
 
   let bodyClass, bodyText;
   const containerClass = alertVisible ? styles.alertOpen : styles.alertClosed;

@@ -18,7 +18,8 @@ export default function SearchGifsButton(
 ): ReactElement {
   const { gameState, showSearchOverlay } = props;
 
-  const { titleRendered, headerVisible } = useTitleVisibleStore.getState();
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
   const setTitleVisibility = useTitleVisibleStore.setState;
   const setClickHereVisibility = useClickHereVisibleStore.setState;
 

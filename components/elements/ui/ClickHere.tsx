@@ -11,9 +11,10 @@ export type ClickHereProps = {
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const { titleRendered, headerVisible } = useTitleVisibleStore.getState();
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
   const setTitleVisibility = useTitleVisibleStore.setState;
-  const { visible } = useClickHereVisibleStore.getState();
+  const visible = useClickHereVisibleStore(state => state.visible);
   const setClickHereVisibility = useClickHereVisibleStore.setState;
 
   const { showSearchOverlay } = props;

@@ -49,7 +49,8 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     startLoadTimers,
   } = props;
 
-  const { idealTableauSize, setGameState } = useGameStore.getState();
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setGameState = useGameStore(state => state.setGameState);
   const setUIVisibility = useUIVisibleStore.setState;
 
   const [searchQuery, setSearchQuery] = useState('');
