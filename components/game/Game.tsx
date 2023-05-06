@@ -9,7 +9,11 @@ import {
   useRenderCount,
   useWindowSize,
 } from '@react-hookz/web';
-import { useClickHereVisibleStore, useTitleVisibleStore } from './Game.stores';
+import {
+  useClickHereVisibleStore,
+  useGameStore,
+  useTitleVisibleStore,
+} from './Game.stores';
 import Header from '../layout/Header';
 import SearchOverlay from '../layout/SearchOverlay';
 import Tableau from '../elements/game/Tableau';
@@ -47,13 +51,17 @@ export default function Game(props: GameProps): ReactElement {
   console.log('Render Count:', renderCount);
   const { topSearches } = props;
 
-  const [gameState, setGameState] = useState(GameState.Idle);
-
-  const [flipped, setFlipped] = useState<boolean[]>([]);
-  const [matched, setMatched] = useState<boolean[]>([]);
-  const [selectedCardIndexes, setSelectedCardIndexes] = useState<number[]>([]);
-  const [tableauSize, setTableauSize] = useState(defaultTableauSize.toString());
-  const actualTableauSize = useRef(defaultTableauSize);
+  const gameState = useGameStore(state => state.gameState);
+  const setGameState = useGameStore(state => state.setGameState);
+  const setFlipped = useGameStore(state => state.setFlipped);
+  const setMatched = useGameStore(state => state.setMatched);
+  const setSelectedCardIndexes = useGameStore(
+    state => state.setSelectedCardIndexes
+  );
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setActualTableauSize = useGameStore(
+    state => state.setActualTableauSize
+  );
 
   const imageData = useRef<SortedGifData[]>([]);
   const imageIndexes = useRef<number[]>([]);
@@ -107,7 +115,7 @@ export default function Game(props: GameProps): ReactElement {
 
   const updateImageData = (data: SortedGifData[]): void => {
     imageData.current = data;
-    actualTableauSize.current = data.length * 2;
+    setActualTableauSize(data.length * 2);
     console.log(data);
   };
 
@@ -127,15 +135,15 @@ export default function Game(props: GameProps): ReactElement {
   };
 
   // Resets and reshuffles states passed to tableau
-  const resetCards = (numCards: number = parseInt(tableauSize)): void => {
+  const resetCards = (numCards: number = parseInt(idealTableauSize)): void => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
     console.log(`Has ${numCards} cards...`);
 
     setGameState(GameState.Loading);
-    setFlipped(Array(numCards).fill(false));
-    setMatched(Array(numCards).fill(false));
-    setSelectedCardIndexes([]);
+    setFlipped({ type: 'clear', payload: numCards });
+    setMatched({ type: 'clear', payload: numCards });
+    setSelectedCardIndexes({ type: 'clear', payload: 0 });
 
     const rect = getRectangleDimensions(numCards);
     if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
@@ -246,18 +254,10 @@ export default function Game(props: GameProps): ReactElement {
           />
         )}
         <Tableau
-          gameState={gameState}
-          setGameState={setGameState}
           reduceMotions={reduceMotions ?? false}
-          flipped={flipped}
-          setFlipped={setFlipped}
-          matched={matched}
-          setMatched={setMatched}
           imageIndexes={imageIndexes.current}
           imageData={imageData.current}
           updateImageLoaded={updateImageLoaded}
-          selectedCardIndexes={selectedCardIndexes}
-          setSelectedCardIndexes={setSelectedCardIndexes}
           showConfetti={(): void => toggleConfetti(true)}
         />
       </div>
@@ -268,18 +268,13 @@ export default function Game(props: GameProps): ReactElement {
         numberOfPieces={confettiVisible ? confettiAmount : 0}
       />
       <SearchOverlay
-        gameState={gameState}
         imageLoaded={imageLoaded}
         overlayVisible={overlayVisible}
-        tableauSize={tableauSize}
-        actualTableauSize={actualTableauSize.current}
         longWaitMsgVisible={longWaitMsgVisible}
         topSearches={topSearches}
-        setTableauSize={setTableauSize}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
-        setGameState={setGameState}
         hideSearchOverlay={(): void => toggleSearchOverlay(false)}
         setGifErrorState={setGifErrorState}
         setAlertVisible={setAlertVisible}

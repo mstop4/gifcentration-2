@@ -1,21 +1,23 @@
 import React from 'react';
+import { useGameStore } from '../../game/Game.stores';
+import Spinner from '../ui/Spinner';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
-import Spinner from '../ui/Spinner';
 import styles from '@/styles/elements/searchOverlay/LoadingIndicator.module.scss';
 
 export type LoadingIndicatorProps = {
-  gameState: GameState;
   imageLoaded: boolean[];
-  actualTableauSize: number;
   longWaitMsgVisible: boolean;
 };
 
 export default function LoadingIndicator(
   props: LoadingIndicatorProps
 ): ReactElement {
-  const { gameState, imageLoaded, actualTableauSize, longWaitMsgVisible } =
-    props;
+  const { imageLoaded, longWaitMsgVisible } = props;
+
+  const gameState = useGameStore(state => state.gameState);
+  const actualTableauSize = useGameStore(state => state.actualTableauSize);
+
   const numImagesLoaded = imageLoaded.reduce(
     (total, current) => (current ? total + 1 : total),
     0

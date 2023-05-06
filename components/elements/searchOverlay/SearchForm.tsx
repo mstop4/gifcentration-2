@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useGameStore } from '../../game/Game.stores';
 import SearchQuery from './searchFormElements/SearchQuery';
 import SearchRating from './searchFormElements/SearchRating';
 import SearchTableauSize from './searchFormElements/SearchTableauSize';
@@ -30,13 +31,10 @@ export type GifFetchResults = {
 };
 
 export type SearchFormProps = {
-  tableauSize: string;
   topSearches: TopSearchResult[];
-  setTableauSize: Dispatch<SetStateAction<string>>;
   updateImageData: (data: SortedGifData[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
-  setGameState: Dispatch<SetStateAction<GameState>>;
   setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   stopConfetti: () => void;
@@ -45,18 +43,18 @@ export type SearchFormProps = {
 
 export default function SearchForm(props: SearchFormProps): ReactElement {
   const {
-    tableauSize,
     topSearches,
-    setTableauSize,
     updateImageData,
     resetImageLoaded,
     resetCards,
-    setGameState,
     setGifErrorState,
     setAlertVisible,
     stopConfetti,
     startLoadTimers,
   } = props;
+
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setGameState = useGameStore(state => state.setGameState);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [rating, setRating] = useState<Rating>('g');
@@ -65,7 +63,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
   // Gets GIFs from API service
   const getGifs = async (): Promise<GifFetchResults> => {
-    const tableauSizeInt = parseInt(tableauSize);
+    const tableauSizeInt = parseInt(idealTableauSize);
     console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
     const searchParams = new URLSearchParams({
@@ -150,7 +148,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     setGameState(GameState.Searching);
     const { numResults, status } = await getGifs();
     setGameState(GameState.Loading);
-    const tableauSizeInt = parseInt(tableauSize);
+    const tableauSizeInt = parseInt(idealTableauSize);
 
     if (status !== ServerHTTPStatus.Ok) {
       // Something went wrong with the request
@@ -196,10 +194,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
       />
       <div id={styles.searchOtherSettings}>
         <SearchRating rating={rating} setRating={setRating} />
-        <SearchTableauSize
-          tableauSize={tableauSize}
-          setTableauSize={setTableauSize}
-        />
+        <SearchTableauSize />
       </div>
       <button id={styles.searchSubmit} type="submit">
         Go!

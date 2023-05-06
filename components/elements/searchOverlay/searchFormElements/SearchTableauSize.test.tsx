@@ -4,7 +4,7 @@ import SearchTableauSize from './SearchTableauSize';
 import '@testing-library/jest-dom';
 
 const makeSearchTableauSize = (): ReactElement => (
-  <SearchTableauSize tableauSize="18" setTableauSize={jest.fn()} />
+  <SearchTableauSize /*tableauSize="18" setTableauSize={jest.fn()} */ />
 );
 
 describe('SearchTableauSize', () => {

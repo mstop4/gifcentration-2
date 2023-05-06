@@ -1,55 +1,97 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import LoadingIndicator from './LoadingIndicator';
 import '@testing-library/jest-dom';
+import { useGameStore } from '../../game/Game.stores';
 import { GameState } from '../../game/Game.typedefs';
 
 describe('LoadingIndicator', () => {
-  it('renders a LoadingIndicator', () => {
+  beforeEach(() => {
+    const setGameState = renderHook(() =>
+      useGameStore(state => state.setGameState)
+    );
+
+    global.setGameState = setGameState.result.current;
+    global.unmountGameState = setGameState.unmount;
+
+    const setActualTableauSize = renderHook(() =>
+      useGameStore(state => state.setActualTableauSize)
+    );
+
+    global.setActualTableauSize = setActualTableauSize.result.current;
+    global.unmountActualTableauSize = setActualTableauSize.unmount;
+  });
+
+  afterEach(() => {
+    global.unmountGameState();
+    global.unmountActualTableauSize();
+
+    global.setGameState = null;
+    global.unmountGameState = null;
+    global.setActualTableauSize = null;
+    global.unmountActualTableauSize = null;
+  });
+
+  it('renders a LoadingIndicator', async () => {
     const numCards = 18;
+
+    await act(() => global.setGameState(GameState.Searching));
+
     const { container } = render(
       <LoadingIndicator
-        gameState={GameState.Searching}
         imageLoaded={new Array(numCards).fill(false)}
-        actualTableauSize={numCards}
         longWaitMsgVisible={false}
       />
     );
 
-    const spinner = container.querySelector('#loadingIndicator');
-    expect(spinner).toBeInTheDocument();
+    await waitFor(() => {
+      const spinner = container.querySelector('#loadingIndicator');
+      expect(spinner).toBeInTheDocument();
+    });
   });
 
   it('says "Searching..." when the GameState is Searching', async () => {
     const numCards = 10;
+    await act(() => {
+      global.setGameState(GameState.Searching);
+      global.setActualTableauSize(numCards);
+    });
+
     render(
       <LoadingIndicator
-        gameState={GameState.Searching}
         imageLoaded={new Array(numCards).fill(true)}
-        actualTableauSize={numCards}
         longWaitMsgVisible={false}
       />
     );
 
-    const text = screen.queryByText(/searching.../i);
     await waitFor(() => {
+      const text = screen.queryByText(/searching.../i);
       expect(text).toBeInTheDocument();
     });
   });
 
   it('says "Loading..." when the GameState is Loading', async () => {
     const numCards = 12;
+    await act(() => {
+      global.setGameState(GameState.Loading);
+      global.setActualTableauSize(numCards);
+    });
+
     render(
       <LoadingIndicator
-        gameState={GameState.Loading}
         imageLoaded={new Array(numCards).fill(false)}
-        actualTableauSize={numCards}
         longWaitMsgVisible={false}
       />
     );
 
-    const text = screen.queryByText(/loading.../i);
     await waitFor(() => {
+      const text = screen.queryByText(/loading.../i);
       expect(text).toBeInTheDocument();
     });
   });

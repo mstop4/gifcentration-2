@@ -7,10 +7,10 @@ import { TopSearchResult } from '../../../lib/mongodb/helpers';
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
-    tableauSize={'2'}
-    setTableauSize={jest.fn()}
+    //tableauSize={'2'}
+    //setTableauSize={jest.fn()}
     resetCards={jest.fn()}
-    setGameState={jest.fn()}
+    //setGameState={jest.fn()}
     updateImageData={jest.fn()}
     resetImageLoaded={jest.fn()}
     setGifErrorState={jest.fn()}

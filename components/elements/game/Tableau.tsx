@@ -1,25 +1,18 @@
 import { useCallback, useEffect } from 'react';
+import { useGameStore } from '../../game/Game.stores';
 import Card from './Card';
 import { SortedGifData } from '../../../helpers/gif';
-import type { ReactElement, Dispatch, SetStateAction } from 'react';
+import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import clientConfig from '../../../config/clientConfig';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type TableauProps = {
-  gameState: GameState;
-  setGameState: Dispatch<SetStateAction<GameState>>;
   reduceMotions: boolean;
-  flipped: boolean[];
-  setFlipped: Dispatch<SetStateAction<boolean[]>>;
-  matched: boolean[];
-  setMatched: Dispatch<SetStateAction<boolean[]>>;
   imageIndexes: number[];
   imageData: SortedGifData[];
   updateImageLoaded: (index: number) => void;
-  selectedCardIndexes: number[];
-  setSelectedCardIndexes: Dispatch<SetStateAction<number[]>>;
   showConfetti: () => void;
 };
 
@@ -27,20 +20,23 @@ const { checkDelay } = clientConfig.tableau;
 
 export default function Tableau(props: TableauProps): ReactElement {
   const {
-    gameState,
-    setGameState,
     reduceMotions,
-    flipped,
-    setFlipped,
-    matched,
-    setMatched,
     imageIndexes,
     imageData,
     updateImageLoaded,
-    selectedCardIndexes,
-    setSelectedCardIndexes,
     showConfetti,
   } = props;
+
+  const gameState = useGameStore(state => state.gameState);
+  const setGameState = useGameStore(state => state.setGameState);
+  const flipped = useGameStore(state => state.flipped);
+  const setFlipped = useGameStore(state => state.setFlipped);
+  const matched = useGameStore(state => state.matched);
+  const setMatched = useGameStore(state => state.setMatched);
+  const selectedCardIndexes = useGameStore(state => state.selectedCardIndexes);
+  const setSelectedCardIndexes = useGameStore(
+    state => state.setSelectedCardIndexes
+  );
 
   useEffect(() => {
     if (gameState !== GameState.Playing) return;
@@ -58,17 +54,11 @@ export default function Tableau(props: TableauProps): ReactElement {
       imageIndexes[selectedCardIndexes[0]] ===
       imageIndexes[selectedCardIndexes[1]]
     ) {
-      setMatched(prev =>
-        prev.map((value, i) =>
-          i === selectedCardIndexes[0] || i === selectedCardIndexes[1]
-            ? true
-            : value
-        )
-      );
+      setMatched({ type: 'set', payload: [...selectedCardIndexes] });
     } else {
-      setFlipped([...matched]);
+      setFlipped({ type: 'copy', payload: matched });
     }
-    setSelectedCardIndexes([]);
+    setSelectedCardIndexes({ type: 'clear', payload: 0 });
   }, [
     imageIndexes,
     selectedCardIndexes,
@@ -90,8 +80,8 @@ export default function Tableau(props: TableauProps): ReactElement {
     if (selectedCardIndexes.length >= 2) return;
 
     // Mark current card as flipped
-    setFlipped(prev => prev.map((value, i) => (i === index ? true : value)));
-    setSelectedCardIndexes(prev => [...prev, index]);
+    setFlipped({ type: 'set', payload: index });
+    setSelectedCardIndexes({ type: 'push', payload: index });
   };
 
   const cardArray: ReactElement[] = [];

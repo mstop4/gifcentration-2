@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import Tableau from './Tableau';
 import '@testing-library/jest-dom';
-import { GameState } from '../../game/Game.typedefs';
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
@@ -15,17 +14,17 @@ const makeTableau = (): ReactElement => {
   return (
     <Tableau
       reduceMotions={false}
-      gameState={GameState.Playing}
-      setGameState={jest.fn()}
-      flipped={[false, false]}
-      setFlipped={jest.fn()}
-      matched={[false, false]}
-      setMatched={jest.fn()}
+      //gameState={GameState.Playing}
+      //setGameState={jest.fn()}
+      //flipped={[false, false]}
+      //setFlipped={jest.fn()}
+      //matched={[false, false]}
+      //setMatched={jest.fn()}
       imageIndexes={[0, 0]}
       imageData={imageData}
-      selectedCardIndexes={[]}
+      //selectedCardIndexes={[]}
       updateImageLoaded={jest.fn()}
-      setSelectedCardIndexes={jest.fn()}
+      //setSelectedCardIndexes={jest.fn()}
       showConfetti={jest.fn()}
     />
   );

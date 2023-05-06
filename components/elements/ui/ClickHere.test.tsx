@@ -27,7 +27,7 @@ describe('ClickHere', () => {
   });
 
   it('should be visible', async () => {
-    const { result: setClickHereVisibility, unmount } = renderHook(() =>
+    const { result: setClickHereVisibility } = renderHook(() =>
       useClickHereVisibleStore(state => state.setVisibilty)
     );
 
@@ -40,13 +40,11 @@ describe('ClickHere', () => {
 
       const clickHere = container.querySelector('#clickHere') as Element;
       expect(clickHere).toHaveClass('elementVisible');
-
-      unmount();
     });
   });
 
   it('should be hidden', async () => {
-    const { result: setClickHereVisibility, unmount } = renderHook(() =>
+    const { result: setClickHereVisibility } = renderHook(() =>
       useClickHereVisibleStore(state => state.setVisibilty)
     );
 
@@ -59,8 +57,6 @@ describe('ClickHere', () => {
 
       const clickHere = container.querySelector('#clickHere') as Element;
       expect(clickHere).toHaveClass('elementHidden');
-
-      unmount();
     });
   });
 
