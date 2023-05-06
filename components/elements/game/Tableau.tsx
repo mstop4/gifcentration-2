@@ -38,18 +38,8 @@ export default function Tableau(props: TableauProps): ReactElement {
     state => state.setSelectedCardIndexes
   );
 
-  useEffect(() => {
-    if (gameState !== GameState.Playing) return;
-
-    // If all cards have been matched, end game
-    if (matched.every(status => status)) {
-      setGameState(GameState.Finished);
-      showConfetti();
-    }
-  }, [gameState, matched, setGameState, showConfetti]);
-
   // Checks if flipped cards match
-  const checkPair = useCallback((): void => {
+  const checkPair = useCallback(() => {
     if (
       imageIndexes[selectedCardIndexes[0]] ===
       imageIndexes[selectedCardIndexes[1]]
@@ -68,13 +58,7 @@ export default function Tableau(props: TableauProps): ReactElement {
     setSelectedCardIndexes,
   ]);
 
-  useEffect(() => {
-    if (selectedCardIndexes.length >= 2) {
-      setTimeout(checkPair, checkDelay);
-    }
-  }, [selectedCardIndexes, checkPair]);
-
-  const handleCardClick = (index: number): void => {
+  const handleCardClick = (index: number) => {
     if (gameState !== GameState.Playing) return;
     if (flipped[index]) return;
     if (selectedCardIndexes.length >= 2) return;
@@ -83,6 +67,22 @@ export default function Tableau(props: TableauProps): ReactElement {
     setFlipped({ type: 'set', payload: index });
     setSelectedCardIndexes({ type: 'push', payload: index });
   };
+
+  useEffect(() => {
+    if (gameState !== GameState.Playing) return;
+
+    // If all cards have been matched, end game
+    if (matched.every(status => status)) {
+      setGameState(GameState.Finished);
+      showConfetti();
+    }
+  }, [gameState, matched, setGameState, showConfetti]);
+
+  useEffect(() => {
+    if (selectedCardIndexes.length >= 2) {
+      setTimeout(checkPair, checkDelay);
+    }
+  }, [selectedCardIndexes, checkPair]);
 
   const cardArray: ReactElement[] = [];
   for (let i = 0; i < imageIndexes.length; ++i) {

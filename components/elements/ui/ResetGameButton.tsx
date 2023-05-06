@@ -14,7 +14,7 @@ export default function ResetGameButton(
 ): ReactElement {
   const { gameState, resetCards } = props;
 
-  const handleClick = (): void => {
+  const handleClick = () => {
     if (
       gameState === GameState.Idle ||
       gameState === GameState.Searching ||

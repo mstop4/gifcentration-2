@@ -107,14 +107,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   };
 
   // Sets up game after receiving gif data
-  const postGifSearchSetup = (numCards: number): void => {
+  const postGifSearchSetup = (numCards: number) => {
     resetCards(numCards);
     resetImageLoaded(numCards);
     startLoadTimers();
   };
 
   // Shows alert with a given state
-  const showAlert = (state: GifErrorState): void => {
+  const showAlert = (state: GifErrorState) => {
     setGifErrorState(state);
     setUIVisibility({ alert: true });
 
@@ -128,16 +128,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   };
 
   // Hides alert
-  const hideAlert = (): void => {
+  const hideAlert = () => {
     if (alertTimeout.current != null) {
       clearTimeout(alertTimeout.current);
     }
     setUIVisibility({ alert: false });
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (
-    e
-  ): Promise<void> => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
     hideAlert();
     setUIVisibility({ confetti: false });

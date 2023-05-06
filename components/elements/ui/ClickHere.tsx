@@ -19,7 +19,7 @@ export default function ClickHere(props: ClickHereProps): ReactElement {
 
   const { showSearchOverlay } = props;
 
-  const handleClick = (): void => {
+  const handleClick = () => {
     setClickHereVisibility({ visible: false });
 
     if (titleRendered) {

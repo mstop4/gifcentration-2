@@ -23,7 +23,7 @@ export default function SearchGifsButton(
   const setTitleVisibility = useTitleVisibleStore.setState;
   const setClickHereVisibility = useClickHereVisibleStore.setState;
 
-  const handleClick = async (): Promise<void> => {
+  const handleClick = async () => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
 

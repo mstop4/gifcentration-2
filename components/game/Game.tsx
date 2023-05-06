@@ -100,14 +100,14 @@ export default function Game(props: GameProps): ReactElement {
     setTimeout(() => setClickHereVisibility({ visible: true }), 2000);
   });
 
-  const updateImageData = (data: SortedGifData[]): void => {
+  const updateImageData = (data: SortedGifData[]) => {
     imageData.current = data;
     setActualTableauSize(data.length * 2);
     console.log(data);
   };
 
   // Updates CSS grid dimensions for tableau
-  const updateGridDimensions = (rect: RectangleDimensions): void => {
+  const updateGridDimensions = (rect: RectangleDimensions) => {
     const { majorAxisSize, minorAxisSize } = rect;
 
     document.documentElement.style.setProperty(
@@ -122,7 +122,7 @@ export default function Game(props: GameProps): ReactElement {
   };
 
   // Resets and reshuffles states passed to tableau
-  const resetCards = (numCards: number = parseInt(idealTableauSize)): void => {
+  const resetCards = (numCards: number = parseInt(idealTableauSize)) => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
     console.log(`Has ${numCards} cards...`);
@@ -141,7 +141,7 @@ export default function Game(props: GameProps): ReactElement {
   };
 
   // Marks a GIF as loaded
-  const updateImageLoaded = (index: number): void => {
+  const updateImageLoaded = (index: number) => {
     if (index >= 0 && index < imageLoaded.length) {
       setImageLoaded(prev =>
         prev.map((value, i) => (i === index ? true : value))
@@ -152,7 +152,7 @@ export default function Game(props: GameProps): ReactElement {
   };
 
   // Resets and resizes imageLoaded array
-  const resetImageLoaded = (numCards: number): void => {
+  const resetImageLoaded = (numCards: number) => {
     setImageLoaded(() => new Array(numCards).fill(false));
   };
 
@@ -172,7 +172,7 @@ export default function Game(props: GameProps): ReactElement {
 
   // Shows/hides search overlay
   const toggleSearchOverlay = useCallback(
-    (visible: boolean): void => {
+    (visible: boolean) => {
       setUIVisibility({ overlay: visible });
       if (visible) router.replace(pathname);
     },
@@ -180,7 +180,7 @@ export default function Game(props: GameProps): ReactElement {
   );
 
   // Shows/hides confetti overlay
-  const toggleConfetti = (visible: boolean): void => {
+  const toggleConfetti = (visible: boolean) => {
     setUIVisibility({ confetti: visible });
 
     if (confettiTimeout.current != null) {
@@ -228,21 +228,19 @@ export default function Game(props: GameProps): ReactElement {
       <Header
         gameState={gameState}
         resetCards={resetCards}
-        showSearchOverlay={(): void => toggleSearchOverlay(true)}
+        showSearchOverlay={() => toggleSearchOverlay(true)}
       />
       <div id={styles.content}>
         {titleRendered && <Title />}
         {clickHereRendered && (
-          <ClickHere
-            showSearchOverlay={(): void => toggleSearchOverlay(true)}
-          />
+          <ClickHere showSearchOverlay={() => toggleSearchOverlay(true)} />
         )}
         <Tableau
           reduceMotions={reduceMotions ?? false}
           imageIndexes={imageIndexes.current}
           imageData={imageData.current}
           updateImageLoaded={updateImageLoaded}
-          showConfetti={(): void => toggleConfetti(true)}
+          showConfetti={() => toggleConfetti(true)}
         />
       </div>
       {/* <Footer /> */}

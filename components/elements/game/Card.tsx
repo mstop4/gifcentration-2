@@ -35,12 +35,12 @@ export default function Card(props: CardProps): ReactElement {
     updateImageLoaded,
   } = props;
 
-  const handleClick = (): void => {
+  const handleClick = () => {
     handleCardClick(index);
   };
 
   // Callback for onLoad event in picture element
-  const handleGifLoad = (): void => {
+  const handleGifLoad = () => {
     updateImageLoaded(index);
   };
 
