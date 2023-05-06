@@ -1,14 +1,14 @@
 import React from 'react';
-import {
-  act,
-  fireEvent,
-  render,
-  renderHook,
-  waitFor,
-} from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
 import { useClickHereVisibleStore } from '../../game/Game.stores';
+import {
+  cleanupZustandHooks,
+  getZustandHooks,
+} from '../../../helpers/zustandTest';
+
+const hookNames = ['setVisibilty'];
 
 describe('ClickHere', () => {
   beforeAll(() => {
@@ -19,6 +19,14 @@ describe('ClickHere', () => {
     jest.useRealTimers();
   });
 
+  beforeEach(() => {
+    getZustandHooks(useClickHereVisibleStore, hookNames);
+  });
+
+  afterEach(() => {
+    cleanupZustandHooks(hookNames);
+  });
+
   it('renders a ClickHere', () => {
     const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
 
@@ -27,12 +35,8 @@ describe('ClickHere', () => {
   });
 
   it('should be visible', async () => {
-    const { result: setClickHereVisibility } = renderHook(() =>
-      useClickHereVisibleStore(state => state.setVisibilty)
-    );
-
     await act(() =>
-      setClickHereVisibility.current({ prop: 'visible', value: true })
+      global.zustandHooks.setVisibilty({ prop: 'visible', value: true })
     );
 
     await waitFor(() => {
@@ -44,12 +48,8 @@ describe('ClickHere', () => {
   });
 
   it('should be hidden', async () => {
-    const { result: setClickHereVisibility } = renderHook(() =>
-      useClickHereVisibleStore(state => state.setVisibilty)
-    );
-
     await act(() =>
-      setClickHereVisibility.current({ prop: 'visible', value: false })
+      global.zustandHooks.setVisibilty({ prop: 'visible', value: false })
     );
 
     await waitFor(() => {

@@ -5,6 +5,22 @@ import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
+import { useGameStore } from '../../game/Game.stores';
+import {
+  getZustandHooks,
+  cleanupZustandHooks,
+} from '../../../helpers/zustandTest';
+
+const hookNames = [
+  'gameState',
+  'setGameState',
+  'flipped',
+  'setFlipped',
+  'matched',
+  'setMatched',
+  'selectedCardIndexes',
+  'setSelectedCardIndexes',
+];
 
 const makeTableau = (): ReactElement => {
   const imageData = mockIGifs.map((imageData: unknown) =>
@@ -14,23 +30,23 @@ const makeTableau = (): ReactElement => {
   return (
     <Tableau
       reduceMotions={false}
-      //gameState={GameState.Playing}
-      //setGameState={jest.fn()}
-      //flipped={[false, false]}
-      //setFlipped={jest.fn()}
-      //matched={[false, false]}
-      //setMatched={jest.fn()}
       imageIndexes={[0, 0]}
       imageData={imageData}
-      //selectedCardIndexes={[]}
       updateImageLoaded={jest.fn()}
-      //setSelectedCardIndexes={jest.fn()}
       showConfetti={jest.fn()}
     />
   );
 };
 
 describe('Tableau', () => {
+  beforeEach(() => {
+    getZustandHooks(useGameStore, hookNames);
+  });
+
+  afterEach(() => {
+    cleanupZustandHooks(hookNames);
+  });
+
   it('renders a Tableau', async () => {
     const { container } = render(makeTableau());
     const tableau = container.querySelector('#tableau');

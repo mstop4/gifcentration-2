@@ -1,47 +1,29 @@
 import React from 'react';
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import LoadingIndicator from './LoadingIndicator';
 import '@testing-library/jest-dom';
 import { useGameStore } from '../../game/Game.stores';
 import { GameState } from '../../game/Game.typedefs';
+import {
+  cleanupZustandHooks,
+  getZustandHooks,
+} from '../../../helpers/zustandTest';
+
+const hookNames = ['setGameState', 'setActualTableauSize'];
 
 describe('LoadingIndicator', () => {
   beforeEach(() => {
-    const setGameState = renderHook(() =>
-      useGameStore(state => state.setGameState)
-    );
-
-    global.setGameState = setGameState.result.current;
-    global.unmountGameState = setGameState.unmount;
-
-    const setActualTableauSize = renderHook(() =>
-      useGameStore(state => state.setActualTableauSize)
-    );
-
-    global.setActualTableauSize = setActualTableauSize.result.current;
-    global.unmountActualTableauSize = setActualTableauSize.unmount;
+    getZustandHooks(useGameStore, hookNames);
   });
 
   afterEach(() => {
-    global.unmountGameState();
-    global.unmountActualTableauSize();
-
-    global.setGameState = null;
-    global.unmountGameState = null;
-    global.setActualTableauSize = null;
-    global.unmountActualTableauSize = null;
+    cleanupZustandHooks(hookNames);
   });
 
   it('renders a LoadingIndicator', async () => {
     const numCards = 18;
 
-    await act(() => global.setGameState(GameState.Searching));
+    await act(() => global.zustandHooks.setGameState(GameState.Searching));
 
     const { container } = render(
       <LoadingIndicator
@@ -59,8 +41,8 @@ describe('LoadingIndicator', () => {
   it('says "Searching..." when the GameState is Searching', async () => {
     const numCards = 10;
     await act(() => {
-      global.setGameState(GameState.Searching);
-      global.setActualTableauSize(numCards);
+      global.zustandHooks.setGameState(GameState.Searching);
+      global.zustandHooks.setActualTableauSize(numCards);
     });
 
     render(
@@ -79,8 +61,8 @@ describe('LoadingIndicator', () => {
   it('says "Loading..." when the GameState is Loading', async () => {
     const numCards = 12;
     await act(() => {
-      global.setGameState(GameState.Loading);
-      global.setActualTableauSize(numCards);
+      global.zustandHooks.setGameState(GameState.Loading);
+      global.zustandHooks.setActualTableauSize(numCards);
     });
 
     render(
