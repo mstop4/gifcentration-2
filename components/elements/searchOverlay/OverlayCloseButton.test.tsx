@@ -2,23 +2,23 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import OverlayCloseButton from './OverlayCloseButton';
 import '@testing-library/jest-dom';
-import { getZustandHooks } from '../../../helpers/zustandTest';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 import { useUIVisibleStore } from '../../game/Game.stores';
 
-let zustandHooks;
+let store;
 
 describe('OverlayCloseButton', () => {
   beforeAll(() => {
-    zustandHooks = getZustandHooks(useUIVisibleStore);
+    store = getZustandStoreHooks(useUIVisibleStore);
   });
 
   beforeEach(() => {
-    zustandHooks.reset();
+    store.reset();
   });
 
   afterAll(() => {
-    zustandHooks.unmount();
-    zustandHooks = null;
+    store.unmount();
+    store = null;
     jest.restoreAllMocks();
   });
 
@@ -36,7 +36,7 @@ describe('OverlayCloseButton', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      const overlayVisible = zustandHooks.getState().overlay;
+      const overlayVisible = store.getState().overlay;
       expect(overlayVisible).toEqual(false);
     });
   });

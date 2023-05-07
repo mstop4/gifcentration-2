@@ -1,14 +1,12 @@
 import { Architects_Daughter } from 'next/font/google';
-import { useTitleVisibleStore } from '../game/Game.stores';
+import { useGameStore, useTitleVisibleStore } from '../game/Game.stores';
 import SearchGifsButton from '../elements/ui/SearchGifsButton';
 import ResetGameButton from '../elements/ui/ResetGameButton';
 import type { ReactElement } from 'react';
-import { GameState } from '../game/Game.typedefs';
 import styles from '@/styles/layout/Header.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type HeaderProps = {
-  gameState: GameState;
   resetCards: () => void;
   showSearchOverlay: () => void;
 };
@@ -28,14 +26,8 @@ export default function Header(props: HeaderProps): ReactElement {
         GIFcentration 2
       </span>
       <span id={styles.headerButtons}>
-        <SearchGifsButton
-          gameState={props.gameState}
-          showSearchOverlay={props.showSearchOverlay}
-        />
-        <ResetGameButton
-          gameState={props.gameState}
-          resetCards={props.resetCards}
-        />
+        <SearchGifsButton showSearchOverlay={props.showSearchOverlay} />
+        <ResetGameButton resetCards={props.resetCards} />
       </span>
     </header>
   );

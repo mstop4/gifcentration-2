@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { useGameStore, useUIVisibleStore } from '../../game/Game.stores';
+import {
+  useGameStore,
+  useImageDataStore,
+  useUIVisibleStore,
+} from '../../game/Game.stores';
 import SearchQuery from './searchFormElements/SearchQuery';
 import SearchRating from './searchFormElements/SearchRating';
 import SearchTableauSize from './searchFormElements/SearchTableauSize';
-import type {
-  ReactElement,
-  Dispatch,
-  FormEventHandler,
-  SetStateAction,
-} from 'react';
+import type { ReactElement, FormEventHandler } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
@@ -35,7 +34,6 @@ export type SearchFormProps = {
   updateImageData: (data: SortedGifData[]) => void;
   resetImageLoaded: (numCards: number) => void;
   resetCards: (numCards: number) => void;
-  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   startLoadTimers: () => void;
 };
 
@@ -45,12 +43,12 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     updateImageData,
     resetImageLoaded,
     resetCards,
-    setGifErrorState,
     startLoadTimers,
   } = props;
 
   const idealTableauSize = useGameStore(state => state.idealTableauSize);
   const setGameState = useGameStore(state => state.setGameState);
+  const setGifErrorState = useImageDataStore(state => state.setGifErrorState);
   const setUIVisibility = useUIVisibleStore.setState;
 
   const [searchQuery, setSearchQuery] = useState('');

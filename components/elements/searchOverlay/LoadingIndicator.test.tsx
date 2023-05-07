@@ -4,28 +4,28 @@ import LoadingIndicator from './LoadingIndicator';
 import '@testing-library/jest-dom';
 import { useGameStore } from '../../game/Game.stores';
 import { GameState } from '../../game/Game.typedefs';
-import { getZustandHooks } from '../../../helpers/zustandTest';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
-let zustandHooks;
+let store;
 
 describe('LoadingIndicator', () => {
   beforeAll(() => {
-    zustandHooks = getZustandHooks(useGameStore);
+    store = getZustandStoreHooks(useGameStore);
   });
 
   beforeEach(() => {
-    zustandHooks.reset();
+    store.reset();
   });
 
   afterAll(() => {
-    zustandHooks.unmount();
-    zustandHooks = null;
+    store.unmount();
+    store = null;
   });
 
   it('renders a LoadingIndicator', async () => {
     const numCards = 18;
 
-    await act(() => zustandHooks.getState().setGameState(GameState.Searching));
+    await act(() => store.getState().setGameState(GameState.Searching));
 
     const { container } = render(
       <LoadingIndicator
@@ -43,8 +43,8 @@ describe('LoadingIndicator', () => {
   it('says "Searching..." when the GameState is Searching', async () => {
     const numCards = 10;
     await act(() => {
-      zustandHooks.getState().setGameState(GameState.Searching);
-      zustandHooks.getState().setActualTableauSize(numCards);
+      store.getState().setGameState(GameState.Searching);
+      store.getState().setActualTableauSize(numCards);
     });
 
     render(
@@ -63,8 +63,8 @@ describe('LoadingIndicator', () => {
   it('says "Loading..." when the GameState is Loading', async () => {
     const numCards = 12;
     await act(() => {
-      zustandHooks.getState().setGameState(GameState.Loading);
-      zustandHooks.getState().setActualTableauSize(numCards);
+      store.getState().setGameState(GameState.Loading);
+      store.getState().setActualTableauSize(numCards);
     });
 
     render(

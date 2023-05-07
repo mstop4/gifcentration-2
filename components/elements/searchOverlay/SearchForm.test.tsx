@@ -5,9 +5,9 @@ import '@testing-library/jest-dom';
 import mockTopSearches from '../../../mockData/popular.json';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import { useGameStore } from '../../game/Game.stores';
-import { getZustandHooks } from '../../../helpers/zustandTest';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
-let zustandHooks;
+let store;
 
 const makeSearchForm = (): ReactElement => (
   <SearchForm
@@ -22,16 +22,16 @@ const makeSearchForm = (): ReactElement => (
 
 describe('SearchForm', () => {
   beforeAll(() => {
-    zustandHooks = getZustandHooks(useGameStore);
+    store = getZustandStoreHooks(useGameStore);
   });
 
   beforeEach(() => {
-    zustandHooks.reset();
+    store.reset();
   });
 
   afterAll(() => {
-    zustandHooks.unmount();
-    zustandHooks = null;
+    store.unmount();
+    store = null;
   });
 
   it('renders a SearchForm', async () => {

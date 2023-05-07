@@ -3,8 +3,8 @@ import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
 import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
 import { SortedGifData } from '../../helpers/gif';
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
-import { GameState, GifErrorState } from '../game/Game.typedefs';
+import type { ReactElement } from 'react';
+import { GameState } from '../game/Game.typedefs';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 
@@ -14,7 +14,6 @@ export type SearchOverlayProps = {
   topSearches: TopSearchResult[];
   updateImageData: (data: SortedGifData[]) => void;
   resetCards: (numCards: number) => void;
-  setGifErrorState: Dispatch<SetStateAction<GifErrorState>>;
   startLoadTimers: () => void;
 };
 
@@ -25,7 +24,6 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
     topSearches,
     updateImageData,
     resetCards,
-    setGifErrorState,
     startLoadTimers,
   } = props;
 
@@ -49,7 +47,6 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
             updateImageData={updateImageData}
             resetImageLoaded={resetImageLoaded}
             resetCards={resetCards}
-            setGifErrorState={setGifErrorState}
             startLoadTimers={startLoadTimers}
           />
           <OverlayCloseButton />

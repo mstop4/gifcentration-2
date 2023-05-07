@@ -5,35 +5,36 @@ import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
-import { useGameStore } from '../../game/Game.stores';
-import { getZustandHooks } from '../../../helpers/zustandTest';
+import { useGameStore, useImageDataStore } from '../../game/Game.stores';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
-let zustandHooks;
+let gameStore;
+let imageDataStore;
+const imageData = mockIGifs.map((imageData: unknown) =>
+  organizeImages(imageData as IGif)
+);
 
-const makeTableau = (): ReactElement => {
-  const imageData = mockIGifs.map((imageData: unknown) =>
-    organizeImages(imageData as IGif)
-  );
-
-  return (
-    <Tableau
-      reduceMotions={false}
-      imageIndexes={[0, 0]}
-      imageData={imageData}
-      updateImageLoaded={jest.fn()}
-      showConfetti={jest.fn()}
-    />
-  );
-};
+const makeTableau = (): ReactElement => (
+  <Tableau
+    reduceMotions={false}
+    updateImageLoaded={jest.fn()}
+    showConfetti={jest.fn()}
+  />
+);
 
 describe('Tableau', () => {
   beforeEach(() => {
-    zustandHooks = getZustandHooks(useGameStore);
+    gameStore = getZustandStoreHooks(useGameStore);
+    imageDataStore = getZustandStoreHooks(useImageDataStore);
+    imageDataStore.setState({ imageIndexes: [0, 0], imageData: imageData });
   });
 
   afterEach(() => {
-    zustandHooks.unmount();
-    zustandHooks = null;
+    gameStore.unmount();
+    gameStore = null;
+
+    imageDataStore.unmount();
+    imageDataStore = null;
   });
 
   it('renders a Tableau', async () => {

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import {
   useClickHereVisibleStore,
+  useGameStore,
   useTitleVisibleStore,
 } from '../../game/Game.stores';
 import type { ReactElement } from 'react';
@@ -9,15 +10,15 @@ import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {
-  gameState: GameState;
   showSearchOverlay: () => void;
 };
 
 export default function SearchGifsButton(
   props: SearchGifsButtonProps
 ): ReactElement {
-  const { gameState, showSearchOverlay } = props;
+  const { showSearchOverlay } = props;
 
+  const gameState = useGameStore(state => state.gameState);
   const titleRendered = useTitleVisibleStore(state => state.titleRendered);
   const headerVisible = useTitleVisibleStore(state => state.headerVisible);
   const setTitleVisibility = useTitleVisibleStore.setState;

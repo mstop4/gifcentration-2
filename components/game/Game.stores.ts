@@ -4,6 +4,9 @@ import {
   ClickHereVisibility,
   GameState,
   GameStore,
+  GifErrorState,
+  ImageDataStore,
+  ImageLoadedArrayAction,
   TitleVisibility,
   UIVisibility,
 } from './Game.typedefs';
@@ -74,6 +77,39 @@ export const useGameStore = create<GameStore>(set => ({
     set(state => _cardArrayReducer(state, 'selectedCardIndexes', action)),
   setIdealTableauSize: size => set(() => ({ idealTableauSize: size })),
   setActualTableauSize: size => set(() => ({ actualTableauSize: size })),
+}));
+
+const _imageLoadedArrayReducer = (
+  prevState: ImageDataStore,
+  action: ImageLoadedArrayAction
+) => {
+  let newArray: boolean[];
+  const { type, payload } = action;
+
+  switch (type) {
+    case 'set':
+      newArray = [...prevState.imageLoaded];
+      newArray[payload] = true;
+      break;
+
+    case 'clear':
+      newArray = Array(payload).fill(false);
+      break;
+  }
+
+  return { imageLoaded: newArray };
+};
+
+export const useImageDataStore = create<ImageDataStore>(set => ({
+  imageData: [],
+  imageIndexes: [],
+  imageLoaded: [],
+  gifErrorState: GifErrorState.Ok,
+  setImageData: data => set(() => ({ imageData: data })),
+  setImageIndexes: indexes => set(() => ({ imageIndexes: indexes })),
+  setImageLoaded: action =>
+    set(state => _imageLoadedArrayReducer(state, action)),
+  setGifErrorState: gifState => set(() => ({ gifErrorState: gifState })),
 }));
 
 export const useUIVisibleStore = create<UIVisibility>(() => ({

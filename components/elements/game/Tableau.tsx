@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import { useGameStore } from '../../game/Game.stores';
+import { useGameStore, useImageDataStore } from '../../game/Game.stores';
 import Card from './Card';
-import { SortedGifData } from '../../../helpers/gif';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import clientConfig from '../../../config/clientConfig';
@@ -10,8 +9,6 @@ import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type TableauProps = {
   reduceMotions: boolean;
-  imageIndexes: number[];
-  imageData: SortedGifData[];
   updateImageLoaded: (index: number) => void;
   showConfetti: () => void;
 };
@@ -19,13 +16,7 @@ export type TableauProps = {
 const { checkDelay } = clientConfig.tableau;
 
 export default function Tableau(props: TableauProps): ReactElement {
-  const {
-    reduceMotions,
-    imageIndexes,
-    imageData,
-    updateImageLoaded,
-    showConfetti,
-  } = props;
+  const { reduceMotions, updateImageLoaded, showConfetti } = props;
 
   const gameState = useGameStore(state => state.gameState);
   const setGameState = useGameStore(state => state.setGameState);
@@ -37,6 +28,8 @@ export default function Tableau(props: TableauProps): ReactElement {
   const setSelectedCardIndexes = useGameStore(
     state => state.setSelectedCardIndexes
   );
+  const imageData = useImageDataStore(state => state.imageData);
+  const imageIndexes = useImageDataStore(state => state.imageIndexes);
 
   // Checks if flipped cards match
   const checkPair = useCallback(() => {

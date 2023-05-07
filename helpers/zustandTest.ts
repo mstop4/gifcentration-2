@@ -1,7 +1,9 @@
 import { renderHook } from '@testing-library/react';
 import type { StoreApi, UseBoundStore } from 'zustand';
 
-export const getZustandHooks = (store: UseBoundStore<StoreApi<unknown>>) => {
+export const getZustandStoreHooks = (
+  store: UseBoundStore<StoreApi<unknown>>
+) => {
   const hook = renderHook(() => store);
   const initialState = hook.result.current.getState();
 

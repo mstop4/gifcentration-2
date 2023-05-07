@@ -1,17 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
-import {
-  useMediaQuery,
-  useMountEffect,
-  useRenderCount,
-  useWindowSize,
-} from '@react-hookz/web';
+import { useMediaQuery, useMountEffect, useWindowSize } from '@react-hookz/web';
 import {
   useClickHereVisibleStore,
   useGameStore,
+  useImageDataStore,
   useTitleVisibleStore,
   useUIVisibleStore,
 } from './Game.stores';
@@ -28,7 +24,7 @@ import {
 } from '../../helpers';
 import { SortedGifData } from '../../helpers/gif';
 import clientConfig from '../../config/clientConfig';
-import { GameState, GifErrorState } from './Game.typedefs';
+import { GameState } from './Game.typedefs';
 import type { ReactElement } from 'react';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
@@ -43,8 +39,6 @@ export default function Game(props: GameProps): ReactElement {
   const reduceMotions = useMediaQuery('(prefers-reduced-motion: reduce)');
   const router = useRouter();
   const pathname = usePathname();
-  const renderCount = useRenderCount();
-  console.log('Render Count:', renderCount);
   const { topSearches } = props;
 
   // Picking states from stores must be done this way (i.e no destructuring store.getState())
@@ -68,10 +62,10 @@ export default function Game(props: GameProps): ReactElement {
   const setClickHereVisibility = useClickHereVisibleStore.setState;
   const setUIVisibility = useUIVisibleStore.setState;
 
-  const imageData = useRef<SortedGifData[]>([]);
-  const imageIndexes = useRef<number[]>([]);
-  const [imageLoaded, setImageLoaded] = useState<boolean[]>([]);
-  const [gifErrorState, setGifErrorState] = useState(GifErrorState.Ok);
+  const setImageData = useImageDataStore(state => state.setImageData);
+  const setImageIndexes = useImageDataStore(state => state.setImageIndexes);
+  const imageLoaded = useImageDataStore(state => state.imageLoaded);
+  const setImageLoaded = useImageDataStore(state => state.setImageLoaded);
 
   const confettiVisible = useUIVisibleStore(state => state.confetti);
 
@@ -101,7 +95,7 @@ export default function Game(props: GameProps): ReactElement {
   });
 
   const updateImageData = (data: SortedGifData[]) => {
-    imageData.current = data;
+    setImageData(data);
     setActualTableauSize(data.length * 2);
     console.log(data);
   };
@@ -137,15 +131,13 @@ export default function Game(props: GameProps): ReactElement {
     updateGridDimensions(rect);
 
     console.log(`Setting up ${numCards / 2} pairs...`);
-    imageIndexes.current = pairShuffler(numCards / 2);
+    setImageIndexes(pairShuffler(numCards / 2));
   };
 
   // Marks a GIF as loaded
   const updateImageLoaded = (index: number) => {
     if (index >= 0 && index < imageLoaded.length) {
-      setImageLoaded(prev =>
-        prev.map((value, i) => (i === index ? true : value))
-      );
+      setImageLoaded({ type: 'set', payload: index });
     } else {
       console.warn(`Index ${index} out of bounds 0-${imageLoaded.length - 1}`);
     }
@@ -153,7 +145,7 @@ export default function Game(props: GameProps): ReactElement {
 
   // Resets and resizes imageLoaded array
   const resetImageLoaded = (numCards: number) => {
-    setImageLoaded(() => new Array(numCards).fill(false));
+    setImageLoaded({ type: 'set', payload: numCards });
   };
 
   // Sets timers connected to loading UI indicators
@@ -226,7 +218,6 @@ export default function Game(props: GameProps): ReactElement {
   return (
     <main className={styles.main}>
       <Header
-        gameState={gameState}
         resetCards={resetCards}
         showSearchOverlay={() => toggleSearchOverlay(true)}
       />
@@ -237,8 +228,6 @@ export default function Game(props: GameProps): ReactElement {
         )}
         <Tableau
           reduceMotions={reduceMotions ?? false}
-          imageIndexes={imageIndexes.current}
-          imageData={imageData.current}
           updateImageLoaded={updateImageLoaded}
           showConfetti={() => toggleConfetti(true)}
         />
@@ -255,10 +244,9 @@ export default function Game(props: GameProps): ReactElement {
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}
         resetCards={resetCards}
-        setGifErrorState={setGifErrorState}
         startLoadTimers={startLoadTimers}
       />
-      <Alert gifErrorState={gifErrorState} />
+      <Alert />
     </main>
   );
 }
