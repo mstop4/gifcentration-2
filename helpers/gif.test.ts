@@ -1,6 +1,7 @@
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../mockData/clientIGifs.json';
 import {
+  SortedGifData,
   calculateTargetSize,
   findBestRepresentations,
   organizeImages,
@@ -14,6 +15,11 @@ describe('organizeImages', () => {
 
   it('should still work with broken gif data', () => {
     const sortedData = organizeImages(mockIGifs[3] as unknown as IGif);
+    expect(sortedData).toBeDefined();
+  });
+
+  it('should still work without title or link url', () => {
+    const sortedData = organizeImages(mockIGifs[4] as unknown as IGif);
     expect(sortedData).toBeDefined();
   });
 });
@@ -115,14 +121,29 @@ describe('calculateTargetSize', () => {
 });
 
 describe('findBestRepresentations', () => {
-  it('should work', () => {
+  it('should work with amnimated GIFs', () => {
     const sortedData = organizeImages(mockIGifs[0] as unknown as IGif);
     const bestReps = findBestRepresentations(sortedData, 400, true);
     expect(bestReps).toBeDefined();
   });
 
-  it('should still work with broken gif data', () => {
+  it('should work with stills', () => {
+    const sortedData = organizeImages(mockIGifs[0] as unknown as IGif);
+    const bestReps = findBestRepresentations(sortedData, 400, false);
+    expect(bestReps).toBeDefined();
+  });
+
+  it('should work with broken gif data', () => {
     const sortedData = organizeImages(mockIGifs[3] as unknown as IGif);
+    const bestReps = findBestRepresentations(sortedData, 400, true);
+    expect(bestReps).toBeDefined();
+  });
+
+  it('should work with bad data from organizedImages (no animated or stills)', () => {
+    const sortedData = {
+      title: 'No GIFs? :(',
+      linkUrl: 'https://example.com',
+    } as unknown as SortedGifData;
     const bestReps = findBestRepresentations(sortedData, 400, true);
     expect(bestReps).toBeDefined();
   });

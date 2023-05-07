@@ -239,7 +239,6 @@ export default function Game(props: GameProps): ReactElement {
         numberOfPieces={confettiVisible ? confettiAmount : 0}
       />
       <SearchOverlay
-        imageLoaded={imageLoaded}
         topSearches={topSearches}
         updateImageData={updateImageData}
         resetImageLoaded={resetImageLoaded}

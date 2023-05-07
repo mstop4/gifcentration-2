@@ -4,22 +4,28 @@ import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
 import { useClickHereVisibleStore } from '../../game/Game.stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
+import { useTitleVisibleStore } from '../../game/Game.stores';
 
-let store;
+let clickHereVisibleStore;
+let titleVisibleStore;
 
 describe('ClickHere', () => {
   beforeAll(() => {
-    store = getZustandStoreHooks(useClickHereVisibleStore);
+    clickHereVisibleStore = getZustandStoreHooks(useClickHereVisibleStore);
+    titleVisibleStore = getZustandStoreHooks(useTitleVisibleStore);
     jest.useFakeTimers();
   });
 
   beforeEach(() => {
-    store.reset();
+    clickHereVisibleStore.reset();
+    titleVisibleStore.reset();
   });
 
   afterAll(() => {
-    store.unmount();
-    store = null;
+    clickHereVisibleStore.unmount();
+    titleVisibleStore.unmount();
+    clickHereVisibleStore = null;
+    titleVisibleStore = null;
     jest.useRealTimers();
   });
 
@@ -31,7 +37,9 @@ describe('ClickHere', () => {
   });
 
   it('should be visible', async () => {
-    await act(() => store.setState({ visible: true }));
+    await act(() =>
+      clickHereVisibleStore.setState({ visible: true, rendered: true })
+    );
 
     await waitFor(() => {
       const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
@@ -42,7 +50,9 @@ describe('ClickHere', () => {
   });
 
   it('should be hidden', async () => {
-    await act(() => store.setState({ visible: false }));
+    await act(() =>
+      clickHereVisibleStore.setState({ visible: false, rendered: true })
+    );
 
     await waitFor(() => {
       const { container } = render(<ClickHere showSearchOverlay={jest.fn()} />);
@@ -52,7 +62,12 @@ describe('ClickHere', () => {
     });
   });
 
-  it('should show search overlay when not rendered', async () => {
+  it('should show search overlay and modify title states when clicked when title is visible', async () => {
+    await act(() => {
+      clickHereVisibleStore.setState({ visible: true, rendered: true });
+      titleVisibleStore.setState({ titleRendered: true });
+    });
+
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
       <ClickHere showSearchOverlay={showSearchOverlayMock} />
@@ -61,6 +76,37 @@ describe('ClickHere', () => {
     const clickHere = container.querySelector('#clickHere') as Element;
     fireEvent.click(clickHere);
 
+    await act(() => jest.runAllTimers());
+    await waitFor(() => {
+      const { titleVisible, subtitleVisible, titleRendered, headerVisible } =
+        titleVisibleStore.getState();
+      const { visible, rendered } = clickHereVisibleStore.getState();
+
+      expect(showSearchOverlayMock).toBeCalled();
+      expect(titleVisible).toEqual(false);
+      expect(subtitleVisible).toEqual(false);
+      expect(titleRendered).toEqual(false);
+      expect(headerVisible).toEqual(true);
+      expect(visible).toEqual(false);
+      expect(rendered).toEqual(false);
+    });
+  });
+
+  it('should show search overlay immediately when clicked when title is hidden', async () => {
+    await act(() => {
+      clickHereVisibleStore.setState({ visible: true, rendered: true });
+      titleVisibleStore.setState({ titleRendered: false });
+    });
+
+    const showSearchOverlayMock = jest.fn();
+    const { container } = render(
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />
+    );
+
+    const clickHere = container.querySelector('#clickHere') as Element;
+    fireEvent.click(clickHere);
+
+    await act(() => jest.runAllTimers());
     await waitFor(() => {
       expect(showSearchOverlayMock).toBeCalled();
     });

@@ -9,7 +9,6 @@ import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 
 export type SearchOverlayProps = {
-  imageLoaded: boolean[];
   resetImageLoaded: (numCards: number) => void;
   topSearches: TopSearchResult[];
   updateImageData: (data: SortedGifData[]) => void;
@@ -19,7 +18,6 @@ export type SearchOverlayProps = {
 
 export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const {
-    imageLoaded,
     resetImageLoaded,
     topSearches,
     updateImageData,
@@ -29,7 +27,6 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
 
   const gameState = useGameStore(state => state.gameState);
   const overlayVisible = useUIVisibleStore(state => state.overlay);
-  const longWaitMsgVisible = useUIVisibleStore(state => state.longWaitMsg);
 
   const classes = `${styles.overlayClosed} ${
     overlayVisible ? styles.overlayOpen : ''
@@ -52,12 +49,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
           <OverlayCloseButton />
         </>
       )}
-      {isFetchingGifs && (
-        <LoadingIndicator
-          imageLoaded={imageLoaded}
-          longWaitMsgVisible={longWaitMsgVisible}
-        />
-      )}
+      {isFetchingGifs && <LoadingIndicator />}
     </div>
   );
 }

@@ -128,10 +128,9 @@ export const calculateTargetSize = (
 
     if (originalWidth >= originalHeight) {
       // Wide
-      targetWidth = (width ?? defaultSize) * gifSizeScale;
-      targetHeight =
-        (((width ?? defaultSize) * originalHeight) / originalWidth) *
-        gifSizeScale;
+      // width will always be defined here
+      targetWidth = width * gifSizeScale;
+      targetHeight = ((width * originalHeight) / originalWidth) * gifSizeScale;
     } else {
       // Tall
       targetHeight = (width ?? defaultSize) * gifSizeScale;

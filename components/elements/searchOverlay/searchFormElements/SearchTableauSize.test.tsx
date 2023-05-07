@@ -1,13 +1,11 @@
-import React, { ReactElement } from 'react';
-import { render } from '@testing-library/react';
+import React from 'react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchTableauSize from './SearchTableauSize';
 import '@testing-library/jest-dom';
 import { useGameStore } from '../../../game/Game.stores';
 import { getZustandStoreHooks } from '../../../../helpers/zustandTest';
 
 let store;
-
-const makeSearchTableauSize = (): ReactElement => <SearchTableauSize />;
 
 describe('SearchTableauSize', () => {
   beforeEach(() => {
@@ -19,10 +17,21 @@ describe('SearchTableauSize', () => {
     store = null;
   });
 
-  it('renders a SearchTableauSize', async () => {
-    const { container } = render(makeSearchTableauSize());
+  it('renders a SearchTableauSize', () => {
+    const { container } = render(<SearchTableauSize />);
     const size = container.querySelector('#searchNumCards');
 
     expect(size).toBeInTheDocument();
+  });
+
+  it('sets tableau size after typing new tableau size', async () => {
+    const { container } = render(<SearchTableauSize />);
+    const tableau = container.querySelector('#searchNumCards') as Element;
+    fireEvent.change(tableau, { target: { value: 24 } });
+
+    await waitFor(() => {
+      const tableauSize = store.getState().idealTableauSize;
+      expect(tableauSize).toEqual('24');
+    });
   });
 });
