@@ -3,16 +3,16 @@ import type { ReactElement } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styles from '@/styles/elements/searchOverlay/OverlayCloseButton.module.scss';
+import { useUIVisibleStore } from '../../game/Game.stores';
 
-export type OverlayCloseButtonProps = {
-  hideOverlay: () => void;
-};
+export default function OverlayCloseButton(): ReactElement {
+  const setUIVisibility = useUIVisibleStore.setState;
 
-export default function OverlayCloseButton(
-  props: OverlayCloseButtonProps
-): ReactElement {
   return (
-    <button id={styles.overlayCloseButton} onClick={props.hideOverlay}>
+    <button
+      id={styles.overlayCloseButton}
+      onClick={() => setUIVisibility({ overlay: false })}
+    >
       <FontAwesomeIcon icon={faXmark} data-testid="x mark" />
     </button>
   );

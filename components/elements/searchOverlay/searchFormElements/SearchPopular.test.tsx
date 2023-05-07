@@ -1,22 +1,48 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
 import SearchPopular from './SearchPopular';
-import mockPopular from '../../../../mocks/popular.json';
+import mockPopular from '../../../../mockData/popular.json';
 import '@testing-library/jest-dom';
 import { TopSearchResult } from '../../../../lib/mongodb/helpers';
-
-const makeSearchPopular = (): ReactElement => (
-  <SearchPopular
-    topSearches={mockPopular as unknown as TopSearchResult[]}
-    setSearchQuery={jest.fn()}
-  />
-);
+import clientConfig from '../../../../config/clientConfig';
 
 describe('SearchPopular', () => {
-  it('renders a SearchPopular', async () => {
-    const { container } = render(makeSearchPopular());
+  it('renders a SearchPopular', () => {
+    const { container } = render(
+      <SearchPopular
+        topSearches={mockPopular as unknown as TopSearchResult[]}
+        setSearchQuery={jest.fn()}
+      />
+    );
     const popular = container.querySelector('#searchPopular');
 
     expect(popular).toBeInTheDocument();
+  });
+
+  it('has no chips', () => {
+    const { container } = render(
+      <SearchPopular
+        topSearches={[] as unknown as TopSearchResult[]}
+        setSearchQuery={jest.fn()}
+      />
+    );
+    const numChips = container.querySelectorAll('.queryChip').length;
+
+    expect(numChips).toEqual(0);
+  });
+
+  it('the number of chips is limited by maxPopularSearches', () => {
+    const doublePopular = [...mockPopular, ...mockPopular];
+    const { container } = render(
+      <SearchPopular
+        topSearches={doublePopular as unknown as TopSearchResult[]}
+        setSearchQuery={jest.fn()}
+      />
+    );
+    const numChips = container.querySelectorAll('.queryChip').length;
+
+    expect(numChips).toBeLessThanOrEqual(
+      clientConfig.searchForm.maxPopularSearches
+    );
   });
 });

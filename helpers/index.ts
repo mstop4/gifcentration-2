@@ -51,7 +51,7 @@ export const randomIntegerRange = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-export const sleep = (duration: number): Promise<void> => {
+export const sleep = (duration: number) => {
   return new Promise(resolve => setTimeout(resolve, duration));
 };
 

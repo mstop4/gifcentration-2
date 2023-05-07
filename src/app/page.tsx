@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Game from '../../components/layout/Game';
+import Game from '../../components/game/Game';
 import { getTopSearches } from '../../lib/mongodb/helpers';
 import type { ReactElement } from 'react';
 

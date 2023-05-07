@@ -1,8 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GifErrorState } from '../../layout/Game.typedefs';
+import { GifErrorState } from '../../game/Game.typedefs';
 import Alert from './Alert';
+import { useUIVisibleStore, useImageDataStore } from '../../game/Game.stores';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
+
+let uiVisibleStore;
+let imageDataStore;
 
 const testHelper = (
   container: HTMLElement,
@@ -18,37 +23,52 @@ const testHelper = (
 };
 
 describe('Alert', () => {
+  beforeAll(() => {
+    uiVisibleStore = getZustandStoreHooks(useUIVisibleStore);
+    imageDataStore = getZustandStoreHooks(useImageDataStore);
+  });
+
+  beforeEach(() => {
+    uiVisibleStore.reset();
+    imageDataStore.reset();
+  });
+
+  afterAll(() => {
+    uiVisibleStore.unmount();
+    imageDataStore.unmount();
+    uiVisibleStore = null;
+    imageDataStore = null;
+  });
+
   it('renders an Alert', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />
-    );
+    const { container } = render(<Alert />);
 
     const alert = container.querySelector('#alert');
     expect(alert).toBeInTheDocument();
   });
 
   it('renders the Alert in a closed state', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />
-    );
+    const { container } = render(<Alert />);
 
     const alert = container.querySelector('#alert');
     expect(alert).toHaveClass('alertClosed');
   });
 
-  it('renders the Alert in a open state', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Ok} alertVisible={true} />
-    );
+  it('renders the Alert in a open state', async () => {
+    await act(() => uiVisibleStore.setState({ alert: true }));
 
+    const { container } = render(<Alert />);
     const alert = container.querySelector('#alert');
     expect(alert).toHaveClass('alertOpen');
   });
 
-  it('renders the no GIFs message', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.NoGifs} alertVisible={false} />
-    );
+  it('renders the no GIFs message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.NoGifs });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
@@ -62,10 +82,13 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
-  it('renders the not enough GIFs message', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.NotEnoughGifs} alertVisible={false} />
-    );
+  it('renders the not enough GIFs message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.NotEnoughGifs });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
@@ -79,10 +102,13 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
-  it('renders the bad request message', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.BadRequest} alertVisible={false} />
-    );
+  it('renders the bad request message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.BadRequest });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
@@ -96,10 +122,13 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
-  it('renders the forbidden message', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.Forbidden} alertVisible={false} />
-    );
+  it('renders the forbidden message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.Forbidden });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
@@ -113,13 +142,15 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
-  it('renders the internal server error message', () => {
-    const { container } = render(
-      <Alert
-        gifErrorState={GifErrorState.InternalServerError}
-        alertVisible={false}
-      />
-    );
+  it('renders the internal server error message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({
+        gifErrorState: GifErrorState.InternalServerError,
+      });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
@@ -133,10 +164,13 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
-  it('renders the unknown error message', () => {
-    const { container } = render(
-      <Alert gifErrorState={GifErrorState.UnknownError} alertVisible={false} />
-    );
+  it('renders the unknown error message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.UnknownError });
+    });
+
+    const { container } = render(<Alert />);
 
     const { alertElem, topText } = testHelper(
       container,
@@ -148,8 +182,13 @@ describe('Alert', () => {
     expect(topText).toBeInTheDocument();
   });
 
-  it('renders the OK message', () => {
-    render(<Alert gifErrorState={GifErrorState.Ok} alertVisible={false} />);
+  it('renders the OK message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.Ok });
+    });
+
+    render(<Alert />);
 
     const alertText = screen.getByText(/ok/i);
     expect(alertText).toBeInTheDocument();

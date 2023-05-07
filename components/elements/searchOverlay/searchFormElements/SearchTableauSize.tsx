@@ -1,19 +1,16 @@
+import { useGameStore } from '../../../game/Game.stores';
 import clientConfig from '../../../../config/clientConfig';
-import type { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
+import type { ChangeEventHandler } from 'react';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
-
-export type SearchTableauSizeProps = {
-  tableauSize: string;
-  setTableauSize: Dispatch<SetStateAction<string>>;
-};
 
 const { minCards, maxCards, cardsStep } = clientConfig.searchForm;
 
-export default function SearchTableauSize(props: SearchTableauSizeProps) {
-  const { tableauSize, setTableauSize } = props;
+export default function SearchTableauSize() {
+  const idealTableauSize = useGameStore(state => state.idealTableauSize);
+  const setIdealTableauSize = useGameStore(state => state.setIdealTableauSize);
 
   const handleNumCardsChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setTableauSize(e.target.value);
+    setIdealTableauSize(e.target.value);
   };
 
   return (
@@ -26,7 +23,7 @@ export default function SearchTableauSize(props: SearchTableauSizeProps) {
         id={styles.searchNumCards}
         className={styles.searchFieldInput}
         name="tableauSize"
-        value={tableauSize}
+        value={idealTableauSize}
         onChange={handleNumCardsChange}
         min={minCards}
         max={maxCards}

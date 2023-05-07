@@ -1,26 +1,42 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import ResetGameButton from './ResetGameButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../../layout/Game.typedefs';
+import { GameState } from '../../game/Game.typedefs';
+import { getZustandStoreHooks } from '../../../helpers/zustandTest';
+import { useGameStore } from '../../game/Game.stores';
+
+let store;
 
 describe('ResetGameButton', () => {
-  it('renders a ResetGameButton', () => {
-    const { container } = render(
-      <ResetGameButton gameState={GameState.Playing} resetCards={jest.fn()} />
-    );
+  beforeAll(() => {
+    store = getZustandStoreHooks(useGameStore);
+  });
+
+  beforeEach(() => {
+    store.reset();
+  });
+
+  afterAll(() => {
+    store.unmount();
+    store = null;
+  });
+
+  it('renders a ResetGameButton', async () => {
+    await act(() => store.setState({ gameState: GameState.Playing }));
+
+    const { container } = render(<ResetGameButton resetCards={jest.fn()} />);
 
     const card = container.querySelector('#resetGameButton');
     expect(card).toBeInTheDocument();
   });
 
-  it('calls resetCards when clicked when playing', () => {
+  it('calls resetCards when clicked when playing', async () => {
+    await act(() => store.setState({ gameState: GameState.Playing }));
+
     const resetCardsMock = jest.fn();
     const { container } = render(
-      <ResetGameButton
-        gameState={GameState.Playing}
-        resetCards={resetCardsMock}
-      />
+      <ResetGameButton resetCards={resetCardsMock} />
     );
 
     const button = container.querySelector('#resetGameButton') as Element;
@@ -28,13 +44,12 @@ describe('ResetGameButton', () => {
     expect(resetCardsMock).toBeCalled();
   });
 
-  it("doesn't call resetCards when clicked when not playing", () => {
+  it("doesn't call resetCards when clicked when not playing", async () => {
+    await act(() => store.setState({ gameState: GameState.Loading }));
+
     const resetCardsMock = jest.fn();
     const { container } = render(
-      <ResetGameButton
-        gameState={GameState.Loading}
-        resetCards={resetCardsMock}
-      />
+      <ResetGameButton resetCards={resetCardsMock} />
     );
 
     const button = container.querySelector('#resetGameButton') as Element;

@@ -1,66 +1,59 @@
-import type { Dispatch, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import {
-  ElementVisibilityAction,
-  TitleVisibility,
-  TitleVisibilityAction,
-} from '../../layout/Game.typedefs';
+  useClickHereVisibleStore,
+  useTitleVisibleStore,
+} from '../../game/Game.stores';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type ClickHereProps = {
-  visible: boolean;
-  titleVisible: TitleVisibility;
-  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
-  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function ClickHere(props: ClickHereProps): ReactElement {
-  const {
-    visible,
-    titleVisible,
-    dispatchTitleVisible,
-    dispatchClickHereVisible,
-    showSearchOverlay,
-  } = props;
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
+  const setTitleVisibility = useTitleVisibleStore.setState;
+  const visible = useClickHereVisibleStore(state => state.visible);
+  const setClickHereVisibility = useClickHereVisibleStore.setState;
 
-  const handleClick = (): void => {
-    dispatchClickHereVisible({ prop: 'visible', value: false });
+  const { showSearchOverlay } = props;
 
-    if (titleVisible.titleRendered) {
-      dispatchTitleVisible({ type: 'hideTitle' });
+  const handleClick = () => {
+    setClickHereVisibility({ visible: false });
+
+    if (titleRendered) {
+      setTitleVisibility({ titleVisible: false });
 
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'hideSubtitle' });
+        setTitleVisibility({ subtitleVisible: false });
       }, 250);
       setTimeout(() => {
         showSearchOverlay();
       }, 500);
       setTimeout(() => {
-        dispatchClickHereVisible({ prop: 'rendered', value: false });
+        setClickHereVisibility({ rendered: false });
       }, 1000);
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'removeTitle' });
+        setTitleVisibility({ titleRendered: false });
       }, 1250);
     } else {
       showSearchOverlay();
     }
 
-    if (!titleVisible.headerVisible) {
+    if (!headerVisible) {
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'showHeader' });
+        setTitleVisibility({ headerVisible: true });
       }, 1000);
     }
   };
 
+  const className = visible
+    ? genericStyles.elementVisible
+    : genericStyles.elementHidden;
+
   return (
-    <div
-      id={styles.clickHere}
-      className={
-        visible ? genericStyles.elementVisible : genericStyles.elementHidden
-      }
-      onClick={handleClick}
-    >
+    <div id={styles.clickHere} className={className} onClick={handleClick}>
       Click here to start!
     </div>
   );

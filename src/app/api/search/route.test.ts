@@ -5,7 +5,7 @@
 
 // import httpMocks from 'node-mocks-http';
 // import { GET } from './route';
-// import mockGifs from '../../../../mocks/serverIGifs.json';
+// import mockGifs from '../../../../mockData/serverIGifs.json';
 // import { IGif } from '@giphy/js-types';
 
 // jest.mock('../../../../lib/redis', () => ({

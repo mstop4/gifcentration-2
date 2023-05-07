@@ -1,46 +1,65 @@
 import { useCallback, useEffect } from 'react';
+import { useGameStore, useImageDataStore } from '../../game/Game.stores';
 import Card from './Card';
-import { SortedGifData } from '../../../helpers/gif';
-import type { ReactElement, Dispatch, SetStateAction } from 'react';
-import { GameState } from '../../layout/Game.typedefs';
+import type { ReactElement } from 'react';
+import { GameState } from '../../game/Game.typedefs';
 import clientConfig from '../../../config/clientConfig';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 
 export type TableauProps = {
-  gameState: GameState;
-  setGameState: Dispatch<SetStateAction<GameState>>;
   reduceMotions: boolean;
-  flipped: boolean[];
-  setFlipped: Dispatch<SetStateAction<boolean[]>>;
-  matched: boolean[];
-  setMatched: Dispatch<SetStateAction<boolean[]>>;
-  imageIndexes: number[];
-  imageData: SortedGifData[];
   updateImageLoaded: (index: number) => void;
-  selectedCardIndexes: number[];
-  setSelectedCardIndexes: Dispatch<SetStateAction<number[]>>;
   showConfetti: () => void;
 };
 
 const { checkDelay } = clientConfig.tableau;
 
 export default function Tableau(props: TableauProps): ReactElement {
-  const {
-    gameState,
-    setGameState,
-    reduceMotions,
-    flipped,
-    setFlipped,
-    matched,
-    setMatched,
+  const { reduceMotions, updateImageLoaded, showConfetti } = props;
+
+  const gameState = useGameStore(state => state.gameState);
+  const setGameState = useGameStore(state => state.setGameState);
+  const flipped = useGameStore(state => state.flipped);
+  const setFlipped = useGameStore(state => state.setFlipped);
+  const matched = useGameStore(state => state.matched);
+  const setMatched = useGameStore(state => state.setMatched);
+  const selectedCardIndexes = useGameStore(state => state.selectedCardIndexes);
+  const setSelectedCardIndexes = useGameStore(
+    state => state.setSelectedCardIndexes
+  );
+  const imageData = useImageDataStore(state => state.imageData);
+  const imageIndexes = useImageDataStore(state => state.imageIndexes);
+
+  // Checks if flipped cards match
+  const checkPair = useCallback(() => {
+    if (
+      imageIndexes[selectedCardIndexes[0]] ===
+      imageIndexes[selectedCardIndexes[1]]
+    ) {
+      setMatched({ type: 'set', payload: [...selectedCardIndexes] });
+    } else {
+      setFlipped({ type: 'copy', payload: matched });
+    }
+    setSelectedCardIndexes({ type: 'clear', payload: 0 });
+  }, [
     imageIndexes,
-    imageData,
-    updateImageLoaded,
     selectedCardIndexes,
+    matched,
+    setFlipped,
+    setMatched,
     setSelectedCardIndexes,
-    showConfetti,
-  } = props;
+  ]);
+
+  const handleCardClick = (index: number) => {
+    if (gameState !== GameState.Playing) return;
+    if (flipped[index]) return;
+    if (selectedCardIndexes.length >= 2) return;
+
+    // Mark current card as flipped
+    setFlipped({ type: 'set', payload: index });
+    setSelectedCardIndexes({ type: 'push', payload: index });
+  };
 
   useEffect(() => {
     if (gameState !== GameState.Playing) return;
@@ -52,47 +71,11 @@ export default function Tableau(props: TableauProps): ReactElement {
     }
   }, [gameState, matched, setGameState, showConfetti]);
 
-  // Checks if flipped cards match
-  const checkPair = useCallback((): void => {
-    if (
-      imageIndexes[selectedCardIndexes[0]] ===
-      imageIndexes[selectedCardIndexes[1]]
-    ) {
-      setMatched(prev =>
-        prev.map((value, i) =>
-          i === selectedCardIndexes[0] || i === selectedCardIndexes[1]
-            ? true
-            : value
-        )
-      );
-    } else {
-      setFlipped([...matched]);
-    }
-    setSelectedCardIndexes([]);
-  }, [
-    imageIndexes,
-    selectedCardIndexes,
-    matched,
-    setFlipped,
-    setMatched,
-    setSelectedCardIndexes,
-  ]);
-
   useEffect(() => {
     if (selectedCardIndexes.length >= 2) {
       setTimeout(checkPair, checkDelay);
     }
   }, [selectedCardIndexes, checkPair]);
-
-  const handleCardClick = (index: number): void => {
-    if (gameState !== GameState.Playing) return;
-    if (flipped[index]) return;
-    if (selectedCardIndexes.length >= 2) return;
-
-    // Mark current card as flipped
-    setFlipped(prev => prev.map((value, i) => (i === index ? true : value)));
-    setSelectedCardIndexes(prev => [...prev, index]);
-  };
 
   const cardArray: ReactElement[] = [];
   for (let i = 0; i < imageIndexes.length; ++i) {

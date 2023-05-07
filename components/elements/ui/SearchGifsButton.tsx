@@ -1,57 +1,53 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import type { Dispatch, ReactElement } from 'react';
 import {
-  ElementVisibilityAction,
-  GameState,
-  TitleVisibility,
-  TitleVisibilityAction,
-} from '../../layout/Game.typedefs';
+  useClickHereVisibleStore,
+  useGameStore,
+  useTitleVisibleStore,
+} from '../../game/Game.stores';
+import type { ReactElement } from 'react';
+import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 
 export type SearchGifsButtonProps = {
-  gameState: GameState;
-  titleVisible: TitleVisibility;
-  dispatchTitleVisible: Dispatch<TitleVisibilityAction>;
-  dispatchClickHereVisible: Dispatch<ElementVisibilityAction>;
   showSearchOverlay: () => void;
 };
 
 export default function SearchGifsButton(
   props: SearchGifsButtonProps
 ): ReactElement {
-  const {
-    gameState,
-    titleVisible,
-    dispatchTitleVisible,
-    dispatchClickHereVisible,
-    showSearchOverlay,
-  } = props;
+  const { showSearchOverlay } = props;
 
-  const handleClick = async (): Promise<void> => {
+  const gameState = useGameStore(state => state.gameState);
+  const titleRendered = useTitleVisibleStore(state => state.titleRendered);
+  const headerVisible = useTitleVisibleStore(state => state.headerVisible);
+  const setTitleVisibility = useTitleVisibleStore.setState;
+  const setClickHereVisibility = useClickHereVisibleStore.setState;
+
+  const handleClick = async () => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
 
     showSearchOverlay();
-    dispatchClickHereVisible({ prop: 'visible', value: false });
+    setClickHereVisibility({ visible: false });
 
-    if (titleVisible.titleRendered) {
-      dispatchTitleVisible({ type: 'hideTitle' });
+    if (titleRendered) {
+      setTitleVisibility({ titleVisible: false });
 
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'hideSubtitle' });
+        setTitleVisibility({ subtitleVisible: false });
       }, 250);
       setTimeout(() => {
-        dispatchClickHereVisible({ prop: 'rendered', value: false });
+        setClickHereVisibility({ rendered: false });
       }, 1000);
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'removeTitle' });
+        setTitleVisibility({ titleRendered: false });
       }, 1250);
     }
 
-    if (!titleVisible.headerVisible) {
+    if (!headerVisible) {
       setTimeout(() => {
-        dispatchTitleVisible({ type: 'showHeader' });
+        setTitleVisibility({ headerVisible: true });
       }, 1000);
     }
   };

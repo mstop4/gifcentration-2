@@ -12,7 +12,7 @@ export default function SearchRating(props: SearchRatingProps) {
 
   const handleRatingChange: ChangeEventHandler<HTMLSelectElement> = e => {
     const newRating = e.target.value as Rating;
-    setRating(() => newRating);
+    setRating(newRating);
   };
 
   return (
