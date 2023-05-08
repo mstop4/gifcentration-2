@@ -3,7 +3,7 @@ import {
   useGameStore,
   useImageDataStore,
   useUIVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import SearchQuery from './searchFormElements/SearchQuery';
 import SearchRating from './searchFormElements/SearchRating';
 import SearchTableauSize from './searchFormElements/SearchTableauSize';

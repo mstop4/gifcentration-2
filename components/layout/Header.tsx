@@ -1,5 +1,5 @@
 import { Architects_Daughter } from 'next/font/google';
-import { useGameStore, useTitleVisibleStore } from '../game/Game.stores';
+import { useGameStore, useTitleVisibleStore } from '../../stores/stores';
 import SearchGifsButton from '../elements/ui/SearchGifsButton';
 import ResetGameButton from '../elements/ui/ResetGameButton';
 import type { ReactElement } from 'react';

@@ -17,6 +17,7 @@ $bob-distance: 5px;
   font-size: 1.5rem;
   animation: bobbing 2s ease-in-out infinite;
   transition: 1s;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -55,12 +56,12 @@ $bob-distance: 5px;
 
 @keyframes bobbing {
   0% {
-    transform: translate(0px, $bob-distance);
+    translate: 0px $bob-distance;
   }
   50% {
-    transform: translate(0px, -$bob-distance);
+    translate: 0px (-$bob-distance);
   }
   100% {
-    transform: translate(0px, $bob-distance);
+    translate: 0px $bob-distance;
   }
 }

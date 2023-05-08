@@ -1,12 +1,12 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
-import LoadingIndicator from './LoadingIndicator';
+import { act, render, screen } from '@testing-library/react';
+import ImageLoadingIndicator from './ImageLoadingIndicator';
 import '@testing-library/jest-dom';
 import {
   useGameStore,
   useImageDataStore,
   useUIVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import { GameState } from '../../game/Game.typedefs';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
@@ -14,7 +14,7 @@ let gameStore;
 let imageDataStore;
 let uiVisibleStore;
 
-describe('LoadingIndicator', () => {
+describe('ImageLoadingIndicator', () => {
   beforeAll(() => {
     gameStore = getZustandStoreHooks(useGameStore);
     imageDataStore = getZustandStoreHooks(useImageDataStore);
@@ -36,7 +36,7 @@ describe('LoadingIndicator', () => {
     uiVisibleStore = null;
   });
 
-  it('renders a LoadingIndicator', async () => {
+  it('renders a ImageLoadingIndicator', async () => {
     const numCards = 18;
 
     await act(() => {
@@ -47,9 +47,9 @@ describe('LoadingIndicator', () => {
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
     });
 
-    const { container } = render(<LoadingIndicator />);
+    const { container } = render(<ImageLoadingIndicator />);
 
-    const spinner = container.querySelector('#loadingIndicator');
+    const spinner = container.querySelector('#imageLoadingIndicator');
     expect(spinner).toBeInTheDocument();
   });
 
@@ -63,7 +63,7 @@ describe('LoadingIndicator', () => {
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
     });
 
-    render(<LoadingIndicator />);
+    render(<ImageLoadingIndicator />);
 
     const text = screen.queryByText(/searching.../i);
     expect(text).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('LoadingIndicator', () => {
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
     });
 
-    render(<LoadingIndicator />);
+    render(<ImageLoadingIndicator />);
 
     const text = screen.queryByText(/loading.../i);
     expect(text).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('LoadingIndicator', () => {
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
     });
 
-    render(<LoadingIndicator />);
+    render(<ImageLoadingIndicator />);
 
     const text1 = screen.queryByText(/still/i);
     const text2 = screen.queryByText(/loading.../i);
@@ -118,7 +118,7 @@ describe('LoadingIndicator', () => {
       imageDataStore.getState().setImageLoaded({ type: 'set', payload: 1 });
     });
 
-    const { container } = render(<LoadingIndicator />);
+    const { container } = render(<ImageLoadingIndicator />);
     const progress = container.querySelector('progress');
     expect(progress?.value).toEqual(2);
     expect(progress?.max).toEqual(numCards);

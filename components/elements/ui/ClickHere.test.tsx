@@ -2,9 +2,11 @@ import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
-import { useClickHereVisibleStore } from '../../game/Game.stores';
+import {
+  useClickHereVisibleStore,
+  useTitleVisibleStore,
+} from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
-import { useTitleVisibleStore } from '../../game/Game.stores';
 
 let clickHereVisibleStore;
 let titleVisibleStore;

@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import {
   useClickHereVisibleStore,
   useTitleVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import styles from '@/styles/elements/ui/ClickHere.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';
 

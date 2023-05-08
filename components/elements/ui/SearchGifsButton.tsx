@@ -4,10 +4,11 @@ import {
   useClickHereVisibleStore,
   useGameStore,
   useTitleVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
+import styles from '@/styles/elements/ui/SearchGifsButton.module.scss';
 
 export type SearchGifsButtonProps = {
   showSearchOverlay: () => void;
@@ -54,7 +55,7 @@ export default function SearchGifsButton(
 
   return (
     <button
-      id="searchGifsButton"
+      id={styles.searchGifsButton}
       className={buttonBaseStyles.buttonBase}
       onClick={handleClick}
     >

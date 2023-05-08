@@ -2,7 +2,7 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 import Title from './Title';
 import '@testing-library/jest-dom';
-import { useTitleVisibleStore } from '../../game/Game.stores';
+import { useTitleVisibleStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
 let store;

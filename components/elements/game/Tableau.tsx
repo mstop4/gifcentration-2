@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useGameStore, useImageDataStore } from '../../game/Game.stores';
+import { useGameStore, useImageDataStore } from '../../../stores/stores';
 import Card from './Card';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';

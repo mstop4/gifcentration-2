@@ -1,7 +1,7 @@
-import { useGameStore, useUIVisibleStore } from '../game/Game.stores';
+import { useGameStore, useUIVisibleStore } from '../../stores/stores';
 import OverlayCloseButton from '../elements/searchOverlay/OverlayCloseButton';
 import SearchForm from '../elements/searchOverlay/SearchForm';
-import LoadingIndicator from '../elements/searchOverlay/LoadingIndicator';
+import ImageLoadingIndicator from '../elements/searchOverlay/ImageLoadingIndicator';
 import { SortedGifData } from '../../helpers/gif';
 import type { ReactElement } from 'react';
 import { GameState } from '../game/Game.typedefs';
@@ -49,7 +49,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
           <OverlayCloseButton />
         </>
       )}
-      {isFetchingGifs && <LoadingIndicator />}
+      {isFetchingGifs && <ImageLoadingIndicator />}
     </div>
   );
 }

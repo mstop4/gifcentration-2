@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 import { IGif } from '@giphy/js-types';
 import mockIGifs from '../../../mockData/clientIGifs.json';
 import { organizeImages } from '../../../helpers/gif';
-import { useGameStore, useImageDataStore } from '../../game/Game.stores';
+import { useGameStore, useImageDataStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
 let gameStore;

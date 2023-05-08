@@ -1,4 +1,4 @@
-import { useGameStore } from '../../../game/Game.stores';
+import { useGameStore } from '../../../../stores/stores';
 import clientConfig from '../../../../config/clientConfig';
 import type { ChangeEventHandler } from 'react';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';

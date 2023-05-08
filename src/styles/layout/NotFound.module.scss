@@ -1,0 +1,19 @@
+#notFound {
+  width: 100dvw;
+  height: 100dvh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainTitle {
+  font-size: 2.5rem;
+  transition: 1s;
+}
+
+.subtitle {
+  text-align: center;
+  transition: 1s;
+}
