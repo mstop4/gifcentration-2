@@ -145,7 +145,7 @@ export default function Game(props: GameProps): ReactElement {
 
   // Resets and resizes imageLoaded array
   const resetImageLoaded = (numCards: number) => {
-    setImageLoaded({ type: 'set', payload: numCards });
+    setImageLoaded({ type: 'clear', payload: numCards });
   };
 
   // Sets timers connected to loading UI indicators
