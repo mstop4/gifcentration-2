@@ -1,3 +1,4 @@
+@use '../../globalVariables' as global;
 @use '../../colourScheme' as colours;
 
 $field-font-size: 1.25rem;
@@ -26,32 +27,30 @@ $field-font-size: 1.25rem;
   font-size: $field-font-size;
   font-weight: 400;
   background: none;
-  color: white;
   margin: 0.5rem 1rem;
   padding: 0.5rem 1rem;
-  border: 2px solid white;
+  background: colours.$input-field-background-colour;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: 1.5rem;
   height: 3rem;
   outline: none;
 }
 
-.searchFieldInput:focus {
-  border: 2px solid colours.$highlight-color;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 10px colours.$highlight-color;
-}
-
 #searchClear {
   font-size: $field-font-size;
-  color: white;
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
-  background-color: red;
+  cursor: pointer;
+  color: colours.$secondary-text-colour;
+  background-color: colours.$primary-colour-light;
+  border: global.$outline-width solid colours.$primary-outline-colour;
 }
 
 #searchClear:disabled {
-  color: white;
-  background-color: #888;
+  background-color: #666;
+  color: #333;
+  border-color: #333;
+  cursor: not-allowed;
 }
 
 #searchPopular {
@@ -78,17 +77,19 @@ $field-font-size: 1.25rem;
   max-width: 8rem;
   height: 2.5rem;
   border-radius: 1.25rem;
-  background-color: colours.$highlight-color;
+  color: black;
+  background-color: colours.$highlight-colour;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   cursor: pointer;
 }
 
 .nothing {
   margin: 0.5rem;
   font-size: 1.5rem;
-  color: #a0a0a0;
 }
 
 .queryChipText {
+  color: colours.$primary-text-colour;
   display: inline-block;
   max-width: 8rem;
   white-space: nowrap;
@@ -96,7 +97,6 @@ $field-font-size: 1.25rem;
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
 }
 
 #searchOtherSettings {
@@ -121,23 +121,15 @@ $field-font-size: 1.25rem;
   padding: 0.5rem 3rem 0.5rem 1rem;
   height: 3rem;
   line-height: 27px;
-  border: 2px solid white;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: 1.5rem;
   font-size: $field-font-size;
-  background: none;
-  color: white;
+  background: colours.$input-field-background-colour;
   outline: none;
 }
 
 .searchRatingOption {
-  color: white;
-  background-color: colours.$primary-bgcolor;
-}
-
-#searchRatingList:focus {
-  border: 2px solid colours.$highlight-color;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 10px colours.$highlight-color;
+  background-color: colours.$input-field-background-colour;
 }
 
 #searchNumCards {
@@ -147,10 +139,12 @@ $field-font-size: 1.25rem;
 #searchSubmit {
   font-size: 2rem;
   font-weight: bold;
-  color: white;
   border-radius: 2rem;
   padding: 0.5rem;
   width: 10rem;
   margin: 1rem;
-  background-color: colours.$highlight-color;
+  cursor: pointer;
+  color: colours.$primary-text-colour;
+  background-color: colours.$highlight-colour;
+  border: global.$outline-width solid colours.$primary-outline-colour;
 }

@@ -31,7 +31,7 @@
 
 .cardFace {
   margin: 0;
-  border: 2px solid colours.$outline-color;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: global.$corner-rad;
   display: block;
   position: absolute;
@@ -49,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: colours.$secondary-color;
+  background-color: colours.$primary-colour;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -61,7 +61,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: colours.$secondary-color;
+  background-color: colours.$primary-colour;
   transform: rotateY(180deg);
   overflow-x: hidden;
   overflow-y: hidden;
@@ -70,7 +70,7 @@
 }
 
 .matched {
-  background-color: colours.$primary-color;
+  background-color: colours.$primary-colour-light;
   transform: rotateY(180deg);
 }
 

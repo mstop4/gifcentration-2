@@ -1,9 +1,13 @@
+@use '../../colourScheme' as colours;
+@use '../../globalVariables' as global;
+
 .spinner {
-  background-color: white;
+  background-color: colours.$input-field-background-colour;
   width: 75px;
   height: 75px;
   margin-bottom: 25px;
-  border-radius: 3.75px;
+  border: global.$outline-width solid colours.$primary-outline-colour;
+  border-radius: 8px;
   -webkit-animation: ani-spinner 0.75s infinite ease-in-out;
   animation: ani-spinner 0.75s infinite ease-in-out;
 }

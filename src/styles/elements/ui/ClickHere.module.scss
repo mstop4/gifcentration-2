@@ -1,4 +1,5 @@
 @use '../../globalVariables' as global;
+@use '../../colourScheme' as colours;
 
 $pointer-size: 18px;
 $bob-distance: 5px;
@@ -9,8 +10,9 @@ $bob-distance: 5px;
   right: 0;
   margin: 0.5rem;
   padding: 0.5rem;
-  background: black;
-  border: 2px solid white;
+  color: colours.$secondary-text-colour;
+  background: colours.$input-field-background-colour;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: 1rem;
   font-size: 1.5rem;
   animation: bobbing 2s ease-in-out infinite;
@@ -33,9 +35,9 @@ $bob-distance: 5px;
   border-left: $pointer-size solid transparent;
   border-right: $pointer-size solid transparent;
   border-top: $pointer-size solid transparent;
-  border-bottom: $pointer-size solid white;
+  border-bottom: $pointer-size solid colours.$primary-outline-colour;
   left: 63%;
-  bottom: calc(100% + 2px);
+  bottom: calc(100% + global.$outline-width);
 }
 
 #clickHere:after {
@@ -46,7 +48,7 @@ $bob-distance: 5px;
   border-left: $pointer-size solid transparent;
   border-right: $pointer-size solid transparent;
   border-top: $pointer-size solid transparent;
-  border-bottom: $pointer-size solid black;
+  border-bottom: $pointer-size solid colours.$input-field-background-colour;
   left: 63%;
   bottom: calc(100% - 1px);
 }

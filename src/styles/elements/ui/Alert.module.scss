@@ -1,3 +1,6 @@
+@use '../../globalVariables' as global;
+@use '../../colourScheme' as colours;
+
 $alert-height: 3.5rem;
 
 #alert {
@@ -13,18 +16,19 @@ $alert-height: 3.5rem;
   text-align: center;
   padding: 0.6rem 2rem;
   background-color: black;
+  color: colours.$primary-text-colour;
   min-width: 10rem;
   border-radius: 2rem 2rem 0 0;
-  border: 2px solid white;
+  border: global.$outline-width solid colours.$primary-outline-colour;
   border-bottom: 0;
 }
 
 .alertBody.alertError {
-  background-color: red;
+  background-color: colours.$highlight-colour;
 }
 
 .alertBody.alertWarning {
-  background-color: orange;
+  background-color: colours.$primary-colour;
 }
 
 .alertClosed {

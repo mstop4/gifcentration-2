@@ -6,13 +6,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  background-color: colours.$primary-bgcolor-90;
+  background-color: colours.$background-colour-translucent;
   font-size: 2rem;
   width: 100dvw;
   height: 100dvh;
   overflow-x: hidden;
   transition: 0.5s;
+  backdrop-filter: blur(0.25rem);
 }
 
 .overlayClosed {
