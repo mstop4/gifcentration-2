@@ -17,6 +17,7 @@ $bob-distance: 5px;
   font-size: 1.5rem;
   animation: bobbing 2s ease-in-out infinite;
   transition: 1s;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }

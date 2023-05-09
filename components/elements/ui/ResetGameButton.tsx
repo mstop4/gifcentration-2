@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { useGameStore } from '../../../stores/stores';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
-import { useGameStore } from '../../../stores/stores';
+import styles from '@/styles/elements/ui/ResetGameButton.module.scss';
 
 export type ResetGameButtonProps = {
   resetCards: (numCards?: number) => void;
@@ -28,7 +29,7 @@ export default function ResetGameButton(
 
   return (
     <button
-      id="resetGameButton"
+      id={styles.resetGameButton}
       className={buttonBaseStyles.buttonBase}
       onClick={handleClick}
     >
