@@ -52,8 +52,6 @@
 
 .cardImage {
   display: block;
-  border-radius: 0.5rem;
-  border: global.$outline-width solid colours.$primary-outline-colour;
 }
 
 .front {
@@ -89,10 +87,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cardBody:hover {
-    scale: 1;
-  }
-
   .back {
     rotate: none;
     opacity: 0;

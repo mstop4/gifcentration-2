@@ -74,7 +74,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     if (selection.length > 0) {
       await dbConnect();
       const search = new Search({
-        query: q.toLowerCase(),
+        query: q,
         rating,
       });
       await search.save();
