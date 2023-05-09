@@ -8,27 +8,17 @@
   margin-bottom: 25px;
   border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: 8px;
-  -webkit-animation: ani-spinner 0.75s infinite ease-in-out;
   animation: ani-spinner 0.75s infinite ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .spinner {
-    -webkit-animation: ani-spinner 1.5s infinite ease-in-out;
     animation: ani-spinner 1.5s infinite ease-in-out;
   }
 }
 
-@-webkit-keyframes ani-spinner {
-  0% {
-    -webkit-transform: perspective(200px) rotateY(0deg);
-  }
-  100% {
-    -webkit-transform: perspective(200px) rotateY(180deg);
-  }
-}
-
 @keyframes ani-spinner {
+  // use legacy transform property because perspective does not work spearately for some reason
   0% {
     transform: perspective(200px) rotateY(0deg);
   }

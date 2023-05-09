@@ -26,7 +26,16 @@
   position: absolute;
   transform-style: preserve-3d;
   transform-origin: center center;
-  transition: transform 0.5s ease-out, opacity 1s ease-in;
+  transition: rotate 0.5s ease-out, scale 0.25s ease-out, opacity 1s ease-in;
+  cursor: pointer;
+}
+
+.cardBody:hover {
+  scale: 1.05;
+}
+
+.cardBody:hover .cardFace {
+  border-color: colours.$secondary-outline-colour;
 }
 
 .cardFace {
@@ -62,7 +71,7 @@
   align-items: center;
   justify-content: center;
   background-color: colours.$primary-colour;
-  transform: rotateY(180deg);
+  rotate: 180deg y;
   overflow-x: hidden;
   overflow-y: hidden;
   user-select: none;
@@ -71,22 +80,21 @@
 
 .matched {
   background-color: colours.$primary-colour-light;
-  transform: rotateY(180deg);
 }
 
 .flipped {
-  transform: rotateY(180deg);
+  rotate: 180deg y;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .back {
-    transform: none;
+    rotate: none;
     opacity: 0;
     transition: 0.25s;
   }
 
   .matched {
-    transform: none;
+    rotate: none;
   }
 
   .matched .front {
@@ -98,7 +106,7 @@
   }
 
   .flipped {
-    transform: none;
+    rotate: none;
   }
 
   .flipped .front {
