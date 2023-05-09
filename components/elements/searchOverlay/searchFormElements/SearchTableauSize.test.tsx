@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchTableauSize from './SearchTableauSize';
 import '@testing-library/jest-dom';
-import { useGameStore } from '../../../game/Game.stores';
+import { useGameStore } from '../../../../stores/stores';
 import { getZustandStoreHooks } from '../../../../helpers/zustandTest';
 
 let store;

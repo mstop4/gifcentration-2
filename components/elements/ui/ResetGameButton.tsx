@@ -3,7 +3,7 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
-import { useGameStore } from '../../game/Game.stores';
+import { useGameStore } from '../../../stores/stores';
 
 export type ResetGameButtonProps = {
   resetCards: (numCards?: number) => void;

@@ -4,7 +4,7 @@ import SearchForm from './SearchForm';
 import '@testing-library/jest-dom';
 import mockTopSearches from '../../../mockData/popular.json';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
-import { useGameStore } from '../../game/Game.stores';
+import { useGameStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
 let store;
@@ -14,7 +14,6 @@ const makeSearchForm = (): ReactElement => (
     resetCards={jest.fn()}
     updateImageData={jest.fn()}
     resetImageLoaded={jest.fn()}
-    setGifErrorState={jest.fn()}
     startLoadTimers={jest.fn()}
     topSearches={mockTopSearches as unknown as TopSearchResult[]}
   />

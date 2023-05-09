@@ -3,13 +3,13 @@ import {
   useGameStore,
   useImageDataStore,
   useUIVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import Spinner from '../ui/Spinner';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
-import styles from '@/styles/elements/searchOverlay/LoadingIndicator.module.scss';
+import styles from '@/styles/elements/searchOverlay/ImageLoadingIndicator.module.scss';
 
-export default function LoadingIndicator(): ReactElement {
+export default function ImageLoadingIndicator(): ReactElement {
   const gameState = useGameStore(state => state.gameState);
   const actualTableauSize = useGameStore(state => state.actualTableauSize);
   const imageLoaded = useImageDataStore(state => state.imageLoaded);
@@ -21,7 +21,7 @@ export default function LoadingIndicator(): ReactElement {
   );
 
   return (
-    <div id={styles.loadingIndicator}>
+    <div id={styles.imageLoadingIndicator}>
       <Spinner />
       {gameState === GameState.Searching && <span>Searching...</span>}
       {gameState === GameState.Loading && (

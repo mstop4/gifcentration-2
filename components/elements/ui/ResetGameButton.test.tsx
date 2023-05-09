@@ -4,7 +4,7 @@ import ResetGameButton from './ResetGameButton';
 import '@testing-library/jest-dom';
 import { GameState } from '../../game/Game.typedefs';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
-import { useGameStore } from '../../game/Game.stores';
+import { useGameStore } from '../../../stores/stores';
 
 let store;
 

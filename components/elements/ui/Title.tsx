@@ -1,5 +1,5 @@
 import { Architects_Daughter } from 'next/font/google';
-import { useTitleVisibleStore } from '../../game/Game.stores';
+import { useTitleVisibleStore } from '../../../stores/stores';
 import type { ReactElement } from 'react';
 import styles from '@/styles/elements/ui/Title.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';

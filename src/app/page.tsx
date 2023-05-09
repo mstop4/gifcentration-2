@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import Game from '../../components/game/Game';
+import Layout from '../../components/layout/Layout';
 import { getTopSearches } from '../../lib/mongodb/helpers';
-import type { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60; // revalidate this page every 60 seconds
@@ -16,5 +16,5 @@ export const metadata: Metadata = {
 
 export default async function Page(): Promise<ReactElement> {
   const topSearches = await getTopSearches();
-  return <Game topSearches={topSearches} />;
+  return <Layout topSearches={topSearches} />;
 }

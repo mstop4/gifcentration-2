@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
@@ -10,7 +8,7 @@ import {
   useImageDataStore,
   useTitleVisibleStore,
   useUIVisibleStore,
-} from './Game.stores';
+} from '../../stores/stores';
 import Header from '../layout/Header';
 import SearchOverlay from '../layout/SearchOverlay';
 import Tableau from '../elements/game/Tableau';
@@ -216,7 +214,7 @@ export default function Game(props: GameProps): ReactElement {
   }, [imageLoaded, gameState, setGameState, toggleSearchOverlay]);
 
   return (
-    <main className={styles.main}>
+    <>
       <Header
         resetCards={resetCards}
         showSearchOverlay={() => toggleSearchOverlay(true)}
@@ -232,7 +230,6 @@ export default function Game(props: GameProps): ReactElement {
           showConfetti={() => toggleConfetti(true)}
         />
       </div>
-      {/* <Footer /> */}
       <Confetti
         width={windowSize.current.appWidth}
         height={windowSize.current.appHeight}
@@ -246,6 +243,6 @@ export default function Game(props: GameProps): ReactElement {
         startLoadTimers={startLoadTimers}
       />
       <Alert />
-    </main>
+    </>
   );
 }

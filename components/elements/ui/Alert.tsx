@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { GifErrorState } from '../../game/Game.typedefs';
 import styles from '@/styles/elements/ui/Alert.module.scss';
-import { useImageDataStore, useUIVisibleStore } from '../../game/Game.stores';
+import { useImageDataStore, useUIVisibleStore } from '../../../stores/stores';
 
 export default function Alert(): ReactElement {
   const alertVisible = useUIVisibleStore(state => state.alert);

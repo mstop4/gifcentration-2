@@ -3,7 +3,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { GifErrorState } from '../../game/Game.typedefs';
 import Alert from './Alert';
-import { useUIVisibleStore, useImageDataStore } from '../../game/Game.stores';
+import { useUIVisibleStore, useImageDataStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 
 let uiVisibleStore;

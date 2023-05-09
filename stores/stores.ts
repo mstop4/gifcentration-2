@@ -2,15 +2,14 @@ import { create } from 'zustand';
 import {
   CardArrayAction,
   ClickHereVisibility,
-  GameState,
   GameStore,
-  GifErrorState,
   ImageDataStore,
   ImageLoadedArrayAction,
   TitleVisibility,
   UIVisibility,
-} from './Game.typedefs';
-import clientConfig from '../../config/clientConfig';
+} from './stores.typedefs';
+import { GameState, GifErrorState } from '../components/game/Game.typedefs';
+import clientConfig from '../config/clientConfig';
 
 const { defaultTableauSize } = clientConfig.game;
 

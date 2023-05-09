@@ -4,7 +4,7 @@ import {
   useClickHereVisibleStore,
   useGameStore,
   useTitleVisibleStore,
-} from '../../game/Game.stores';
+} from '../../../stores/stores';
 import type { ReactElement } from 'react';
 import { GameState } from '../../game/Game.typedefs';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';

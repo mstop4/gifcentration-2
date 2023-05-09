@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import OverlayCloseButton from './OverlayCloseButton';
 import '@testing-library/jest-dom';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
-import { useUIVisibleStore } from '../../game/Game.stores';
+import { useUIVisibleStore } from '../../../stores/stores';
 
 let store;
 
