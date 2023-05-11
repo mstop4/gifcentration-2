@@ -81,7 +81,7 @@ export default function Tableau(props: TableauProps): ReactElement {
   for (let i = 0; i < imageIndexes.length; ++i) {
     cardArray.push(
       <Card
-        key={i}
+        key={`${imageData[imageIndexes[i]].id}-${i}`}
         index={i}
         reduceMotions={reduceMotions}
         imageData={imageData[imageIndexes[i]]}

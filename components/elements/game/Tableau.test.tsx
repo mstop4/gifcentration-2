@@ -49,7 +49,7 @@ describe('Tableau', () => {
   it('has 2 Cards in the tableau div', async () => {
     const { container } = render(makeTableau());
     const tableau = container.querySelector('#tableau');
-    const cards = tableau?.querySelectorAll('.cardContainer');
+    const cards = tableau?.querySelectorAll('.container');
 
     await waitFor(() => {
       expect(cards).toHaveLength(2);

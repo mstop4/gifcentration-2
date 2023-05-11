@@ -9,12 +9,12 @@ $field-font-size: 1.25rem;
   align-items: center;
 }
 
-.searchL1Label {
+.L1Label {
   font-size: 2rem;
   font-weight: 700;
 }
 
-.searchL2Label {
+.L2Label {
   font-size: 1.5rem;
   font-weight: 500;
 }
@@ -23,7 +23,7 @@ $field-font-size: 1.25rem;
   margin-bottom: 1rem;
 }
 
-.searchFieldInput {
+.fieldInput {
   font-size: $field-font-size;
   font-weight: 400;
   background: none;
@@ -31,8 +31,8 @@ $field-font-size: 1.25rem;
   padding: 0.5rem 1rem;
   background: colours.$input-field-background-colour;
   border: global.$outline-width solid colours.$primary-outline-colour;
-  border-radius: 1.5rem;
-  height: 3rem;
+  border-radius: 1lh;
+  height: 2lh;
   outline: none;
 }
 
@@ -53,7 +53,7 @@ $field-font-size: 1.25rem;
   cursor: not-allowed;
 }
 
-#searchPopular {
+#popular {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,8 +75,8 @@ $field-font-size: 1.25rem;
   padding: 1rem;
   margin: 0.5rem;
   max-width: 8rem;
-  height: 2.5rem;
-  border-radius: 1.25rem;
+  height: 1lh;
+  border-radius: 0.5lh;
   color: black;
   background-color: colours.$highlight-colour;
   border: global.$outline-width solid colours.$primary-outline-colour;
@@ -99,7 +99,7 @@ $field-font-size: 1.25rem;
   font-weight: 600;
 }
 
-#searchOtherSettings {
+#otherSettings {
   margin: 0.5rem 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -108,39 +108,33 @@ $field-font-size: 1.25rem;
   justify-items: center;
 }
 
-.searchRatingLabel {
-  font-size: $field-font-size;
-  font-weight: 400;
-  margin: 0.5rem;
-}
-
-#searchRatingList {
+#ratingList {
   appearance: none;
   display: inline-block;
   margin: 0.5rem 1rem;
   padding: 0.5rem 3rem 0.5rem 1rem;
-  height: 3rem;
+  height: 2lh;
   line-height: 27px;
   border: global.$outline-width solid colours.$primary-outline-colour;
-  border-radius: 1.5rem;
+  border-radius: 1lh;
   font-size: $field-font-size;
   background: colours.$input-field-background-colour;
   outline: none;
 }
 
-.searchRatingOption {
+.ratingOption {
   background-color: colours.$input-field-background-colour;
 }
 
-#searchNumCards {
+#numCards {
   width: 10ch;
 }
 
-#searchSubmit {
+#submit {
   font-size: 2rem;
   font-weight: bold;
-  border-radius: 2rem;
-  padding: 0.5rem;
+  border-radius: 0.75lh;
+  height: 1.5lh;
   width: 10rem;
   margin: 1rem;
   cursor: pointer;

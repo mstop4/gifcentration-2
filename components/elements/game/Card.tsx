@@ -45,8 +45,8 @@ export default function Card(props: CardProps): ReactElement {
   };
 
   // Determine CSS classes
-  const cardBodyClasses = `${styles.cardBody} ${flipped ? styles.flipped : ''}`;
-  const cardBackClasses = `${styles.cardFace} ${styles.back} ${
+  const cardBodyClasses = `${styles.body} ${flipped ? styles.flipped : ''}`;
+  const cardBackClasses = `${styles.face} ${styles.back} ${
     matched ? styles.matched : ''
   }`;
 
@@ -71,9 +71,9 @@ export default function Card(props: CardProps): ReactElement {
   );
 
   return (
-    <div className={styles.cardContainer} onClick={handleClick}>
+    <div className={styles.container} onClick={handleClick}>
       <div className={cardBodyClasses} ref={ref}>
-        <div className={`${styles.cardFace} ${styles.front}`}>
+        <div className={`${styles.face} ${styles.front}`}>
           <FontAwesomeIcon
             icon={faQuestion}
             size={size}
@@ -85,7 +85,7 @@ export default function Card(props: CardProps): ReactElement {
             <picture onLoad={handleGifLoad} data-testid="card picture">
               {webp.url && <source type="image/webp" srcSet={webp.url} />}
               <img
-                className={styles.cardImage}
+                className={styles.image}
                 src={gif.url}
                 alt={`${index}. ${imageData?.title}`}
                 width={targetWidth}

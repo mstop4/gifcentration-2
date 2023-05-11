@@ -17,7 +17,7 @@ export default function GifOverlay(props: GifOverlayProps): ReactElement {
     <div className={overlayStyles}>
       <a href={linkUrl} target="_blank" rel="noopener noreferrer">
         {children}
-        <span className={styles.gifOverlayLink}>
+        <span className={styles.link}>
           <FontAwesomeIcon icon={faHandPointer} data-testid="link" />
         </span>
       </a>

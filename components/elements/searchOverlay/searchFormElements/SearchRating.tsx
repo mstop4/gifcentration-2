@@ -17,28 +17,28 @@ export default function SearchRating(props: SearchRatingProps) {
 
   return (
     <>
-      <label className={styles.searchL2Label} htmlFor="searchRatingList">
+      <label className={styles.L2Label} htmlFor="ratingList">
         Rating
       </label>
       <select
-        id={styles.searchRatingList}
-        name="searchRatingList"
+        id={styles.ratingList}
+        name="ratingList"
         value={rating}
         onChange={handleRatingChange}
       >
-        <option value="y" className={styles.searchRatingOption}>
+        <option value="y" className={styles.ratingOption}>
           Y
         </option>
-        <option value="g" className={styles.searchRatingOption}>
+        <option value="g" className={styles.ratingOption}>
           G
         </option>
-        <option value="pg" className={styles.searchRatingOption}>
+        <option value="pg" className={styles.ratingOption}>
           PG
         </option>
-        <option value="pg-13" className={styles.searchRatingOption}>
+        <option value="pg-13" className={styles.ratingOption}>
           PG-13
         </option>
-        <option value="r" className={styles.searchRatingOption}>
+        <option value="r" className={styles.ratingOption}>
           R
         </option>
       </select>

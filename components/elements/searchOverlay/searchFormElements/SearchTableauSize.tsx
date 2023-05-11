@@ -15,13 +15,13 @@ export default function SearchTableauSize() {
 
   return (
     <>
-      <label htmlFor="searchNumCards" className={styles.searchL2Label}>
+      <label htmlFor="numCards" className={styles.L2Label}>
         Tableau Size
       </label>
       <input
         type="number"
-        id={styles.searchNumCards}
-        className={styles.searchFieldInput}
+        id={styles.numCards}
+        className={styles.fieldInput}
         name="tableauSize"
         value={idealTableauSize}
         onChange={handleNumCardsChange}

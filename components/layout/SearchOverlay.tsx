@@ -28,9 +28,7 @@ export default function SearchOverlay(props: SearchOverlayProps): ReactElement {
   const gameState = useGameStore(state => state.gameState);
   const overlayVisible = useUIVisibleStore(state => state.overlay);
 
-  const classes = `${styles.overlayClosed} ${
-    overlayVisible ? styles.overlayOpen : ''
-  }`;
+  const classes = `${styles.closed} ${overlayVisible ? styles.open : ''}`;
 
   const isFetchingGifs =
     gameState === GameState.Searching || gameState === GameState.Loading;

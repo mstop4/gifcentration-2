@@ -15,6 +15,7 @@ export type SortedGifData = {
   stills: GifData[];
   animated: GifData[];
   title: string;
+  id: string;
   linkUrl: string;
 };
 
@@ -68,6 +69,7 @@ export const organizeImages = (gifData: IGif): SortedGifData => {
     stills: [],
     animated: [],
     title: gifData.title ?? '',
+    id: gifData.id?.toString() ?? '',
     linkUrl: gifData.url ?? '',
   };
 

@@ -8,11 +8,11 @@ export default function Alert(): ReactElement {
   const gifErrorState = useImageDataStore(state => state.gifErrorState);
 
   let bodyClass, bodyText;
-  const containerClass = alertVisible ? styles.alertOpen : styles.alertClosed;
+  const containerClass = alertVisible ? styles.open : styles.closed;
 
   switch (gifErrorState) {
     case GifErrorState.NoGifs:
-      bodyClass = styles.alertError;
+      bodyClass = styles.error;
       bodyText = (
         <>
           Could not find any GIFs!
@@ -23,7 +23,7 @@ export default function Alert(): ReactElement {
       break;
 
     case GifErrorState.NotEnoughGifs:
-      bodyClass = styles.alertWarning;
+      bodyClass = styles.warning;
       bodyText = (
         <>
           Not enough GIFs found.
@@ -34,7 +34,7 @@ export default function Alert(): ReactElement {
       break;
 
     case GifErrorState.BadRequest:
-      bodyClass = styles.alertError;
+      bodyClass = styles.error;
       bodyText = (
         <>
           Could not search for GIFs.
@@ -45,7 +45,7 @@ export default function Alert(): ReactElement {
       break;
 
     case GifErrorState.Forbidden:
-      bodyClass = styles.alertError;
+      bodyClass = styles.error;
       bodyText = (
         <>
           Could not search for GIFs.
@@ -56,7 +56,7 @@ export default function Alert(): ReactElement {
       break;
 
     case GifErrorState.InternalServerError:
-      bodyClass = styles.alertError;
+      bodyClass = styles.error;
       bodyText = (
         <>
           Could not search for GIFs.
@@ -67,7 +67,7 @@ export default function Alert(): ReactElement {
       break;
 
     case GifErrorState.UnknownError:
-      bodyClass = styles.alertError;
+      bodyClass = styles.error;
       bodyText = <>An unknown error occured</>;
       break;
 
@@ -79,7 +79,7 @@ export default function Alert(): ReactElement {
 
   return (
     <div id={styles.alert} className={containerClass}>
-      <span className={`${styles.alertBody} ${bodyClass}`}>{bodyText}</span>
+      <span className={`${styles.body} ${bodyClass}`}>{bodyText}</span>
     </div>
   );
 }

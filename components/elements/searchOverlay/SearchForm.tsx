@@ -185,11 +185,11 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         topSearches={topSearches}
         setSearchQuery={setSearchQuery}
       />
-      <div id={styles.searchOtherSettings}>
+      <div id={styles.otherSettings}>
         <SearchRating rating={rating} setRating={setRating} />
         <SearchTableauSize />
       </div>
-      <button id={styles.searchSubmit} type="submit">
+      <button id={styles.submit} type="submit">
         Go!
       </button>
     </form>

@@ -19,14 +19,14 @@ describe('SearchTableauSize', () => {
 
   it('renders a SearchTableauSize', () => {
     const { container } = render(<SearchTableauSize />);
-    const size = container.querySelector('#searchNumCards');
+    const size = container.querySelector('#numCards');
 
     expect(size).toBeInTheDocument();
   });
 
   it('sets tableau size after typing new tableau size', async () => {
     const { container } = render(<SearchTableauSize />);
-    const tableau = container.querySelector('#searchNumCards') as Element;
+    const tableau = container.querySelector('#numCards') as Element;
     fireEvent.change(tableau, { target: { value: 24 } });
 
     await waitFor(() => {
