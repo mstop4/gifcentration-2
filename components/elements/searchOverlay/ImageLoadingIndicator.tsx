@@ -27,7 +27,11 @@ export default function ImageLoadingIndicator(): ReactElement {
       {gameState === GameState.Loading && (
         <>
           <span>{longWaitMsgVisible ? 'Still ' : ''} Pre-loading GIFs...</span>
-          <progress value={numImagesLoaded} max={actualTableauSize}></progress>
+          <progress
+            id={styles.loadingProgress}
+            value={numImagesLoaded}
+            max={actualTableauSize}
+          ></progress>
         </>
       )}
     </div>

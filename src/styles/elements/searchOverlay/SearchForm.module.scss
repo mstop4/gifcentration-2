@@ -60,7 +60,7 @@ $field-font-size: 1.25rem;
   justify-content: center;
 }
 
-.queryList {
+#queryList {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -86,6 +86,8 @@ $field-font-size: 1.25rem;
 .nothing {
   margin: 0.5rem;
   font-size: 1.5rem;
+  font-style: italic;
+  color: #999;
 }
 
 .queryChipText {
@@ -141,4 +143,8 @@ $field-font-size: 1.25rem;
   color: colours.$primary-text-colour;
   background-color: colours.$highlight-colour;
   border: global.$outline-width solid colours.$primary-outline-colour;
+}
+
+#giphyLogo {
+  margin-top: 1rem;
 }

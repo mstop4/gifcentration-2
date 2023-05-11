@@ -26,6 +26,7 @@ import { GameState } from './Game.typedefs';
 import type { ReactElement } from 'react';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
+import ImageLoadingIndicator from '../elements/searchOverlay/ImageLoadingIndicator';
 
 export type GameProps = {
   topSearches: TopSearchResult[];

@@ -1,5 +1,29 @@
+@use '../../colourScheme' as colours;
+@use '../../globalVariables' as global;
+
 #imageLoadingIndicator {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#loadingProgress {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#loadingProgress::-webkit-progress-bar {
+  background-color: colours.$input-field-background-colour;
+}
+
+#loadingProgress::-webkit-progress-value {
+  background-color: colours.$highlight-colour;
+}
+
+#loadingProgress::-webkit-progress-inner-element {
+  border: global.$outline-width solid colours.$primary-outline-colour;
+}
+
+#loadingProgress::-moz-progress-bar {
+  background-color: colours.$highlight-colour;
 }

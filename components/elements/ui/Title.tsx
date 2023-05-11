@@ -20,7 +20,7 @@ export default function Title(): ReactElement {
   return (
     <div id={styles.title}>
       <h1 className={mainTitleClasses}>GIFcentration 2</h1>
-      <h2 className={subtitleClasses}>Card-matching game powered by Giphy</h2>
+      <h2 className={subtitleClasses}>The GIF card-matching game!</h2>
     </div>
   );
 }
