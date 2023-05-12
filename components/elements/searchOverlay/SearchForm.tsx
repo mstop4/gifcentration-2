@@ -61,7 +61,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   // Gets GIFs from API service
   const getGifs = async (): Promise<GifFetchResults> => {
     const tableauSizeInt = parseInt(idealTableauSize);
-    console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
     const searchParams = new URLSearchParams({
       q: searchQuery,

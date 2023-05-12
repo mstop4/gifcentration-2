@@ -26,7 +26,6 @@ import { GameState } from './Game.typedefs';
 import type { ReactElement } from 'react';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
-import ImageLoadingIndicator from '../elements/searchOverlay/ImageLoadingIndicator';
 
 export type GameProps = {
   topSearches: TopSearchResult[];
@@ -96,7 +95,6 @@ export default function Game(props: GameProps): ReactElement {
   const updateImageData = (data: SortedGifData[]) => {
     setImageData(data);
     setActualTableauSize(data.length * 2);
-    console.log(data);
   };
 
   // Updates CSS grid dimensions for tableau
@@ -118,7 +116,6 @@ export default function Game(props: GameProps): ReactElement {
   const resetCards = (numCards: number = parseInt(idealTableauSize)) => {
     if (gameState === GameState.Searching || gameState === GameState.Loading)
       return;
-    console.log(`Has ${numCards} cards...`);
 
     setGameState(GameState.Loading);
     setFlipped({ type: 'clear', payload: numCards });
@@ -129,7 +126,6 @@ export default function Game(props: GameProps): ReactElement {
     if (rect.majorAxisSize === 0 || rect.minorAxisSize === 0) return;
     updateGridDimensions(rect);
 
-    console.log(`Setting up ${numCards / 2} pairs...`);
     setImageIndexes(pairShuffler(numCards / 2));
   };
 
@@ -194,7 +190,6 @@ export default function Game(props: GameProps): ReactElement {
     const allLoaded = imageLoaded.every(value => value);
 
     if (!allLoaded) return;
-    console.log('all ok');
 
     if (loadingTimeout.current != null) {
       clearTimeout(loadingTimeout.current);
