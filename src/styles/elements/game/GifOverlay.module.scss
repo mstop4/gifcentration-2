@@ -19,11 +19,7 @@
 }
 
 @media (hover: none) {
-  .link {
-    display: flex;
-  }
-
-  .inactive .link {
+  .gifOverlay:hover .link {
     display: none;
   }
 }

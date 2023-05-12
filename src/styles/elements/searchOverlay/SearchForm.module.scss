@@ -41,8 +41,8 @@ $field-font-size: 1.25rem;
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  color: colours.$secondary-text-colour;
-  background-color: colours.$primary-colour-light;
+  color: colours.$primary-text-colour;
+  background-color: colours.$highlight-colour;
   border: global.$outline-width solid colours.$primary-outline-colour;
 }
 
@@ -146,5 +146,5 @@ $field-font-size: 1.25rem;
 }
 
 #giphyLogo {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
