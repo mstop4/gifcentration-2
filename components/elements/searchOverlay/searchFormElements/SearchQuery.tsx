@@ -26,14 +26,14 @@ export default function SearchQuery(props: SearchQueryProps) {
 
   return (
     <>
-      <label className={styles.searchL1Label} htmlFor="searchQuery">
+      <label className={styles.L1Label} htmlFor="searchQuery">
         Search for GIFs
       </label>
       <div className={styles.queryContainer}>
         <input
           type="text"
           id="searchQuery"
-          className={styles.searchFieldInput}
+          className={styles.fieldInput}
           name="searchQuery"
           placeholder="Enter your query here..."
           value={searchQuery}

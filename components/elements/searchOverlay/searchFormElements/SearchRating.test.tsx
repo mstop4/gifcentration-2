@@ -8,7 +8,7 @@ describe('SearchRating', () => {
     const { container } = render(
       <SearchRating rating="g" setRating={jest.fn()} />
     );
-    const rating = container.querySelector('#searchRatingList');
+    const rating = container.querySelector('#ratingList');
 
     expect(rating).toBeInTheDocument();
   });
@@ -18,7 +18,7 @@ describe('SearchRating', () => {
     const { container } = render(
       <SearchRating rating="g" setRating={setRatingMock} />
     );
-    const rating = container.querySelector('#searchRatingList') as Element;
+    const rating = container.querySelector('#ratingList') as Element;
     fireEvent.change(rating, { target: { value: 2 } });
 
     await waitFor(() => {

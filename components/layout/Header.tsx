@@ -1,5 +1,5 @@
 import { Architects_Daughter } from 'next/font/google';
-import { useGameStore, useTitleVisibleStore } from '../../stores/stores';
+import { useTitleVisibleStore } from '../../stores/stores';
 import SearchGifsButton from '../elements/ui/SearchGifsButton';
 import ResetGameButton from '../elements/ui/ResetGameButton';
 import type { ReactElement } from 'react';
@@ -22,7 +22,7 @@ export default function Header(props: HeaderProps): ReactElement {
 
   return (
     <header id={styles.header}>
-      <span id={styles.headerTitle} className={titleClasses}>
+      <span id={styles.title} className={titleClasses}>
         GIFcentration 2
       </span>
       <span id={styles.headerButtons}>

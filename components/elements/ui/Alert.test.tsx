@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { GifErrorState } from '../../game/Game.typedefs';
 import Alert from './Alert';
@@ -51,7 +51,7 @@ describe('Alert', () => {
     const { container } = render(<Alert />);
 
     const alert = container.querySelector('#alert');
-    expect(alert).toHaveClass('alertClosed');
+    expect(alert).toHaveClass('closed');
   });
 
   it('renders the Alert in a open state', async () => {
@@ -59,7 +59,7 @@ describe('Alert', () => {
 
     const { container } = render(<Alert />);
     const alert = container.querySelector('#alert');
-    expect(alert).toHaveClass('alertOpen');
+    expect(alert).toHaveClass('open');
   });
 
   it('renders the no GIFs message', async () => {
@@ -72,12 +72,12 @@ describe('Alert', () => {
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /could not find any gifs!/i,
       /try a different search./i
     );
 
-    expect(alertElem).toHaveClass('alertError');
+    expect(alertElem).toHaveClass('error');
     expect(topText).toBeInTheDocument();
     expect(bottomText).toBeInTheDocument();
   });
@@ -92,12 +92,12 @@ describe('Alert', () => {
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /not enough gifs found./i,
       /reducing tableau size./i
     );
 
-    expect(alertElem).toHaveClass('alertWarning');
+    expect(alertElem).toHaveClass('warning');
     expect(topText).toBeInTheDocument();
     expect(bottomText).toBeInTheDocument();
   });
@@ -112,12 +112,12 @@ describe('Alert', () => {
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /could not search for gifs./i,
       /bad request/i
     );
 
-    expect(alertElem).toHaveClass('alertError');
+    expect(alertElem).toHaveClass('error');
     expect(topText).toBeInTheDocument();
     expect(bottomText).toBeInTheDocument();
   });
@@ -132,12 +132,12 @@ describe('Alert', () => {
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /could not search for gifs./i,
       /forbidden/i
     );
 
-    expect(alertElem).toHaveClass('alertError');
+    expect(alertElem).toHaveClass('error');
     expect(topText).toBeInTheDocument();
     expect(bottomText).toBeInTheDocument();
   });
@@ -154,12 +154,12 @@ describe('Alert', () => {
 
     const { alertElem, topText, bottomText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /could not search for gifs./i,
       /internal server error/i
     );
 
-    expect(alertElem).toHaveClass('alertError');
+    expect(alertElem).toHaveClass('error');
     expect(topText).toBeInTheDocument();
     expect(bottomText).toBeInTheDocument();
   });
@@ -174,11 +174,11 @@ describe('Alert', () => {
 
     const { alertElem, topText } = testHelper(
       container,
-      '.alertBody',
+      '.body',
       /An unknown error occured/i
     );
 
-    expect(alertElem).toHaveClass('alertError');
+    expect(alertElem).toHaveClass('error');
     expect(topText).toBeInTheDocument();
   });
 

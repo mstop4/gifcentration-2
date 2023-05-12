@@ -36,6 +36,7 @@ describe('calculateTargetSize', () => {
       ],
       stills: [],
       title: 'Test',
+      id: 'test',
       linkUrl: 'https://example.com',
     };
     const targetSize = calculateTargetSize(sortedData, 400, 1, 100);
@@ -56,6 +57,7 @@ describe('calculateTargetSize', () => {
       ],
       stills: [],
       title: 'Test',
+      id: 'test',
       linkUrl: 'https://example.com',
     };
     const targetSize = calculateTargetSize(sortedData, 200, 1, 500);
@@ -76,6 +78,7 @@ describe('calculateTargetSize', () => {
       ],
       stills: [],
       title: 'Test',
+      id: 'test',
       linkUrl: 'https://example.com',
     };
     const targetSize = calculateTargetSize(sortedData, 300, 1, 1000);
@@ -96,6 +99,7 @@ describe('calculateTargetSize', () => {
       ],
       stills: [],
       title: 'Test',
+      id: 'test',
       linkUrl: 'https://example.com',
     };
     const targetSize = calculateTargetSize(sortedData, 800, 0.5, 100);
@@ -110,6 +114,7 @@ describe('calculateTargetSize', () => {
       animated: [],
       stills: [],
       title: 'Test',
+      id: 'test',
       linkUrl: 'https://example.com',
     };
     const targetSize = calculateTargetSize(sortedData, 123, 0.5, 345);
@@ -142,6 +147,7 @@ describe('findBestRepresentations', () => {
   it('should work with bad data from organizedImages (no animated or stills)', () => {
     const sortedData = {
       title: 'No GIFs? :(',
+      id: 'noGifs',
       linkUrl: 'https://example.com',
     } as unknown as SortedGifData;
     const bestReps = findBestRepresentations(sortedData, 400, true);

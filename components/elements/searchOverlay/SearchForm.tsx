@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 import {
   useGameStore,
   useImageDataStore,
@@ -7,14 +8,15 @@ import {
 import SearchQuery from './searchFormElements/SearchQuery';
 import SearchRating from './searchFormElements/SearchRating';
 import SearchTableauSize from './searchFormElements/SearchTableauSize';
+import SearchPopular from './searchFormElements/SearchPopular';
 import type { ReactElement, FormEventHandler } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import { GameState, GifErrorState } from '../../game/Game.typedefs';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
+import giphyLogo from '@/img/giphyLogo.png';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
-import SearchPopular from './searchFormElements/SearchPopular';
 
 export enum ServerHTTPStatus {
   Ok = 200,
@@ -59,7 +61,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   // Gets GIFs from API service
   const getGifs = async (): Promise<GifFetchResults> => {
     const tableauSizeInt = parseInt(idealTableauSize);
-    console.log(`Getting ${tableauSizeInt / 2} pairs...`);
 
     const searchParams = new URLSearchParams({
       q: searchQuery,
@@ -185,13 +186,16 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         topSearches={topSearches}
         setSearchQuery={setSearchQuery}
       />
-      <div id={styles.searchOtherSettings}>
+      <div id={styles.otherSettings}>
         <SearchRating rating={rating} setRating={setRating} />
         <SearchTableauSize />
       </div>
-      <button id={styles.searchSubmit} type="submit">
+      <button id={styles.submit} type="submit">
         Go!
       </button>
+      <a href="https://giphy.com" target="_blank" rel="noopener noreferrer">
+        <Image id={styles.giphyLogo} src={giphyLogo} alt="Powered by GIPHY" />
+      </a>
     </form>
   );
 }

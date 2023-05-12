@@ -23,9 +23,9 @@ export default function SearchPopular(props: SearchPopularProps) {
     ));
 
   return (
-    <div id={styles.searchPopular}>
-      <label className={styles.searchL2Label}>Popular Searches</label>
-      <span className={styles.queryList}>
+    <div id={styles.popular}>
+      <label className={styles.L2Label}>Popular Searches</label>
+      <span id={styles.queryList}>
         {chips.length > 0 ? (
           chips
         ) : (

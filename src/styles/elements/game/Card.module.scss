@@ -1,26 +1,26 @@
 @use '../../globalVariables' as global;
 @use '../../colourScheme' as colours;
 
-.cardContainer {
+.container {
   position: relative;
   perspective: 800px;
   display: inline-block;
 }
 
 @media screen and (min-aspect-ratio: 1/1) {
-  .cardContainer {
+  .container {
     padding-bottom: 100%;
   }
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-  .cardContainer {
+  .container {
     height: 100%;
     padding-right: 100%;
   }
 }
 
-.cardBody {
+.body {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -30,15 +30,15 @@
   cursor: pointer;
 }
 
-.cardBody:hover {
+.body:hover {
   scale: 1.05;
 }
 
-.cardBody:hover .cardFace {
+.body:hover .face {
   border-color: colours.$secondary-outline-colour;
 }
 
-.cardFace {
+.face {
   margin: 0;
   border: global.$outline-width solid colours.$primary-outline-colour;
   border-radius: global.$corner-rad;
@@ -50,8 +50,10 @@
   transition: background-color 0.3s ease-out;
 }
 
-.cardImage {
+.image {
   display: block;
+  border: global.$outline-width solid colours.$primary-outline-colour;
+  border-radius: 0.5rem;
 }
 
 .front {

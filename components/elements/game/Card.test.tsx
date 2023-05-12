@@ -29,7 +29,7 @@ describe('Card', () => {
   it('renders a Card', () => {
     const { container } = render(makeCard(0));
 
-    const card = container.querySelector('.cardContainer');
+    const card = container.querySelector('.container');
     expect(card).toBeInTheDocument();
   });
 
@@ -52,7 +52,7 @@ describe('Card', () => {
   it('should be front-facing when initialized', () => {
     const { container } = render(makeCard(0));
 
-    const card = container.querySelector('.cardContainer') as Element;
+    const card = container.querySelector('.container') as Element;
     expect(card).not.toHaveClass('flipped');
   });
 
@@ -60,7 +60,7 @@ describe('Card', () => {
     const cardComp = makeCard(0);
     const { container } = render(cardComp);
 
-    const cardContainer = container.querySelector('.cardContainer') as Element;
+    const cardContainer = container.querySelector('.container') as Element;
     fireEvent.click(cardContainer);
     expect(handleClickMock).toHaveBeenCalledTimes(1);
   });
@@ -68,7 +68,7 @@ describe('Card', () => {
   it('should have a flipped class on cardBody when flipped', () => {
     const cardComp = makeCard(0, true);
     const { container } = render(cardComp);
-    const cardBody = container.querySelector('.cardBody') as Element;
+    const cardBody = container.querySelector('.body') as Element;
     expect(cardBody).toHaveClass('flipped');
   });
 
@@ -82,7 +82,7 @@ describe('Card', () => {
   it('should call handleGifLoad when picture is loaded', () => {
     const { container } = render(makeCard(0));
 
-    const img = container.querySelector('.cardImage') as Element;
+    const img = container.querySelector('.image') as Element;
     fireEvent.load(img);
     expect(updateImageLoadedMock).toBeCalled();
   });
@@ -90,7 +90,7 @@ describe('Card', () => {
   it("should still work with gif data that's missing a gif URL", () => {
     const { container } = render(makeCard(3));
 
-    const card = container.querySelector('.cardContainer');
+    const card = container.querySelector('.container');
     expect(card).toBeInTheDocument();
   });
 });

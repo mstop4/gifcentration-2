@@ -15,6 +15,7 @@ export type SortedGifData = {
   stills: GifData[];
   animated: GifData[];
   title: string;
+  id: string;
   linkUrl: string;
 };
 
@@ -34,7 +35,7 @@ export type BestGifResultsKeys = keyof BestGifsResults;
 
 const stillKeys = [
   'fixed_width_still',
-  'downsized_still',
+  // 'downsized_still',
   'original_still',
   'fixed_height_small_still',
   'fixed_width_small_still',
@@ -46,16 +47,16 @@ const stillKeys = [
 const animatedKeys = [
   // 'hd',
   'fixed_height_downsampled',
-  'preview_gif',
+  // 'preview_gif',
   // 'preview',
   'fixed_height_small',
-  'downsized',
+  // 'downsized',
   'fixed_width_downsampled',
   'fixed_width',
-  'downsized_medium',
+  // 'downsized_medium',
   // 'original_mp4',
-  'downsized_large',
-  'preview_webp',
+  // 'downsized_large',
+  // 'preview_webp',
   'original',
   'fixed_width_small',
   // 'looping',
@@ -68,6 +69,7 @@ export const organizeImages = (gifData: IGif): SortedGifData => {
     stills: [],
     animated: [],
     title: gifData.title ?? '',
+    id: gifData.id?.toString() ?? '',
     linkUrl: gifData.url ?? '',
   };
 

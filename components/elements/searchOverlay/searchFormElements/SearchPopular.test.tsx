@@ -14,7 +14,7 @@ describe('SearchPopular', () => {
         setSearchQuery={jest.fn()}
       />
     );
-    const popular = container.querySelector('#searchPopular');
+    const popular = container.querySelector('#popular');
 
     expect(popular).toBeInTheDocument();
   });

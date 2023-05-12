@@ -12,7 +12,7 @@ $alert-height: 3.5rem;
   transition: 0.5s;
 }
 
-.alertBody {
+.body {
   text-align: center;
   padding: 0.6rem 2rem;
   background-color: black;
@@ -23,18 +23,18 @@ $alert-height: 3.5rem;
   border-bottom: 0;
 }
 
-.alertBody.alertError {
+.body.error {
   background-color: colours.$highlight-colour;
 }
 
-.alertBody.alertWarning {
+.body.warning {
   background-color: colours.$primary-colour;
 }
 
-.alertClosed {
+.closed {
   bottom: -$alert-height;
 }
 
-.alertOpen {
+.open {
   bottom: 0;
 }
