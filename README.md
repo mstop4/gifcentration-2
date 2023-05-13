@@ -1,7 +1,7 @@
 # GIFcentration 2
 ## The GIF Card-matching game!
 
-![Preview of GIFcentration 2](https://github.com/mstop4/gifcentration-2/blob/docs/docs/preview.gif?raw=true)
+![Preview of GIFcentration 2](https://github.com/mstop4/gifcentration-2/blob/main/docs/preview.gif?raw=true)
 
 A card pairs-matching game powered by Next.js, Giphy, and Vercel. Enter a topic and GIFcentration will search for relevant GIFs and set up a game of Concentration for you to play.
 
