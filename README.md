@@ -15,12 +15,12 @@ Successor to [GIFcentration Client](https://github.com/mstop4/gifcentration-clie
 
 ### Desktop
 
-<img src="https://github.com/mstop4/gifcentration-2/blob/docs/docs/desktop-search.png?raw=true" alt="Search Form on Desktop" width="640">
+<img src="https://github.com/mstop4/gifcentration-2/blob/main/docs/desktop-search.png?raw=true" alt="Search Form on Desktop" width="640">
 
-<img src="https://github.com/mstop4/gifcentration-2/blob/docs/docs/desktop-game.png?raw=true" alt="Game on Desktop" width="640">
+<img src="https://github.com/mstop4/gifcentration-2/blob/main/docs/desktop-game.png?raw=true" alt="Game on Desktop" width="640">
 
 ### Mobile
 
-<img src="https://github.com/mstop4/gifcentration-2/blob/docs/docs/mobile-search.PNG?raw=true" alt="Search Form on Mobile" width="320">
+<img src="https://github.com/mstop4/gifcentration-2/blob/main/docs/mobile-search.PNG?raw=true" alt="Search Form on Mobile" width="320">
 
-<img src="https://github.com/mstop4/gifcentration-2/blob/docs/docs/mobile-game.PNG?raw=true" alt="Game on Mobile" width="320">
+<img src="https://github.com/mstop4/gifcentration-2/blob/main/docs/mobile-game.PNG?raw=true" alt="Game on Mobile" width="320">
