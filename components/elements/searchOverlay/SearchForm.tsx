@@ -15,7 +15,7 @@ import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import { GameState, GifErrorState } from '../../game/Game.typedefs';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
-import giphyLogo from '@/img/giphyLogo.png';
+import giphyLogo from '../../../public/giphyLogo.png';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
 
 export enum ServerHTTPStatus {
