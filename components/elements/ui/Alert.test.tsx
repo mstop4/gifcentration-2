@@ -142,6 +142,50 @@ describe('Alert', () => {
     expect(bottomText).toBeInTheDocument();
   });
 
+  it('renders the gateway timeout message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({
+        gifErrorState: GifErrorState.GatewayTimeout,
+      });
+    });
+
+    const { container } = render(<Alert />);
+
+    const { alertElem, topText, bottomText } = testHelper(
+      container,
+      '.body',
+      /could not search for gifs./i,
+      /fetch timeout/i
+    );
+
+    expect(alertElem).toHaveClass('error');
+    expect(topText).toBeInTheDocument();
+    expect(bottomText).toBeInTheDocument();
+  });
+
+  it('renders the service unavailable message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({
+        gifErrorState: GifErrorState.ServiceUnavailable,
+      });
+    });
+
+    const { container } = render(<Alert />);
+
+    const { alertElem, topText, bottomText } = testHelper(
+      container,
+      '.body',
+      /could not search for gifs./i,
+      /service unavailable/i
+    );
+
+    expect(alertElem).toHaveClass('error');
+    expect(topText).toBeInTheDocument();
+    expect(bottomText).toBeInTheDocument();
+  });
+
   it('renders the internal server error message', async () => {
     await act(() => {
       uiVisibleStore.setState({ alert: true });

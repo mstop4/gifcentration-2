@@ -13,6 +13,7 @@ import type { ReactElement, FormEventHandler } from 'react';
 import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
+import clientConfig from '../../../config/clientConfig';
 import { GameState, GifErrorState } from '../../game/Game.typedefs';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import giphyLogo from '../../../public/giphyLogo.png';
@@ -23,6 +24,8 @@ export enum ServerHTTPStatus {
   BadRequest = 400,
   Forbidden = 403,
   InternalServerError = 500,
+  ServiceUnavailable = 503,
+  GatewayTimeout = 504,
   UnknownError = -1,
 }
 
@@ -68,11 +71,49 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
       rating,
     });
 
-    const response = await fetch('/api/search?' + searchParams, {
-      headers: {
-        'x-api-key': process.env.NEXT_PUBLIC_GIFCENTRATION_API_KEY ?? '',
-      },
-    });
+    // Set timeout in case we can't reach server
+    const abortController = new AbortController();
+    const searchTimeout = setTimeout(
+      () => abortController.abort(),
+      clientConfig.game.maxSearchWaitTime
+    );
+    let response;
+
+    try {
+      response = await fetch('/api/search?' + searchParams, {
+        headers: {
+          'x-api-key': process.env.NEXT_PUBLIC_GIFCENTRATION_API_KEY ?? '',
+        },
+        signal: abortController.signal,
+      });
+    } catch (err) {
+      console.log(err.message);
+      if (err.name === 'AbortError') {
+        // Fetch took too long
+        return {
+          numResults: 0,
+          status: ServerHTTPStatus.GatewayTimeout,
+        };
+      }
+      if (err.message === 'Failed to fetch') {
+        // Fetch failed
+        clearTimeout(searchTimeout);
+        return {
+          numResults: 0,
+          status: ServerHTTPStatus.ServiceUnavailable,
+        };
+      }
+
+      // Unknown error
+      clearTimeout(searchTimeout);
+      return {
+        numResults: 0,
+        status: ServerHTTPStatus.UnknownError,
+      };
+    }
+
+    clearTimeout(searchTimeout);
+
     const json = await response.json();
     const { status } = response;
 
@@ -141,8 +182,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
     setGameState(GameState.Searching);
     const { numResults, status } = await getGifs();
-    setGameState(GameState.Loading);
-    const tableauSizeInt = parseInt(idealTableauSize);
 
     if (status !== ServerHTTPStatus.Ok) {
       // Something went wrong with the request
@@ -157,6 +196,14 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
           showAlert(GifErrorState.Forbidden);
           break;
 
+        case ServerHTTPStatus.GatewayTimeout:
+          showAlert(GifErrorState.GatewayTimeout);
+          break;
+
+        case ServerHTTPStatus.ServiceUnavailable:
+          showAlert(GifErrorState.ServiceUnavailable);
+          break;
+
         case ServerHTTPStatus.InternalServerError:
           showAlert(GifErrorState.InternalServerError);
           break;
@@ -164,18 +211,23 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         default:
           showAlert(GifErrorState.UnknownError);
       }
-    } else if (numResults === 0) {
-      // No GIFs found
-      setGameState(GameState.Idle);
-      showAlert(GifErrorState.NoGifs);
-    } else if (numResults === tableauSizeInt / 2) {
-      // There are enough GIFs for every card in the tableau
-      postGifSearchSetup(tableauSizeInt);
-      setGifErrorState(GifErrorState.Ok);
-    } else if (numResults < tableauSizeInt / 2) {
-      // There aren't enough GIFs for every card in the tableau, reduce tableau size
-      postGifSearchSetup(numResults * 2);
-      showAlert(GifErrorState.NotEnoughGifs);
+    } else {
+      setGameState(GameState.Loading);
+      const tableauSizeInt = parseInt(idealTableauSize);
+
+      if (numResults === 0) {
+        // No GIFs found
+        setGameState(GameState.Idle);
+        showAlert(GifErrorState.NoGifs);
+      } else if (numResults === tableauSizeInt / 2) {
+        // There are enough GIFs for every card in the tableau
+        postGifSearchSetup(tableauSizeInt);
+        setGifErrorState(GifErrorState.Ok);
+      } else if (numResults < tableauSizeInt / 2) {
+        // There aren't enough GIFs for every card in the tableau, reduce tableau size
+        postGifSearchSetup(numResults * 2);
+        showAlert(GifErrorState.NotEnoughGifs);
+      }
     }
   };
 

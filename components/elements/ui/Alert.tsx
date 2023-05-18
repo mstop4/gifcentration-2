@@ -55,6 +55,28 @@ export default function Alert(): ReactElement {
       );
       break;
 
+    case GifErrorState.GatewayTimeout:
+      bodyClass = styles.error;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Fetch Timeout
+        </>
+      );
+      break;
+
+    case GifErrorState.ServiceUnavailable:
+      bodyClass = styles.error;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Service Unavailable
+        </>
+      );
+      break;
+
     case GifErrorState.InternalServerError:
       bodyClass = styles.error;
       bodyText = (

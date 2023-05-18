@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitAny": true,
+    "useUnknownInCatchVariables": false,
     "paths": {
       "@/*": ["./src/*"]
     },

@@ -147,13 +147,13 @@ export default function Game(props: GameProps): ReactElement {
   const startLoadTimers = () => {
     setUIVisibility({ longWaitMsg: false });
     loadingTimeout.current = setTimeout(() => {
-      setUIVisibility({ overlay: false });
-      loadingTimeout.current = null;
-      setTimeout(() => setGameState(GameState.Playing), 500);
+      // setUIVisibility({ overlay: false });
+      console.log('This is taking a long time');
+      // loadingTimeout.current = null;
+      // setTimeout(() => setGameState(GameState.Playing), 500);
     }, maxLoadWaitTime);
     longWaitTimeout.current = setTimeout(() => {
       setUIVisibility({ longWaitMsg: true });
-      longWaitTimeout.current = null;
     }, maxLoadWaitTime / 2);
   };
 
