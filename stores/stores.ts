@@ -8,7 +8,11 @@ import {
   TitleVisibility,
   UIVisibility,
 } from './stores.typedefs';
-import { GameState, GifErrorState } from '../components/game/Game.typedefs';
+import {
+  GameState,
+  GifErrorState,
+  ImageLoadingStatus,
+} from '../components/game/Game.enums';
 import clientConfig from '../config/clientConfig';
 
 const { defaultTableauSize } = clientConfig.game;
@@ -115,7 +119,7 @@ export const useUIVisibleStore = create<UIVisibility>(() => ({
   overlay: false,
   alert: false,
   confetti: false,
-  longWaitMsg: false,
+  imageLoadingStatus: ImageLoadingStatus.OK,
 }));
 
 export const useClickHereVisibleStore = create<ClickHereVisibility>(() => ({

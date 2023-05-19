@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useGameStore, useImageDataStore } from '../../../stores/stores';
 import Card from './Card';
 import type { ReactElement } from 'react';
-import { GameState } from '../../game/Game.typedefs';
+import { GameState } from '../../game/Game.enums';
 import clientConfig from '../../../config/clientConfig';
 import styles from '@/styles/elements/game/Tableau.module.scss';
 import genericStyles from '@/styles/GenericStyles.module.scss';

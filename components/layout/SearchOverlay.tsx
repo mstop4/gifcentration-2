@@ -4,7 +4,7 @@ import SearchForm from '../elements/searchOverlay/SearchForm';
 import ImageLoadingIndicator from '../elements/searchOverlay/ImageLoadingIndicator';
 import { SortedGifData } from '../../helpers/gif';
 import type { ReactElement } from 'react';
-import { GameState } from '../game/Game.typedefs';
+import { GameState } from '../game/Game.enums';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/SearchOverlay.module.scss';
 

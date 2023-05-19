@@ -123,6 +123,28 @@ describe('calculateTargetSize', () => {
       targetHeight: 345,
     });
   });
+
+  it('should return default size if width is missing', () => {
+    const sortedData = {
+      animated: [
+        {
+          width: 40,
+          height: 30,
+          originalKey: 'original',
+        },
+      ],
+      stills: [],
+      title: 'Test',
+      id: 'test',
+      linkUrl: 'https://example.com',
+    };
+    // @ts-expect-error: missing width parameter
+    const targetSize = calculateTargetSize(sortedData, undefined, 1, 100);
+    expect(targetSize).toMatchObject({
+      targetWidth: 100,
+      targetHeight: 75,
+    });
+  });
 });
 
 describe('findBestRepresentations', () => {

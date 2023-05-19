@@ -2,7 +2,7 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import ResetGameButton from './ResetGameButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../../game/Game.typedefs';
+import { GameState } from '../../game/Game.enums';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 import { useGameStore } from '../../../stores/stores';
 

@@ -19,7 +19,8 @@ const clientConfig = {
     defaultTableauSize: 18,
     confettiAmount: 200,
     confettiDuration: 10000, // milliseconds
-    maxLoadWaitTime: 10000, // milliseconds
+    maxSearchWaitTime: 8000, // milliseconds
+    maxLoadWaitTime: 8000, // milliseconds
   },
 };
 

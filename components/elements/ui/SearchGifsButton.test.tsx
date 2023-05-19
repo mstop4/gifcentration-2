@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, waitFor, act } from '@testing-library/react';
 import SearchGifsButton from './SearchGifsButton';
 import '@testing-library/jest-dom';
-import { GameState } from '../../game/Game.typedefs';
+import { GameState } from '../../game/Game.enums';
 import { useGameStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 

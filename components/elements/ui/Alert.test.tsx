@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GifErrorState } from '../../game/Game.typedefs';
+import { GifErrorState } from '../../game/Game.enums';
 import Alert from './Alert';
 import { useUIVisibleStore, useImageDataStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
@@ -135,6 +135,50 @@ describe('Alert', () => {
       '.body',
       /could not search for gifs./i,
       /forbidden/i
+    );
+
+    expect(alertElem).toHaveClass('error');
+    expect(topText).toBeInTheDocument();
+    expect(bottomText).toBeInTheDocument();
+  });
+
+  it('renders the gateway timeout message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({
+        gifErrorState: GifErrorState.GatewayTimeout,
+      });
+    });
+
+    const { container } = render(<Alert />);
+
+    const { alertElem, topText, bottomText } = testHelper(
+      container,
+      '.body',
+      /could not search for gifs./i,
+      /fetch timeout/i
+    );
+
+    expect(alertElem).toHaveClass('error');
+    expect(topText).toBeInTheDocument();
+    expect(bottomText).toBeInTheDocument();
+  });
+
+  it('renders the service unavailable message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({
+        gifErrorState: GifErrorState.ServiceUnavailable,
+      });
+    });
+
+    const { container } = render(<Alert />);
+
+    const { alertElem, topText, bottomText } = testHelper(
+      container,
+      '.body',
+      /could not search for gifs./i,
+      /service unavailable/i
     );
 
     expect(alertElem).toHaveClass('error');

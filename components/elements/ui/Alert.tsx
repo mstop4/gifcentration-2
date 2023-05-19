@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { GifErrorState } from '../../game/Game.typedefs';
+import { GifErrorState } from '../../game/Game.enums';
 import styles from '@/styles/elements/ui/Alert.module.scss';
 import { useImageDataStore, useUIVisibleStore } from '../../../stores/stores';
 
@@ -51,6 +51,28 @@ export default function Alert(): ReactElement {
           Could not search for GIFs.
           <br />
           Forbidden
+        </>
+      );
+      break;
+
+    case GifErrorState.GatewayTimeout:
+      bodyClass = styles.error;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Fetch Timeout
+        </>
+      );
+      break;
+
+    case GifErrorState.ServiceUnavailable:
+      bodyClass = styles.error;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Service Unavailable
         </>
       );
       break;

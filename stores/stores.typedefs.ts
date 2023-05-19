@@ -1,4 +1,8 @@
-import { GameState, GifErrorState } from '../components/game/Game.typedefs';
+import {
+  GameState,
+  GifErrorState,
+  ImageLoadingStatus,
+} from '../components/game/Game.enums';
 import { SortedGifData } from '../helpers/gif';
 
 export type CardArrayAction =
@@ -59,7 +63,7 @@ export type UIVisibility = {
   overlay: boolean;
   alert: boolean;
   confetti: boolean;
-  longWaitMsg: boolean;
+  imageLoadingStatus: ImageLoadingStatus;
 };
 
 export type ClickHereVisibility = {

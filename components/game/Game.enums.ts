@@ -13,5 +13,13 @@ export enum GifErrorState {
   BadRequest,
   Forbidden,
   InternalServerError,
+  ServiceUnavailable,
+  GatewayTimeout,
   UnknownError,
+}
+
+export enum ImageLoadingStatus {
+  Timeout,
+  LongWait,
+  OK,
 }
