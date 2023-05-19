@@ -23,6 +23,7 @@ export enum ServerHTTPStatus {
   Ok = 200,
   BadRequest = 400,
   Forbidden = 403,
+  URITooLong = 414,
   InternalServerError = 500,
   ServiceUnavailable = 503,
   GatewayTimeout = 504,
@@ -119,6 +120,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     switch (status) {
       case ServerHTTPStatus.BadRequest:
       case ServerHTTPStatus.Forbidden:
+      case ServerHTTPStatus.URITooLong:
       case ServerHTTPStatus.InternalServerError:
         return {
           numResults: 0,
@@ -193,6 +195,10 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
 
         case ServerHTTPStatus.Forbidden:
           showAlert(GifErrorState.Forbidden);
+          break;
+
+        case ServerHTTPStatus.URITooLong:
+          showAlert(GifErrorState.URITooLong);
           break;
 
         case ServerHTTPStatus.GatewayTimeout:

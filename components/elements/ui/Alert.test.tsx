@@ -114,7 +114,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /bad request/i
+      /request was malformed./i
     );
 
     expect(alertElem).toHaveClass('error');
@@ -134,7 +134,27 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /forbidden/i
+      /you don't have the required permissions./i
+    );
+
+    expect(alertElem).toHaveClass('error');
+    expect(topText).toBeInTheDocument();
+    expect(bottomText).toBeInTheDocument();
+  });
+
+  it('renders the URI too long message', async () => {
+    await act(() => {
+      uiVisibleStore.setState({ alert: true });
+      imageDataStore.setState({ gifErrorState: GifErrorState.URITooLong });
+    });
+
+    const { container } = render(<Alert />);
+
+    const { alertElem, topText, bottomText } = testHelper(
+      container,
+      '.body',
+      /could not search for gifs./i,
+      /search query was too long./i
     );
 
     expect(alertElem).toHaveClass('error');
@@ -156,7 +176,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /fetch timeout/i
+      /search timed out./i
     );
 
     expect(alertElem).toHaveClass('error');
@@ -178,7 +198,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /service unavailable/i
+      /service is unavailable/i
     );
 
     expect(alertElem).toHaveClass('error');

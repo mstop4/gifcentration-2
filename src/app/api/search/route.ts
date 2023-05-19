@@ -16,17 +16,17 @@ const { maxLimit, cacheExpiryTime } = serverConfig.api.search;
 export async function GET(request: Request): Promise<NextResponse> {
   if (!process.env.GIFCENTRATION_API_HASH)
     return NextResponse.json(
-      { status: '500 Internal Server Error' },
+      { status: 'Internal Server Error' },
       { status: 500 }
     );
 
   const key = request.headers.get('x-api-key');
   if (!key)
-    return NextResponse.json({ status: '400 Bad Request' }, { status: 400 });
+    return NextResponse.json({ status: 'Bad Request' }, { status: 400 });
 
   const result = checkKey(process.env.GIFCENTRATION_API_HASH, key);
   if (!result)
-    return NextResponse.json({ status: '403 Forbidden' }, { status: 403 });
+    return NextResponse.json({ status: 'Forbidden' }, { status: 403 });
 
   try {
     const { searchParams } = new URL(request.url);
@@ -84,8 +84,8 @@ export async function GET(request: Request): Promise<NextResponse> {
   } catch (err) {
     console.log('Error in api/search', err);
     return NextResponse.json(
-      { status: '500 Internal Server Error' },
-      { status: 500 }
+      { status: err.statusText ?? 'Internal Server Error' },
+      { status: err.status ?? 500 }
     );
   }
 }

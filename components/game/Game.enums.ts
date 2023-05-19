@@ -12,6 +12,7 @@ export enum GifErrorState {
   NoGifs,
   BadRequest,
   Forbidden,
+  URITooLong,
   InternalServerError,
   ServiceUnavailable,
   GatewayTimeout,

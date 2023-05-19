@@ -39,7 +39,7 @@ export default function Alert(): ReactElement {
         <>
           Could not search for GIFs.
           <br />
-          Bad Request
+          Request was malformed.
         </>
       );
       break;
@@ -50,7 +50,18 @@ export default function Alert(): ReactElement {
         <>
           Could not search for GIFs.
           <br />
-          Forbidden
+          You don&apos;t have the required permissions.
+        </>
+      );
+      break;
+
+    case GifErrorState.URITooLong:
+      bodyClass = styles.error;
+      bodyText = (
+        <>
+          Could not search for GIFs.
+          <br />
+          Search query was too long.
         </>
       );
       break;
@@ -61,7 +72,7 @@ export default function Alert(): ReactElement {
         <>
           Could not search for GIFs.
           <br />
-          Fetch Timeout
+          Search timed out.
         </>
       );
       break;
@@ -72,7 +83,7 @@ export default function Alert(): ReactElement {
         <>
           Could not search for GIFs.
           <br />
-          Service Unavailable
+          Service is unavailable.
         </>
       );
       break;
@@ -83,7 +94,7 @@ export default function Alert(): ReactElement {
         <>
           Could not search for GIFs.
           <br />
-          Internal Server Error
+          Internal server error.
         </>
       );
       break;

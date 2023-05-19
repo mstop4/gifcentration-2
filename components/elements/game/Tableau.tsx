@@ -78,19 +78,21 @@ export default function Tableau(props: TableauProps): ReactElement {
   }, [selectedCardIndexes, checkPair]);
 
   const cardArray: ReactElement[] = [];
-  for (let i = 0; i < imageIndexes.length; ++i) {
-    cardArray.push(
-      <Card
-        key={`${imageData[imageIndexes[i]].id}-${i}`}
-        index={i}
-        reduceMotions={reduceMotions}
-        imageData={imageData[imageIndexes[i]]}
-        flipped={flipped[i]}
-        matched={matched[i]}
-        handleCardClick={handleCardClick}
-        updateImageLoaded={updateImageLoaded}
-      />
-    );
+  if (imageData.length > 0 && imageIndexes.length > 0) {
+    for (let i = 0; i < imageIndexes.length; ++i) {
+      cardArray.push(
+        <Card
+          key={`${imageData[imageIndexes[i]].id}-${i}`}
+          index={i}
+          reduceMotions={reduceMotions}
+          imageData={imageData[imageIndexes[i]]}
+          flipped={flipped[i]}
+          matched={matched[i]}
+          handleCardClick={handleCardClick}
+          updateImageLoaded={updateImageLoaded}
+        />
+      );
+    }
   }
 
   return (
