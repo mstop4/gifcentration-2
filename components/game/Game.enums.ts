@@ -17,3 +17,9 @@ export enum GifErrorState {
   GatewayTimeout,
   UnknownError,
 }
+
+export enum ImageLoadingStatus {
+  Timeout,
+  LongWait,
+  OK,
+}

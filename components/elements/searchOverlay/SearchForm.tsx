@@ -14,7 +14,7 @@ import { Rating } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { SortedGifData, organizeImages } from '../../../helpers/gif';
 import clientConfig from '../../../config/clientConfig';
-import { GameState, GifErrorState } from '../../game/Game.typedefs';
+import { GameState, GifErrorState } from '../../game/Game.enums';
 import { TopSearchResult } from '../../../lib/mongodb/helpers';
 import giphyLogo from '../../../public/giphyLogo.png';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';

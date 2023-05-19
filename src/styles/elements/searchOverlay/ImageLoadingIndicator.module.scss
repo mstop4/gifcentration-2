@@ -28,3 +28,18 @@
 #loadingProgress::-moz-progress-bar {
   background-color: colours.$highlight-colour;
 }
+
+#startGameButton {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 2rem; // fallback for firefox
+  height: 4rem;
+  border-radius: 0.75lh;
+  height: 1.5lh;
+  width: 14rem;
+  margin: 1.5rem;
+  cursor: pointer;
+  color: colours.$primary-text-colour;
+  background-color: colours.$highlight-colour;
+  border: global.$outline-width solid colours.$primary-outline-colour;
+}

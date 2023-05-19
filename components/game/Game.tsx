@@ -22,7 +22,7 @@ import {
 } from '../../helpers';
 import { SortedGifData } from '../../helpers/gif';
 import clientConfig from '../../config/clientConfig';
-import { GameState } from './Game.typedefs';
+import { GameState, ImageLoadingStatus } from './Game.enums';
 import type { ReactElement } from 'react';
 import { TopSearchResult } from '../../lib/mongodb/helpers';
 import styles from '@/styles/layout/Game.module.scss';
@@ -145,15 +145,12 @@ export default function Game(props: GameProps): ReactElement {
 
   // Sets timers connected to loading UI indicators
   const startLoadTimers = () => {
-    setUIVisibility({ longWaitMsg: false });
+    setUIVisibility({ imageLoadingStatus: ImageLoadingStatus.OK });
     loadingTimeout.current = setTimeout(() => {
-      // setUIVisibility({ overlay: false });
-      console.log('This is taking a long time');
-      // loadingTimeout.current = null;
-      // setTimeout(() => setGameState(GameState.Playing), 500);
+      setUIVisibility({ imageLoadingStatus: ImageLoadingStatus.Timeout });
     }, maxLoadWaitTime);
     longWaitTimeout.current = setTimeout(() => {
-      setUIVisibility({ longWaitMsg: true });
+      setUIVisibility({ imageLoadingStatus: ImageLoadingStatus.LongWait });
     }, maxLoadWaitTime / 2);
   };
 

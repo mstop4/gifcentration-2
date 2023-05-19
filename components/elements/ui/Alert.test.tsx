@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { GifErrorState } from '../../game/Game.typedefs';
+import { GifErrorState } from '../../game/Game.enums';
 import Alert from './Alert';
 import { useUIVisibleStore, useImageDataStore } from '../../../stores/stores';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';

@@ -1,5 +1,11 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import ImageLoadingIndicator from './ImageLoadingIndicator';
 import '@testing-library/jest-dom';
 import {
@@ -7,8 +13,9 @@ import {
   useImageDataStore,
   useUIVisibleStore,
 } from '../../../stores/stores';
-import { GameState } from '../../game/Game.typedefs';
+import { GameState } from '../../game/Game.enums';
 import { getZustandStoreHooks } from '../../../helpers/zustandTest';
+import { ImageLoadingStatus } from '../../game/Game.enums';
 
 let gameStore;
 let imageDataStore;
@@ -19,6 +26,7 @@ describe('ImageLoadingIndicator', () => {
     gameStore = getZustandStoreHooks(useGameStore);
     imageDataStore = getZustandStoreHooks(useImageDataStore);
     uiVisibleStore = getZustandStoreHooks(useUIVisibleStore);
+    jest.useFakeTimers();
   });
 
   beforeEach(() => {
@@ -34,6 +42,7 @@ describe('ImageLoadingIndicator', () => {
     gameStore = null;
     imageDataStore = null;
     uiVisibleStore = null;
+    jest.useRealTimers();
   });
 
   it('renders a ImageLoadingIndicator', async () => {
@@ -74,7 +83,7 @@ describe('ImageLoadingIndicator', () => {
     await act(() => {
       gameStore.getState().setGameState(GameState.Loading);
       gameStore.getState().setActualTableauSize(numCards);
-      uiVisibleStore.setState({ longWaitMsg: false });
+      uiVisibleStore.setState({ imageLoadingStatus: ImageLoadingStatus.OK });
       imageDataStore
         .getState()
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
@@ -82,7 +91,7 @@ describe('ImageLoadingIndicator', () => {
 
     render(<ImageLoadingIndicator />);
 
-    const text = screen.queryByText(/loading.../i);
+    const text = screen.queryByText(/preloading gifs.../i);
     expect(text).toBeInTheDocument();
   });
 
@@ -91,7 +100,9 @@ describe('ImageLoadingIndicator', () => {
     await act(() => {
       gameStore.getState().setGameState(GameState.Loading);
       gameStore.getState().setActualTableauSize(numCards);
-      uiVisibleStore.setState({ longWaitMsg: true });
+      uiVisibleStore.setState({
+        imageLoadingStatus: ImageLoadingStatus.LongWait,
+      });
       imageDataStore
         .getState()
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });
@@ -99,10 +110,55 @@ describe('ImageLoadingIndicator', () => {
 
     render(<ImageLoadingIndicator />);
 
-    const text1 = screen.queryByText(/still/i);
-    const text2 = screen.queryByText(/loading.../i);
-    expect(text1).toBeInTheDocument();
-    expect(text2).toBeInTheDocument();
+    const text = screen.queryByText(/still preloading gifs.../i);
+    expect(text).toBeInTheDocument();
+  });
+
+  it('should display the Start Game Now button', async () => {
+    const numCards = 8;
+    await act(() => {
+      gameStore.getState().setGameState(GameState.Loading);
+      gameStore.getState().setActualTableauSize(numCards);
+      uiVisibleStore.setState({
+        imageLoadingStatus: ImageLoadingStatus.Timeout,
+      });
+      imageDataStore
+        .getState()
+        .setImageLoaded({ type: 'clear', payload: numCards / 2 });
+    });
+
+    const { container } = render(<ImageLoadingIndicator />);
+
+    const button = container.querySelector('#startGameButton');
+    const text = screen.queryByText(/still preloading gifs.../i);
+    expect(button).toBeInTheDocument();
+    expect(text).toBeInTheDocument();
+  });
+
+  it('should click on Start Game Now button', async () => {
+    const numCards = 8;
+    await act(() => {
+      gameStore.getState().setGameState(GameState.Loading);
+      gameStore.getState().setActualTableauSize(numCards);
+      uiVisibleStore.setState({
+        imageLoadingStatus: ImageLoadingStatus.Timeout,
+      });
+      imageDataStore
+        .getState()
+        .setImageLoaded({ type: 'clear', payload: numCards / 2 });
+    });
+
+    const { container } = render(<ImageLoadingIndicator />);
+    const button = container.querySelector('#startGameButton') as Element;
+    fireEvent.click(button);
+
+    await act(() => jest.runAllTimers());
+    await waitFor(() => {
+      const overlayVisible = uiVisibleStore.getState().overlay;
+      const gameState = gameStore.getState().gameState;
+      expect(overlayVisible).toEqual(false);
+      expect(gameState).toEqual(GameState.Playing);
+    });
   });
 
   it('should have a progress bar that is partially full', async () => {
@@ -110,7 +166,7 @@ describe('ImageLoadingIndicator', () => {
     await act(() => {
       gameStore.getState().setGameState(GameState.Loading);
       gameStore.getState().setActualTableauSize(numCards);
-      uiVisibleStore.setState({ longWaitMsg: false });
+      uiVisibleStore.setState({ imageLoadingStatus: ImageLoadingStatus.OK });
       imageDataStore
         .getState()
         .setImageLoaded({ type: 'clear', payload: numCards / 2 });

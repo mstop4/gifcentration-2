@@ -25,7 +25,7 @@ describe('pairShuffler', () => {
     }
 
     const correctCounts = indexCounts.every(count => count === 2);
-    expect(correctCounts).toBeTruthy();
+    expect(correctCounts).toEqual(true);
   });
 });
 
@@ -95,7 +95,7 @@ describe('checkKey', () => {
     const hash =
       'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d7751f.6fd8f6789cfebce0';
     const result = checkKey(hash, key);
-    expect(result).toBeTruthy();
+    expect(result).toEqual(true);
   });
 
   it('should return false due to incorrect key', () => {
@@ -104,7 +104,7 @@ describe('checkKey', () => {
     const hash =
       'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d7751f.6fd8f6789cfebce0';
     const result = checkKey(hash, key);
-    expect(result).toBeFalsy();
+    expect(result).toEqual(false);
   });
 
   it('should return false due to incorrect hash', () => {
@@ -113,6 +113,6 @@ describe('checkKey', () => {
     const hash =
       'f47c81283650b9bc1e698984b577a41473fb4f7644985b8546cf42d87d3104180a04fb5c91f6c552b7bd1b66e4138b3759e537d374c1ab29f278d027a5d77510.6fd8f6789cfebce1';
     const result = checkKey(hash, key);
-    expect(result).toBeFalsy();
+    expect(result).toEqual(false);
   });
 });

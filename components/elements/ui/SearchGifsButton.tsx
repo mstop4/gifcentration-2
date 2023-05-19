@@ -6,7 +6,7 @@ import {
   useTitleVisibleStore,
 } from '../../../stores/stores';
 import type { ReactElement } from 'react';
-import { GameState } from '../../game/Game.typedefs';
+import { GameState } from '../../game/Game.enums';
 import buttonBaseStyles from '@/styles/elements/ui/ButtonBase.module.scss';
 import styles from '@/styles/elements/ui/SearchGifsButton.module.scss';
 
