@@ -87,7 +87,6 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         signal: abortController.signal,
       });
     } catch (err) {
-      console.log(err.message);
       if (err.name === 'AbortError') {
         // Fetch took too long
         return {
