@@ -17,7 +17,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   if (!process.env.GIFCENTRATION_API_HASH)
     return NextResponse.json(
       { status: 'Internal Server Error' },
-      { status: 500 }
+      { status: 500 },
     );
 
   const key = request.headers.get('x-api-key');
@@ -85,7 +85,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     console.log('Error in api/search', err);
     return NextResponse.json(
       { status: err.statusText ?? 'Internal Server Error' },
-      { status: err.status ?? 500 }
+      { status: err.status ?? 500 },
     );
   }
 }

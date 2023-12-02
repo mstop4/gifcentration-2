@@ -34,6 +34,7 @@
     "@giphy/js-types": "^5.0.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.10",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
     "eslint-config-next": "^14.0.3",

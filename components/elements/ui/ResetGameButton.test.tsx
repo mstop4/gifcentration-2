@@ -36,7 +36,7 @@ describe('ResetGameButton', () => {
 
     const resetCardsMock = jest.fn();
     const { container } = render(
-      <ResetGameButton resetCards={resetCardsMock} />
+      <ResetGameButton resetCards={resetCardsMock} />,
     );
 
     const button = container.querySelector('#resetGameButton') as Element;
@@ -49,7 +49,7 @@ describe('ResetGameButton', () => {
 
     const resetCardsMock = jest.fn();
     const { container } = render(
-      <ResetGameButton resetCards={resetCardsMock} />
+      <ResetGameButton resetCards={resetCardsMock} />,
     );
 
     const button = container.querySelector('#resetGameButton') as Element;

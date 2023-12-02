@@ -13,7 +13,7 @@ const testHelper = (
   container: HTMLElement,
   elemName: string,
   topTextRegEx: RegExp,
-  bottomTextRegEx?: RegExp
+  bottomTextRegEx?: RegExp,
 ) => {
   return {
     alertElem: container.querySelector(elemName),
@@ -74,7 +74,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not find any gifs!/i,
-      /try a different search./i
+      /try a different search./i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -94,7 +94,7 @@ describe('Alert', () => {
       container,
       '.body',
       /not enough gifs found./i,
-      /reducing tableau size./i
+      /reducing tableau size./i,
     );
 
     expect(alertElem).toHaveClass('warning');
@@ -114,7 +114,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /request was malformed./i
+      /request was malformed./i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -134,7 +134,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /you don't have the required permissions./i
+      /you don't have the required permissions./i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -154,7 +154,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /search query was too long./i
+      /search query was too long./i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -176,7 +176,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /search timed out./i
+      /search timed out./i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -198,7 +198,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /service is unavailable/i
+      /service is unavailable/i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -220,7 +220,7 @@ describe('Alert', () => {
       container,
       '.body',
       /could not search for gifs./i,
-      /internal server error/i
+      /internal server error/i,
     );
 
     expect(alertElem).toHaveClass('error');
@@ -239,7 +239,7 @@ describe('Alert', () => {
     const { alertElem, topText } = testHelper(
       container,
       '.body',
-      /An unknown error occured/i
+      /An unknown error occured/i,
     );
 
     expect(alertElem).toHaveClass('error');

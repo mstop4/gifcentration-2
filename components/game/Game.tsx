@@ -47,11 +47,11 @@ export default function Game(props: GameProps): ReactElement {
   const setFlipped = useGameStore(state => state.setFlipped);
   const setMatched = useGameStore(state => state.setMatched);
   const setSelectedCardIndexes = useGameStore(
-    state => state.setSelectedCardIndexes
+    state => state.setSelectedCardIndexes,
   );
   const idealTableauSize = useGameStore(state => state.idealTableauSize);
   const setActualTableauSize = useGameStore(
-    state => state.setActualTableauSize
+    state => state.setActualTableauSize,
   );
 
   const titleRendered = useTitleVisibleStore(state => state.titleRendered);
@@ -103,12 +103,12 @@ export default function Game(props: GameProps): ReactElement {
 
     document.documentElement.style.setProperty(
       '--major-axis-size',
-      `${majorAxisSize}`
+      `${majorAxisSize}`,
     );
 
     document.documentElement.style.setProperty(
       '--minor-axis-size',
-      `${minorAxisSize}`
+      `${minorAxisSize}`,
     );
   };
 
@@ -160,7 +160,7 @@ export default function Game(props: GameProps): ReactElement {
       setUIVisibility({ overlay: visible });
       if (visible) router.replace(pathname);
     },
-    [pathname, router, setUIVisibility]
+    [pathname, router, setUIVisibility],
   );
 
   // Shows/hides confetti overlay

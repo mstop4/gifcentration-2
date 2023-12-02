@@ -11,7 +11,7 @@ import { getZustandStoreHooks } from '../../../helpers/zustandTest';
 let gameStore;
 let imageDataStore;
 const imageData = mockIGifs.map((imageData: unknown) =>
-  organizeImages(imageData as IGif)
+  organizeImages(imageData as IGif),
 );
 
 const makeTableau = (): ReactElement => (

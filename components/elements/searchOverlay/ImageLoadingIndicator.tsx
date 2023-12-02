@@ -24,7 +24,7 @@ export default function ImageLoadingIndicator(): ReactElement {
 
   const numImagesLoaded = imageLoaded.reduce(
     (total, current) => (current ? total + 1 : total),
-    0
+    0,
   );
 
   let loadingMsg;

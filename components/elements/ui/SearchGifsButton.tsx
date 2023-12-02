@@ -15,7 +15,7 @@ export type SearchGifsButtonProps = {
 };
 
 export default function SearchGifsButton(
-  props: SearchGifsButtonProps
+  props: SearchGifsButtonProps,
 ): ReactElement {
   const { showSearchOverlay } = props;
 

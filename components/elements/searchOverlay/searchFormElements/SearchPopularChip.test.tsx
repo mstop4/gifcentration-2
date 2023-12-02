@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 describe('SearchPopularChip', () => {
   it('renders a SearchPopularChip', () => {
     const { container } = render(
-      <SearchPopularChip query="test" setSearchQuery={jest.fn()} />
+      <SearchPopularChip query="test" setSearchQuery={jest.fn()} />,
     );
     const chip = container.querySelector('.queryChip');
 
@@ -16,7 +16,7 @@ describe('SearchPopularChip', () => {
   it('clicking on it should set search query', async () => {
     const setSearchQueryMock = jest.fn();
     const { container } = render(
-      <SearchPopularChip query="test" setSearchQuery={setSearchQueryMock} />
+      <SearchPopularChip query="test" setSearchQuery={setSearchQueryMock} />,
     );
 
     const chip = container.querySelector('.queryChip') as Element;

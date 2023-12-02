@@ -12,7 +12,7 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={mockPopular as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const popular = container.querySelector('#popular');
 
@@ -24,7 +24,7 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={[] as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const numChips = container.querySelectorAll('.queryChip').length;
 
@@ -37,12 +37,12 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={doublePopular as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const numChips = container.querySelectorAll('.queryChip').length;
 
     expect(numChips).toBeLessThanOrEqual(
-      clientConfig.searchForm.maxPopularSearches
+      clientConfig.searchForm.maxPopularSearches,
     );
   });
 });

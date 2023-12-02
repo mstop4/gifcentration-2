@@ -8,7 +8,7 @@ describe('GifOverlay', () => {
     const { container } = render(
       <GifOverlay active={true} linkUrl="https://example.com">
         <div></div>
-      </GifOverlay>
+      </GifOverlay>,
     );
 
     const overlay = container.querySelector('.gifOverlay');

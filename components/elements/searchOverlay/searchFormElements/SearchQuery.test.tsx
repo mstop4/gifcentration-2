@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 describe('SearchQuery', () => {
   it('renders a SearchQuery', () => {
     const { container } = render(
-      <SearchQuery searchQuery="" setSearchQuery={jest.fn()} />
+      <SearchQuery searchQuery="" setSearchQuery={jest.fn()} />,
     );
     const query = container.querySelector('#searchQuery');
 
@@ -16,7 +16,7 @@ describe('SearchQuery', () => {
   it('sets search query when inputting text', async () => {
     const setSearchQueryMock = jest.fn();
     const { container } = render(
-      <SearchQuery searchQuery="" setSearchQuery={setSearchQueryMock} />
+      <SearchQuery searchQuery="" setSearchQuery={setSearchQueryMock} />,
     );
     const query = container.querySelector('#searchQuery') as Element;
     fireEvent.change(query, { target: { value: 'F' } });
@@ -29,7 +29,7 @@ describe('SearchQuery', () => {
   it('clears search query after clicking clear button if text field is not blank', async () => {
     const setSearchQueryMock = jest.fn();
     const { container } = render(
-      <SearchQuery searchQuery="Text" setSearchQuery={setSearchQueryMock} />
+      <SearchQuery searchQuery="Text" setSearchQuery={setSearchQueryMock} />,
     );
     const clear = container.querySelector('#searchClear') as Element;
     fireEvent.click(clear);
@@ -42,7 +42,7 @@ describe('SearchQuery', () => {
   it('does nothing after clicking clear button if text field is blank', async () => {
     const setSearchQueryMock = jest.fn();
     const { container } = render(
-      <SearchQuery searchQuery="" setSearchQuery={setSearchQueryMock} />
+      <SearchQuery searchQuery="" setSearchQuery={setSearchQueryMock} />,
     );
     const clear = container.querySelector('#searchClear') as Element;
     fireEvent.click(clear);

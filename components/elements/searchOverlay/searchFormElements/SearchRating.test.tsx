@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 describe('SearchRating', () => {
   it('renders a SearchRating', () => {
     const { container } = render(
-      <SearchRating rating="g" setRating={jest.fn()} />
+      <SearchRating rating="g" setRating={jest.fn()} />,
     );
     const rating = container.querySelector('#ratingList');
 
@@ -16,7 +16,7 @@ describe('SearchRating', () => {
   it('sets rating after selecting from select element', async () => {
     const setRatingMock = jest.fn();
     const { container } = render(
-      <SearchRating rating="g" setRating={setRatingMock} />
+      <SearchRating rating="g" setRating={setRatingMock} />,
     );
     const rating = container.querySelector('#ratingList') as Element;
     fireEvent.change(rating, { target: { value: 2 } });

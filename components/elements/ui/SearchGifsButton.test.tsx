@@ -28,7 +28,7 @@ describe('SearchGifsButton', () => {
     await act(() => store.setState({ gameState: GameState.Playing }));
 
     const { container } = render(
-      <SearchGifsButton showSearchOverlay={jest.fn()} />
+      <SearchGifsButton showSearchOverlay={jest.fn()} />,
     );
     const button = container.querySelector('#searchGifsButton');
     expect(button).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('SearchGifsButton', () => {
 
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />
+      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />,
     );
 
     const button = container.querySelector('#searchGifsButton') as Element;
@@ -56,7 +56,7 @@ describe('SearchGifsButton', () => {
 
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />
+      <SearchGifsButton showSearchOverlay={showSearchOverlayMock} />,
     );
 
     const button = container.querySelector('#searchGifsButton') as Element;
