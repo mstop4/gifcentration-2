@@ -3,6 +3,7 @@ import SearchPopularChip from './SearchPopularChip';
 import clientConfig from '../../../../config/clientConfig';
 import { TopSearchResult } from '../../../../lib/mongodb/helpers';
 import styles from '@/styles/elements/searchOverlay/SearchForm.module.scss';
+import { filterObscenities } from '../../../../helpers/obscenityFilter';
 
 export type SearchPopularProps = {
   topSearches: TopSearchResult[];
@@ -12,7 +13,9 @@ export type SearchPopularProps = {
 export default function SearchPopular(props: SearchPopularProps) {
   const { topSearches, setSearchQuery } = props;
 
-  const chips = topSearches
+  const filteredTopSearches = filterObscenities(topSearches);
+
+  const chips = filteredTopSearches
     ?.slice(0, clientConfig.searchForm.maxPopularSearches)
     ?.map(query => (
       <SearchPopularChip

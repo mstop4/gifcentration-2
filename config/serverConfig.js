@@ -1,6 +1,6 @@
 const serverConfig = {
   home: {
-    topSearchesLimit: 10,
+    topSearchesLimit: 20,
   },
 
   api: {

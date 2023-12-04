@@ -5,7 +5,6 @@ import mockPopular from '../../../../mockData/popular.json';
 import '@testing-library/jest-dom';
 import { TopSearchResult } from '../../../../lib/mongodb/helpers';
 import clientConfig from '../../../../config/clientConfig';
-import { filterObscenities } from '../../../../helpers/obscenityFilter';
 
 describe('SearchPopular', () => {
   it('renders a SearchPopular', () => {
@@ -48,11 +47,9 @@ describe('SearchPopular', () => {
   });
 
   it('obscene search terms should be filtered', () => {
-    const filteredPopularSearches = filterObscenities(mockPopular);
-
     render(
       <SearchPopular
-        topSearches={filteredPopularSearches as unknown as TopSearchResult[]}
+        topSearches={mockPopular as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
       />,
     );
