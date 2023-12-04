@@ -1,10 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SearchPopular from './SearchPopular';
 import mockPopular from '../../../../mockData/popular.json';
 import '@testing-library/jest-dom';
 import { TopSearchResult } from '../../../../lib/mongodb/helpers';
 import clientConfig from '../../../../config/clientConfig';
+import { filterObscenities } from '../../../../helpers/obscenityFilter';
 
 describe('SearchPopular', () => {
   it('renders a SearchPopular', () => {
@@ -44,5 +45,21 @@ describe('SearchPopular', () => {
     expect(numChips).toBeLessThanOrEqual(
       clientConfig.searchForm.maxPopularSearches,
     );
+  });
+
+  it('obscene search terms should be filtered', () => {
+    const filteredPopularSearches = filterObscenities(mockPopular);
+
+    render(
+      <SearchPopular
+        topSearches={filteredPopularSearches as unknown as TopSearchResult[]}
+        setSearchQuery={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText('boobs')).not.toBeInTheDocument();
+    expect(screen.queryByText('penis penis penis')).not.toBeInTheDocument();
+    expect(screen.queryByText('shitcock')).not.toBeInTheDocument();
+    expect(screen.queryByText('p0rn')).not.toBeInTheDocument();
   });
 });
