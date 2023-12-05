@@ -11,7 +11,7 @@ export type ResetGameButtonProps = {
 };
 
 export default function ResetGameButton(
-  props: ResetGameButtonProps
+  props: ResetGameButtonProps,
 ): ReactElement {
   const { resetCards } = props;
 

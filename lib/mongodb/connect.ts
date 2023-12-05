@@ -45,7 +45,7 @@ async function _setupMongooseDev() {
 
     mongoose.connection.on('connected', () => console.log('Connected to DB'));
     mongoose.connection.on('reconnected', () =>
-      console.log('Reconnected to DB')
+      console.log('Reconnected to DB'),
     );
     mongoose.connection.on('error', () => console.log('Error in DB'));
   }

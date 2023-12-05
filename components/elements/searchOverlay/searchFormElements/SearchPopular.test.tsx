@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SearchPopular from './SearchPopular';
 import mockPopular from '../../../../mockData/popular.json';
 import '@testing-library/jest-dom';
@@ -12,7 +12,7 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={mockPopular as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const popular = container.querySelector('#popular');
 
@@ -24,7 +24,7 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={[] as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const numChips = container.querySelectorAll('.queryChip').length;
 
@@ -37,12 +37,26 @@ describe('SearchPopular', () => {
       <SearchPopular
         topSearches={doublePopular as unknown as TopSearchResult[]}
         setSearchQuery={jest.fn()}
-      />
+      />,
     );
     const numChips = container.querySelectorAll('.queryChip').length;
 
     expect(numChips).toBeLessThanOrEqual(
-      clientConfig.searchForm.maxPopularSearches
+      clientConfig.searchForm.maxPopularSearches,
     );
+  });
+
+  it('obscene search terms should be filtered', () => {
+    render(
+      <SearchPopular
+        topSearches={mockPopular as unknown as TopSearchResult[]}
+        setSearchQuery={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText('boobs')).not.toBeInTheDocument();
+    expect(screen.queryByText('penis penis penis')).not.toBeInTheDocument();
+    expect(screen.queryByText('shitcock')).not.toBeInTheDocument();
+    expect(screen.queryByText('p0rn')).not.toBeInTheDocument();
   });
 });

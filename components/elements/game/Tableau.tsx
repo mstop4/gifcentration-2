@@ -26,7 +26,7 @@ export default function Tableau(props: TableauProps): ReactElement {
   const setMatched = useGameStore(state => state.setMatched);
   const selectedCardIndexes = useGameStore(state => state.selectedCardIndexes);
   const setSelectedCardIndexes = useGameStore(
-    state => state.setSelectedCardIndexes
+    state => state.setSelectedCardIndexes,
   );
   const imageData = useImageDataStore(state => state.imageData);
   const imageIndexes = useImageDataStore(state => state.imageIndexes);
@@ -90,7 +90,7 @@ export default function Tableau(props: TableauProps): ReactElement {
           matched={matched[i]}
           handleCardClick={handleCardClick}
           updateImageLoaded={updateImageLoaded}
-        />
+        />,
       );
     }
   }

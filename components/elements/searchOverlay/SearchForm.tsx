@@ -76,7 +76,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
     const abortController = new AbortController();
     const searchTimeout = setTimeout(
       () => abortController.abort(),
-      clientConfig.game.maxSearchWaitTime
+      clientConfig.game.maxSearchWaitTime,
     );
     let response;
 
@@ -130,7 +130,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
       case ServerHTTPStatus.Ok:
         // Organize image data
         const organizedData = json.map((imageData: IGif) =>
-          organizeImages(imageData)
+          organizeImages(imageData),
         );
 
         updateImageData(organizedData);

@@ -26,7 +26,10 @@
   position: absolute;
   transform-style: preserve-3d;
   transform-origin: center center;
-  transition: rotate 0.5s ease-out, scale 0.25s ease-out, opacity 1s ease-in;
+  transition:
+    rotate 0.5s ease-out,
+    scale 0.25s ease-out,
+    opacity 1s ease-in;
   cursor: pointer;
 }
 

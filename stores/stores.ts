@@ -20,7 +20,7 @@ const { defaultTableauSize } = clientConfig.game;
 const _cardArrayReducer = (
   prevState: GameStore,
   key: 'flipped' | 'matched' | 'selectedCardIndexes',
-  action: CardArrayAction
+  action: CardArrayAction,
 ) => {
   let newArray: (number | boolean)[];
   const { type, payload } = action;
@@ -84,7 +84,7 @@ export const useGameStore = create<GameStore>(set => ({
 
 const _imageLoadedArrayReducer = (
   prevState: ImageDataStore,
-  action: ImageLoadedArrayAction
+  action: ImageLoadedArrayAction,
 ) => {
   let newArray: boolean[];
   const { type, payload } = action;

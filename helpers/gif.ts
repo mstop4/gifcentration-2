@@ -115,14 +115,14 @@ export const calculateTargetSize = (
   imageData: SortedGifData,
   width: number,
   gifSizeScale: number,
-  defaultSize: number
+  defaultSize: number,
 ) => {
   // Determine aspect ratio of image and resize
   let targetWidth = defaultSize;
   let targetHeight = defaultSize;
 
   const originalGif = imageData?.animated?.find(
-    image => image?.originalKey === 'original'
+    image => image?.originalKey === 'original',
   );
 
   if (originalGif) {
@@ -153,7 +153,7 @@ export const calculateTargetSize = (
 export const findBestRepresentations = (
   imageData: SortedGifData,
   targetWidth: number,
-  isAnimated: boolean
+  isAnimated: boolean,
 ) => {
   const gifDataArray =
     (isAnimated ? imageData?.animated : imageData?.stills) ?? [];
@@ -175,7 +175,7 @@ export const findBestRepresentations = (
   const _assignProps = (
     resultsKey: BestGifResultsKeys,
     image: GifData,
-    urlKey: GifDataUrlKeys
+    urlKey: GifDataUrlKeys,
   ) => {
     results[resultsKey].url = image[urlKey];
     results[resultsKey].width = image.width;

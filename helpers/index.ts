@@ -6,7 +6,7 @@ export type RectangleDimensions = {
 };
 
 export const getRectangleDimensions = (
-  numElem: number
+  numElem: number,
 ): RectangleDimensions => {
   if (numElem < 1)
     return {

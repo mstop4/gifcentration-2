@@ -40,7 +40,7 @@ describe('ClickHere', () => {
 
   it('should be visible', async () => {
     await act(() =>
-      clickHereVisibleStore.setState({ visible: true, rendered: true })
+      clickHereVisibleStore.setState({ visible: true, rendered: true }),
     );
 
     await waitFor(() => {
@@ -53,7 +53,7 @@ describe('ClickHere', () => {
 
   it('should be hidden', async () => {
     await act(() =>
-      clickHereVisibleStore.setState({ visible: false, rendered: true })
+      clickHereVisibleStore.setState({ visible: false, rendered: true }),
     );
 
     await waitFor(() => {
@@ -72,7 +72,7 @@ describe('ClickHere', () => {
 
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <ClickHere showSearchOverlay={showSearchOverlayMock} />
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />,
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;
@@ -102,7 +102,7 @@ describe('ClickHere', () => {
 
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <ClickHere showSearchOverlay={showSearchOverlayMock} />
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />,
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;
@@ -117,7 +117,7 @@ describe('ClickHere', () => {
   it('calls dispatches and callbacks when clicked', async () => {
     const showSearchOverlayMock = jest.fn();
     const { container } = render(
-      <ClickHere showSearchOverlay={showSearchOverlayMock} />
+      <ClickHere showSearchOverlay={showSearchOverlayMock} />,
     );
 
     const clickHere = container.querySelector('#clickHere') as Element;

@@ -60,14 +60,14 @@ export default function Card(props: CardProps): ReactElement {
     imageData,
     width,
     gifSizeScale,
-    defaultSize
+    defaultSize,
   );
 
   // Find best representations
   const { gif, webp } = findBestRepresentations(
     imageData,
     targetWidth,
-    !reduceMotions
+    !reduceMotions,
   );
 
   return (
