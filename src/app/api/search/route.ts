@@ -6,6 +6,7 @@ import serverConfig from '../../../../config/serverConfig';
 import type { Rating } from '@giphy/js-fetch-api';
 import dbConnect from '../../../../lib/mongodb/connect';
 import Search from '../../../../lib/mongodb/models/Search';
+import { isObscene } from '../../../../helpers/obscenityFilter';
 
 const { maxLimit, cacheExpiryTime } = serverConfig.api.search;
 
@@ -73,9 +74,14 @@ export async function GET(request: Request): Promise<NextResponse> {
     // Track search on db if there are results
     if (selection.length > 0) {
       await dbConnect();
+
+      const lowercaseQuery = q.toLowerCase();
+      const obscene = isObscene(lowercaseQuery);
+
       const search = new Search({
-        query: q.toLowerCase(),
+        query: lowercaseQuery,
         rating,
+        isObscene: obscene,
       });
       await search.save();
     }

@@ -1,4 +1,4 @@
-import { filterObscenities } from './obscenityFilter';
+import { filterObscenities, isObscene } from './obscenityFilter';
 
 const goodWords = [
   {
@@ -79,9 +79,16 @@ describe('obscenityFilter', () => {
     const wordList = [...goodWords];
     const filteredWordList = filterObscenities(wordList);
 
-    console.log(wordList);
-    console.log(filteredWordList);
-
     expect(filteredWordList.length).toEqual(wordList.length);
+  });
+});
+
+describe('isObscene', () => {
+  it('should be obscene', () => {
+    expect(isObscene('shit')).toBeTruthy();
+  });
+
+  it('should not be obscene', () => {
+    expect(isObscene('hush it')).toBeFalsy();
   });
 });

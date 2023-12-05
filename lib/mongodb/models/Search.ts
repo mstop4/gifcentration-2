@@ -5,12 +5,14 @@ import serverConfig from '../../../config/serverConfig';
 export type TSearch = {
   query: string;
   rating: Rating;
+  isObscene: boolean;
 };
 
 const SearchSchema = new Schema<TSearch>(
   {
     query: { type: String, required: true },
     rating: { type: String, required: true },
+    isObscene: { type: Boolean, required: true },
   },
   { timestamps: true },
 );

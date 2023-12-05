@@ -9,7 +9,7 @@ export type TopSearchResult = {
 
 export async function getTopSearches(): Promise<TopSearchResult[]> {
   await dbConnect();
-  const topSearches = await Search.aggregate()
+  const topSearches = await Search.aggregate([{ $match: { isObscene: false } }])
     .group({ _id: '$query', count: { $sum: 1 } })
     .sort({ count: -1 })
     .limit(serverConfig.home.topSearchesLimit);

@@ -24,3 +24,5 @@ const matcher = new RegExpMatcher({
 export const filterObscenities = (
   wordList: TopSearchResult[],
 ): TopSearchResult[] => wordList.filter(word => !matcher.hasMatch(word._id));
+
+export const isObscene = (word: string): boolean => matcher.hasMatch(word);
