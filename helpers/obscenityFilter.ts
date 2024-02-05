@@ -3,18 +3,25 @@ import {
   RegExpMatcher,
   englishDataset,
   englishRecommendedTransformers,
-  pattern,
 } from 'obscenity';
+import filterList from './obscenityFilterList';
 import { type TopSearchResult } from '../lib/mongodb/helpers';
 
-const dataset = new DataSet().addAll(englishDataset).addPhrase(phrase =>
-  phrase
-    .setMetadata({ originalWord: 'shit' })
-    .addPattern(pattern`shit`)
-    .addWhitelistedTerm('sh it')
-    .addWhitelistedTerm('s hit')
-    .addWhitelistedTerm('shi t'),
-);
+const dataset = new DataSet().addAll(englishDataset);
+
+for (const word of filterList) {
+  const { originalWord, wordPattern, whitelistedTerms } = word;
+
+  dataset.addPhrase(phrase => {
+    phrase.setMetadata({ originalWord }).addPattern(wordPattern);
+
+    for (const whiteListTerm of whitelistedTerms) {
+      phrase.addWhitelistedTerm(whiteListTerm);
+    }
+
+    return phrase;
+  });
+}
 
 const matcher = new RegExpMatcher({
   ...dataset.build(),

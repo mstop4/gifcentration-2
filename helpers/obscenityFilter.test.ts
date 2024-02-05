@@ -39,6 +39,10 @@ const badWords = [
     _id: 'horseshit',
     count: 5,
   },
+  {
+    _id: 'nsfw',
+    count: 6,
+  },
 ];
 const susWords = [
   {
