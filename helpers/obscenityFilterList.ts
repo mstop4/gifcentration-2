@@ -16,6 +16,31 @@ const filterList = [
     wordPattern: pattern`ahegao`,
     whitelistedTerms: ['ah egao'],
   },
+  {
+    originalWord: 'nude',
+    wordPattern: pattern`nude`,
+    whitelistedTerms: [],
+  },
+  {
+    originalWord: 'sexy',
+    wordPattern: pattern`sexy`,
+    whitelistedTerms: [],
+  },
+  {
+    originalWord: 'tits',
+    wordPattern: pattern`tits`,
+    whitelistedTerms: ['t its'],
+  },
+  {
+    originalWord: 'hot women',
+    wordPattern: pattern`hot women`,
+    whitelistedTerms: [],
+  },
+  {
+    originalWord: 'hot woman',
+    wordPattern: pattern`hot woman`,
+    whitelistedTerms: [],
+  },
 ];
 
 export default filterList;

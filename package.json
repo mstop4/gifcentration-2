@@ -23,7 +23,7 @@
     "eslint": "^8.55.0",
     "mongoose": "^8.0.2",
     "next": "^14.0.3",
-    "obscenity": "^0.1.4",
+    "obscenity": "^0.2.0",
     "react": "^18.2.0",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",

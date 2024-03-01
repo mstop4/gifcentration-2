@@ -43,6 +43,22 @@ const badWords = [
     _id: 'nsfw',
     count: 6,
   },
+  {
+    _id: 'nude ass women',
+    count: 8,
+  },
+  {
+    _id: 'hot women',
+    count: 8,
+  },
+  {
+    _id: 'nsfw pics',
+    count: 8,
+  },
+  {
+    _id: 'sexy tits',
+    count: 9,
+  },
 ];
 const susWords = [
   {
