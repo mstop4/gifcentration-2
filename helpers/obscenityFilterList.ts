@@ -38,7 +38,7 @@ const filterList = [
   },
   {
     originalWord: 'hot woman',
-    wordPattern: pattern`hot women`,
+    wordPattern: pattern`hot woman`,
     whitelistedTerms: [],
   },
 ];
