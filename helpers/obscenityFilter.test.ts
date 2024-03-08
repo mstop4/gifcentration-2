@@ -56,7 +56,7 @@ const badWords = [
     count: 8,
   },
   {
-    _id: 'sexy tits',
+    _id: 'titjob',
     count: 9,
   },
 ];

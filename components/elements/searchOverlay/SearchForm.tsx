@@ -58,7 +58,7 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
   const setUIVisibility = useUIVisibleStore.setState;
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [rating, setRating] = useState<Rating>('g');
+  const [rating, setRating] = useState<Rating>('pg');
 
   const alertTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -244,7 +244,9 @@ export default function SearchForm(props: SearchFormProps): ReactElement {
         setSearchQuery={setSearchQuery}
       />
       <div id={styles.otherSettings}>
-        <SearchRating rating={rating} setRating={setRating} />
+        {clientConfig.searchForm.enableRatingSelection && (
+          <SearchRating rating={rating} setRating={setRating} />
+        )}
         <SearchTableauSize />
       </div>
       <button id={styles.submit} type="submit">
