@@ -27,9 +27,9 @@ const filterList = [
     whitelistedTerms: [],
   },
   {
-    originalWord: 'tits',
-    wordPattern: pattern`tits`,
-    whitelistedTerms: ['t its'],
+    originalWord: 'tit',
+    wordPattern: pattern`tit`,
+    whitelistedTerms: ['t it'],
   },
   {
     originalWord: 'hot women',
