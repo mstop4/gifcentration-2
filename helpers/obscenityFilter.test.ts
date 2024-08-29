@@ -59,6 +59,18 @@ const badWords = [
     _id: 'titjob',
     count: 9,
   },
+  {
+    _id: 'pron',
+    count: 10,
+  },
+  {
+    _id: 'covid19',
+    count: 11,
+  },
+  {
+    _id: 'anti-covid19',
+    count: 12,
+  },
 ];
 const susWords = [
   {

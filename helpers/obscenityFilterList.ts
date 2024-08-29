@@ -41,6 +41,16 @@ const filterList = [
     wordPattern: pattern`hot woman`,
     whitelistedTerms: [],
   },
+  {
+    originalWord: 'pron',
+    wordPattern: pattern`pron`,
+    whitelistedTerms: ['pro n', 'pr on'],
+  },
+  {
+    originalWord: 'covid',
+    wordPattern: pattern`covid`,
+    whitelistedTerms: ['co vid'],
+  },
 ];
 
 export default filterList;
