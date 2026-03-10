@@ -1,4 +1,3 @@
-import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import ResetGameButton from './ResetGameButton';
 import '@testing-library/jest-dom';
@@ -41,7 +40,7 @@ describe('ResetGameButton', () => {
 
     const button = container.querySelector('#resetGameButton') as Element;
     fireEvent.click(button);
-    expect(resetCardsMock).toBeCalled();
+    expect(resetCardsMock).toHaveBeenCalled();
   });
 
   it("doesn't call resetCards when clicked when not playing", async () => {
@@ -54,6 +53,6 @@ describe('ResetGameButton', () => {
 
     const button = container.querySelector('#resetGameButton') as Element;
     fireEvent.click(button);
-    expect(resetCardsMock).not.toBeCalled();
+    expect(resetCardsMock).not.toHaveBeenCalled();
   });
 });

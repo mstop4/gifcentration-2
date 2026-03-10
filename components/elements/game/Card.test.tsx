@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Card from './Card';
 import '@testing-library/jest-dom';
@@ -84,7 +83,7 @@ describe('Card', () => {
 
     const img = container.querySelector('.image') as Element;
     fireEvent.load(img);
-    expect(updateImageLoadedMock).toBeCalled();
+    expect(updateImageLoadedMock).toHaveBeenCalled();
   });
 
   it("should still work with gif data that's missing a gif URL", () => {

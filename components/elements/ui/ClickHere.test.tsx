@@ -1,4 +1,3 @@
-import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ClickHere from './ClickHere';
 import '@testing-library/jest-dom';
@@ -84,7 +83,7 @@ describe('ClickHere', () => {
         titleVisibleStore.getState();
       const { visible, rendered } = clickHereVisibleStore.getState();
 
-      expect(showSearchOverlayMock).toBeCalled();
+      expect(showSearchOverlayMock).toHaveBeenCalled();
       expect(titleVisible).toEqual(false);
       expect(subtitleVisible).toEqual(false);
       expect(titleRendered).toEqual(false);
@@ -110,7 +109,7 @@ describe('ClickHere', () => {
 
     await act(() => jest.runAllTimers());
     await waitFor(() => {
-      expect(showSearchOverlayMock).toBeCalled();
+      expect(showSearchOverlayMock).toHaveBeenCalled();
     });
   });
 
@@ -126,7 +125,7 @@ describe('ClickHere', () => {
     await act(() => jest.runAllTimers());
 
     await waitFor(() => {
-      expect(showSearchOverlayMock).toBeCalled();
+      expect(showSearchOverlayMock).toHaveBeenCalled();
     });
   });
 });

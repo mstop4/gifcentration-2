@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SearchPopular from './SearchPopular';
 import mockPopular from '../../../../mockData/popular.json';

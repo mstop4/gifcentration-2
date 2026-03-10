@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import OverlayCloseButton from './OverlayCloseButton';
 import '@testing-library/jest-dom';

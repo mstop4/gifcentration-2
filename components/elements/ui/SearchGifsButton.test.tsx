@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, waitFor, act } from '@testing-library/react';
 import SearchGifsButton from './SearchGifsButton';
 import '@testing-library/jest-dom';
@@ -47,7 +46,7 @@ describe('SearchGifsButton', () => {
     await act(() => jest.runAllTimers());
 
     await waitFor(() => {
-      expect(showSearchOverlayMock).toBeCalled();
+      expect(showSearchOverlayMock).toHaveBeenCalled();
     });
   });
 
@@ -65,7 +64,7 @@ describe('SearchGifsButton', () => {
     await act(() => jest.runAllTimers());
 
     await waitFor(() => {
-      expect(showSearchOverlayMock).not.toBeCalled();
+      expect(showSearchOverlayMock).not.toHaveBeenCalled();
     });
   });
 });

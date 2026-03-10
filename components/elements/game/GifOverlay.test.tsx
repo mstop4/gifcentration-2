@@ -1,4 +1,3 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import GifOverlay from './GifOverlay';
 import { render } from '@testing-library/react';

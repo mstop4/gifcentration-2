@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchRating from './SearchRating';
 import '@testing-library/jest-dom';
@@ -22,7 +21,7 @@ describe('SearchRating', () => {
     fireEvent.change(rating, { target: { value: 2 } });
 
     await waitFor(() => {
-      expect(setRatingMock).toBeCalled();
+      expect(setRatingMock).toHaveBeenCalled();
     });
   });
 });
