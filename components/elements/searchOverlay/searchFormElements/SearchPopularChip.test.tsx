@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchPopularChip from './SearchPopularChip';
 import '@testing-library/jest-dom';
@@ -23,7 +22,7 @@ describe('SearchPopularChip', () => {
     fireEvent.click(chip);
 
     await waitFor(() => {
-      expect(setSearchQueryMock).toBeCalled();
+      expect(setSearchQueryMock).toHaveBeenCalled();
     });
   });
 });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import SearchQuery from './SearchQuery';
 import '@testing-library/jest-dom';
@@ -22,7 +21,7 @@ describe('SearchQuery', () => {
     fireEvent.change(query, { target: { value: 'F' } });
 
     await waitFor(() => {
-      expect(setSearchQueryMock).toBeCalled();
+      expect(setSearchQueryMock).toHaveBeenCalled();
     });
   });
 
@@ -35,7 +34,7 @@ describe('SearchQuery', () => {
     fireEvent.click(clear);
 
     await waitFor(() => {
-      expect(setSearchQueryMock).toBeCalled();
+      expect(setSearchQueryMock).toHaveBeenCalled();
     });
   });
 
@@ -48,7 +47,7 @@ describe('SearchQuery', () => {
     fireEvent.click(clear);
 
     await waitFor(() => {
-      expect(setSearchQueryMock).not.toBeCalled();
+      expect(setSearchQueryMock).not.toHaveBeenCalled();
     });
   });
 });
